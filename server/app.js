@@ -1,0 +1,44 @@
+const express = require('express');
+const cors = require('cors');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+
+const authRouter = require('./routes/authRouters');
+const userRouter = require('./routes/userRoutes');
+const postRouter = require('./routes/postRoutes');
+
+const app = express();
+
+app.use(express.json());
+// app.use(
+//   cors({
+//     origin: 'http://localhost:5173',
+//     credentials: true,
+//     optionSuccessStatus: 200,
+//     Headers: true,
+//     exposedHeaders: 'Set-Cookie',
+//     methods: ['GET', 'PUT', 'POST', 'DELETE', 'OPTIONS'],
+//     allowedHeaders: [
+//       'Access-Control-Allow-Origin',
+//       'Content-Type',
+//       'Authorization',
+//     ],
+//   })
+// );
+app.use(
+  cors({
+    origin: ['http://localhost:5173'],
+    credentials: true,
+    sameSite: 'none',
+  })
+);
+// app.use(cors({ credentials: true, origin: 'http://localhost:5173' }));
+app.use(cookieParser());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static('public'));
+
+app.use('/auth', authRouter);
+app.use('/users', userRouter);
+app.use('/posts', postRouter);
+
+module.exports = app;
