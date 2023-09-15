@@ -6,6 +6,7 @@ import { useAutoTextareaResize } from "../hooks/useAutoTextareaResize"
 import CreatePostFooter from "../features/posts/CreatePostFooter"
 import { useState } from "react"
 import DropdownMenu from "../ui/DropdownMenu"
+import { useAddNewPost } from "../features/posts/useAddNewPost"
 const StyledCreatePost = styled.form`
   background-color: var(--color-grey-50);
   height: calc(100vh - 7rem);
@@ -31,6 +32,7 @@ const SyledDiv = styled.div`
   } */
 `
 const StyledTitle = styled.textarea`
+  margin-top: 1.25rem;
   line-height: 1.1;
   width: 100%;
   resize: auto;
@@ -39,7 +41,7 @@ const StyledTitle = styled.textarea`
   resize: none;
   border: none;
   font-weight: 600;
-  font-size: 4rem;
+  font-size: 3rem;
   caret-color: auto;
   color: var(--color-grey-700);
   &::placeholder {
@@ -51,6 +53,10 @@ const StyledTitle = styled.textarea`
     outline-offset: none;
   }
 `
+const StyledSummary = styled(StyledTitle)`
+  font-weight: 500;
+  font-size: 2rem;
+`
 const Wrapper = styled.div`
   padding: 0 2rem;
   display: flex;
@@ -59,21 +65,33 @@ const Wrapper = styled.div`
 `
 
 function CreatePost() {
-  const ref = useAutoTextareaResize()
-  const [file, setFile] = useState(null)
+  const { isLoading, addNewPost } = useAddNewPost()
+  const titleRef = useAutoTextareaResize()
+  const summaryRef = useAutoTextareaResize()
+  const [coverImg, setCoverImg] = useState(null)
   const [title, setTitle] = useState("")
+  const [summary, setSummary] = useState("")
   const [content, setContent] = useState("")
   const [showList, setShowList] = useState(false)
-  const [categorie, setCategorie] = useState("")
+  const [category, setCategory] = useState("")
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    const data = new FormData()
+    data.append("coverImg", coverImg)
+    data.append("category", category)
+    data.append("title", title)
+    data.append("content", content)
+    data.append("summary", summary)
+
+    addNewPost(data)
   }
   const clear = () => {
     setShowList(false)
-    setCategorie("")
-    setFile(null)
+    setCategory("")
+    setCoverImg(null)
     setTitle("")
+    setSummary("")
     setContent("")
   }
   return (
@@ -83,20 +101,26 @@ function CreatePost() {
           <DropdownMenu
             showList={showList}
             setShowList={setShowList}
-            categorie={categorie}
-            setCategorie={setCategorie}
+            category={category}
+            setCategory={setCategory}
           />
           <FileInput
-            file={file}
-            setFile={setFile}
+            file={coverImg}
+            setFile={setCoverImg}
             type="file"
             placeholder="Add a cover image"
           />
           <StyledTitle
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            ref={ref}
+            ref={titleRef}
             placeholder="New post title here..."
+          />
+          <StyledSummary
+            value={summary}
+            onChange={(e) => setSummary(e.target.value)}
+            ref={summaryRef}
+            placeholder="New post summary here..."
           />
         </Wrapper>
         <Editor content={content} setContent={setContent} />

@@ -1,8 +1,6 @@
 import styled from "styled-components"
 import Logo from "./Logo"
 import Menu from "./Menu"
-import Searchbar from "./Searchbar"
-
 const StyledHeader = styled.header`
   position: fixed;
   top: 0;
@@ -22,7 +20,6 @@ function Header() {
   return (
     <StyledHeader>
       <Logo />
-      <Searchbar />
       <Menu />
     </StyledHeader>
   )

@@ -3,8 +3,8 @@ import styled from "styled-components"
 import PostItem from "./PostItem"
 
 const StyledPosts = styled.ul`
-  max-width: 120rem;
-  margin: 0 auto;
+  /* max-width: 120rem;
+  margin: 0 auto; */
   display: flex;
   flex-direction: column;
   gap: 2.5rem;

@@ -10,6 +10,7 @@ router.post(
   postController.addNewPost
 );
 router.get('/', postController.getPosts);
+router.get('/:postId', postController.getPost);
 router.post('/upload', authController.protect, postController.upload);
 
 module.exports = router;

@@ -27,7 +27,7 @@ const formats = [
   "link"
 ]
 function Editor({ content, setContent }) {
-  console.log(content)
+  // console.log(content)
   return (
     <ReactQuill
       placeholder="Write your post content here..."

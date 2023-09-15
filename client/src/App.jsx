@@ -48,9 +48,9 @@ function App() {
         <Routes>
           <Route element={<AppLayout />}>
             <Route index element={<Home />} />
+            <Route path="/post/:postId" element={<Post />} />
             <Route element={<ProtectedRoute />}>
               <Route path="/new" element={<CreatePost />} />
-              <Route path="/post/:postId" element={<Post />} />
             </Route>
           </Route>
           <Route path="/signup" element={<Signup />} />

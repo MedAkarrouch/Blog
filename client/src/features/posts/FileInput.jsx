@@ -1,8 +1,8 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { useDropzone } from "react-dropzone"
 import styled, { css } from "styled-components"
 
-const Button = styled.button`
+const Button = styled.button.attrs({ type: "button" })`
   background-color: #fff;
   border: 3px solid var(--color-grey-100);
   padding: 0.75rem 1.5rem;
@@ -11,7 +11,7 @@ const Button = styled.button`
   font-size: 1.5rem;
   border-radius: 5px;
   ${(props) =>
-    props.type !== "danger" &&
+    props.variation !== "danger" &&
     css`
       &:hover {
         background-color: var(--color-grey-100);
@@ -19,7 +19,7 @@ const Button = styled.button`
     `}
 
   ${(props) =>
-    props.type === "danger" &&
+    props.variation === "danger" &&
     css`
       color: var(--color-red-500);
       border: none;
@@ -48,6 +48,7 @@ function FileInput({ file, setFile }) {
     },
     maxFiles: 1, // Limit to one file
     onDrop: (acceptedFiles) => {
+      // setCoverImg(acceptedFiles[0])
       setFile(
         Object.assign(acceptedFiles[0], {
           preview: URL.createObjectURL(acceptedFiles[0])
@@ -71,7 +72,7 @@ function FileInput({ file, setFile }) {
           <Button>{!file ? "Add a cover image" : "Change"}</Button>
         </div>
         {file && (
-          <Button type="danger" onClick={() => setFile(null)}>
+          <Button variation="danger" onClick={() => setFile(null)}>
             Remove
           </Button>
         )}

@@ -5,7 +5,6 @@ import Header from "./Header"
 const StyledMain = styled.main`
   /* background-color: var(--color-grey-50); */
   margin-top: 7rem;
-  padding: 0 2rem;
 `
 
 function AppLayout() {

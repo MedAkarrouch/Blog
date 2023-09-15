@@ -1,9 +1,14 @@
 import { createGlobalStyle } from "styled-components"
 const GlobalStyles = createGlobalStyle`
   &:root{
+    // 
+    --bp-tabland:75em;
     /* Box shadow */
     --shadow :0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
     --shadow-sm : 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md :  0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg :0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1) ;
+    --shadow-xl :0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1) ;
     /* Orange */
     --color-orange-50:rgb(255 247 237) ;
     --color-orange-100: rgb(255 237 213) ;
@@ -88,6 +93,7 @@ const GlobalStyles = createGlobalStyle`
   line-height: 1.6;
   color:var(--color-grey-600);
   font-size: 2rem;
+  font-size: 1.8rem;
   & * img{
     width: 15rem;
     display:block;
@@ -107,6 +113,18 @@ const GlobalStyles = createGlobalStyle`
 
   html {
     font-size: 62.5%;
+    // 75em = 1200px
+    // 56.25em = 800px
+    // 37.5em = 600
+    @media screen and (max-width:75em) {
+      font-size: 56.25%;
+    }
+    @media screen and (max-width:56.25em) {
+      font-size: 50%;
+    }
+    @media screen and (max-width:37.5em) {
+      font-size: 43.75%;
+    }
   }
 
   body {

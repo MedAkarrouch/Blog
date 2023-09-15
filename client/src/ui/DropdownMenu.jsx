@@ -1,16 +1,7 @@
 import styled from "styled-components"
 import { useOutsideClick } from "../hooks/useOutsideClick"
-const categories = [
-  "Lifestyle",
-  "Travel",
-  "Food and Cooking",
-  "Health and Wellness",
-  "Fashion and Beauty",
-  "Technology",
-  "Finance",
-  "Education",
-  "News"
-]
+import { categories } from "../utils/constants"
+
 const StyledContainer = styled.div`
   position: relative;
   max-width: 18rem;
@@ -79,7 +70,7 @@ const ListItem = styled.li`
   }
 `
 
-function DropdownMenu({ showList, setShowList, categorie, setCategorie }) {
+function DropdownMenu({ showList, setShowList, category, setCategory }) {
   // const [showList, setShowList] = useState(false)
   // const [categorie, setCategorie] = useState("")
   const closeList = () => setShowList(false)
@@ -87,28 +78,28 @@ function DropdownMenu({ showList, setShowList, categorie, setCategorie }) {
   const ref = useOutsideClick(closeList)
 
   const filteredCategories =
-    categorie === ""
+    category === ""
       ? categories
       : categories.filter((el) =>
-          el.toLowerCase().startsWith(categorie.toLowerCase())
+          el.toLowerCase().startsWith(category.toLowerCase())
         )
 
   return (
     <StyledContainer>
       <Input
         ref={ref}
-        placeholder="Select categorie"
-        value={categorie}
-        onChange={(e) => setCategorie(e.target.value)}
+        placeholder="Select category"
+        value={category}
+        onChange={(e) => setCategory(e.target.value)}
         onFocus={() => {
-          setCategorie("")
+          setCategory("")
           openList()
         }}
       />
       {showList && (
         <List>
           {filteredCategories.map((el) => (
-            <ListItem onClick={() => setCategorie(el)} key={el}>
+            <ListItem onClick={() => setCategory(el)} key={el}>
               {el}
             </ListItem>
           ))}

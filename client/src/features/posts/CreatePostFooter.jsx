@@ -11,7 +11,7 @@ const Button = styled.button`
     background-color: var(--color-orange-600);
   }
   ${(props) =>
-    props.type === "clear" &&
+    props.role === "clear" &&
     css`
       background-color: transparent;
       color: var(--color-grey-700);
@@ -33,7 +33,7 @@ function CreatePostFooter({ clear }) {
   return (
     <StyledFooter>
       <Button>Publish</Button>
-      <Button type="clear" onClick={clear}>
+      <Button type="button" role="clear" onClick={clear}>
         Clear
       </Button>
     </StyledFooter>
