@@ -26,7 +26,7 @@ function Posts({ posts }) {
           return (
             <>
               <PostItem key={post._id} post={post} />
-              <StyledLine />
+              <StyledLine key={index} />
             </>
           )
         else return <PostItem key={post._id} post={post} />

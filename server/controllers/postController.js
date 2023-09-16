@@ -27,6 +27,8 @@ exports.upload = (req, res, next) => {
 };
 
 exports.getPosts = async (req, res) => {
+  const queries = req.query;
+  console.log('Queries = ', queries);
   try {
     const posts = await Post.find();
     renderRes({ res, status: 200, data: { posts } });

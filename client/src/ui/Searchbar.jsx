@@ -3,16 +3,16 @@ import { HiOutlineMagnifyingGlass, HiMiniXCircle } from "react-icons/hi2"
 import { useSearchParams } from "react-router-dom"
 import { useState } from "react"
 
-import SelectCategory from "../features/posts/SelectCategory"
-import { categories as categoriesArr } from "../utils/constants"
-const categories = ["All", ...categoriesArr]
+// import { categories as categoriesArr, searchForArr } from "../utils/constants"
+
+import SelectResults from "../features/posts/SelectResults"
+// const categories = ["All", ...categoriesArr]
 
 const StyledSearchbar = styled.form`
-  /* display: flex; */
-  /* align-items: center; */
-  /* gap: 3rem; */
   display: grid;
-  grid-template-columns: minmax(40rem, 3fr) min-content minmax(20rem, 1.2fr);
+  /* grid-template-columns: minmax(40rem, 4fr) min-content minmax(10rem, 1fr); */
+  grid-template-columns: minmax(40rem, 4fr) min-content 8rem;
+  /* grid-template-columns: minmax(40rem, 3fr) min-content minmax(20rem, 1.2fr); */
   column-gap: 3rem;
   max-width: 90rem;
   margin: 0 auto;
@@ -29,6 +29,7 @@ const Input = styled.input`
   border: none;
   display: block;
   width: 50rem;
+  width: 100%;
   &:focus {
     outline: none;
   }
@@ -58,19 +59,22 @@ const Line = styled.div`
 
 function Searchbar() {
   const [searchParams, setSearchParams] = useSearchParams()
-  const [category, setCategory] = useState(categories.at(0))
-  const [search, setSearch] = useState("")
+  const [search, setSearch] = useState(() => searchParams.get("search") || "")
 
-  const handler = () => {
-    searchParams.set("category", category)
+  const setParams = (val) => {
+    searchParams.set("search", val)
     setSearchParams(searchParams)
   }
-
   const onSubmit = (e) => {
     e.preventDefault()
-    searchParams.set("search", search)
-    searchParams.set("category", category)
-    setSearchParams(searchParams)
+    setParams(search)
+  }
+  const onClear = () => {
+    setSearch("")
+    if (searchParams.has("search")) {
+      searchParams.delete("search")
+      setSearchParams(searchParams)
+    }
   }
 
   return (
@@ -83,15 +87,10 @@ function Searchbar() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-        <HiMiniXCircle onClick={() => setSearch("")} />
+        <HiMiniXCircle type="submit" onClick={onClear} />
       </InputBox>
       <Line>&nbsp;</Line>
-      <SelectCategory
-        items={categories}
-        category={category}
-        setCategory={setCategory}
-        handler={handler}
-      />
+      <SelectResults />
     </StyledSearchbar>
   )
 }

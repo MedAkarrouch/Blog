@@ -15,7 +15,10 @@ export const addNewPost = async (data) =>
     withCredentials: true
   })
 
-export async function getPosts() {
-  const res = await axios.get(`${serverUrl}/posts`, config)
+export async function getPosts({ search, category }) {
+  const res = await axios.get(
+    `${serverUrl}/posts?search=${search}&category=${category}`,
+    config
+  )
   return res.data?.data?.posts
 }

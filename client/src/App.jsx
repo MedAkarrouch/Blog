@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom"
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom"
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query"
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import { Toaster } from "react-hot-toast"
@@ -10,7 +10,10 @@ import Post from "./pages/Post"
 import CreatePost from "./pages/CreatePost"
 import Signup from "./pages/Signup"
 import Login from "./pages/Login"
+import PageNotFound from "./pages/PageNotFound"
 import ProtectedRoute from "./ui/ProtectedRoute"
+import PostsLayout from "./pages/PostsLayout"
+import Users from "./pages/Users"
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -47,7 +50,16 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route element={<AppLayout />}>
-            <Route index element={<Home />} />
+            <Route index element={<Navigate replace to="/posts" />} />
+            <Route element={<Home />}>
+              <Route path="/posts" element={<PostsLayout />} />
+              <Route path="/users" element={<Users />} />
+            </Route>
+            {/* <Route index element={<Navigate replace to="/home" />} />
+            <Route path="/home" element={<Home />}>
+              <Route path="users" element={<Users />} />
+              <Route path="posts" element={<Posts />} />
+            </Route> */}
             <Route path="/post/:postId" element={<Post />} />
             <Route element={<ProtectedRoute />}>
               <Route path="/new" element={<CreatePost />} />
@@ -55,6 +67,7 @@ function App() {
           </Route>
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/pageNotFound" element={<PageNotFound />} />
         </Routes>
       </BrowserRouter>
     </QueryClientProvider>

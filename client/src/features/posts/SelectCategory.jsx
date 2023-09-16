@@ -1,6 +1,7 @@
 import styled from "styled-components"
 import { HiMiniChevronDown } from "react-icons/hi2"
 import { useState } from "react"
+import { useSearchParams } from "react-router-dom"
 
 const Button = styled.button`
   display: block;
@@ -47,9 +48,18 @@ const ListItem = styled.li`
   }
 `
 
-function SelectCategory({ items, category, setCategory, handler }) {
+function SelectCategory({ items, category, setCategory }) {
   // const [category, setCategory] = useState(categories.at(0))
   const [showList, setShowList] = useState(false)
+  const [searchParams, setSearchParams] = useSearchParams()
+
+  const onClick = (category) => {
+    setCategory(category)
+    setShowList(false)
+    searchParams.set("category", category)
+    setSearchParams(searchParams)
+  }
+
   return (
     <div>
       <Button type="button" onClick={() => setShowList((show) => !show)}>
@@ -59,14 +69,7 @@ function SelectCategory({ items, category, setCategory, handler }) {
       {showList && (
         <List>
           {items.map((cat) => (
-            <ListItem
-              key={cat}
-              onClick={() => {
-                setCategory(cat)
-                setShowList(false)
-                handler()
-              }}
-            >
+            <ListItem key={cat} onClick={() => onClick(cat)}>
               {cat}
             </ListItem>
           ))}

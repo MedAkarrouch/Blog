@@ -1,8 +1,12 @@
 import styled from "styled-components"
-import Posts from "../features/posts/Posts"
 import { usePosts } from "../features/posts/usePosts"
 import Spinner from "../ui/Spinner"
+import HomeContent from "../ui/HomeContent"
+import { Outlet, useNavigate, useParams } from "react-router-dom"
 import Searchbar from "../ui/Searchbar"
+import PostsLayout from "./PostsLayout"
+import Users from "./Users"
+import { useEffect } from "react"
 
 const StyledHome = styled.div`
   padding: 0 2rem;
@@ -15,24 +19,30 @@ const StyledContent = styled.div`
   flex-direction: column;
   gap: 3rem;
 `
-
 function Home() {
-  const { isLoading, posts } = usePosts()
-  console.log(posts)
-  if (isLoading)
-    return (
-      <Spinner.Wrapper subtract="7rem">
-        <Spinner />
-      </Spinner.Wrapper>
-    )
   return (
     <StyledHome>
       <StyledContent>
         <Searchbar />
-        <Posts posts={posts} />
+        <Outlet />
       </StyledContent>
     </StyledHome>
   )
 }
+// function Home() {
+//   const { isLoading, posts } = usePosts()
+//   console.log(posts)
+//   if (isLoading)
+//     return (
+//       <Spinner.Wrapper subtract="7rem">
+//         <Spinner />
+//       </Spinner.Wrapper>
+//     )
+//   return (
+//     <StyledHome>
+//       <HomeContent posts={posts} />
+//     </StyledHome>
+//   )
+// }
 
 export default Home
