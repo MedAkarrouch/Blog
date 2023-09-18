@@ -27,11 +27,22 @@ exports.upload = (req, res, next) => {
 };
 
 exports.getPosts = async (req, res) => {
-  const queries = req.query;
-  console.log('Queries = ', queries);
+  const { category, search, page, pageSize } = req.query;
+  console.log('page= ', page);
+  const filterObj = {};
+  if (category && category !== 'all') filterObj.category = category;
+  if (search) filterObj.title = { $regex: new RegExp(search, 'i') };
+  let query = Post.find(filterObj);
+  if (page) {
+    const PAGE_SIZE = +pageSize ? +pageSize : 10;
+    const skip = +page ? (+page - 1) * PAGE_SIZE : 0;
+    const limit = PAGE_SIZE;
+    query = query.skip(skip).limit(limit);
+  }
   try {
-    const posts = await Post.find();
-    renderRes({ res, status: 200, data: { posts } });
+    const posts = await query;
+    const count = await Post.countDocuments(filterObj);
+    renderRes({ res, status: 200, data: { count, posts } });
   } catch (err) {
     renderRes({ res, status: 500, message: err.message });
   }

@@ -1,7 +1,8 @@
 export const serverUrl = "http://localhost:8000"
 export const postsImagesUrl = `${serverUrl}/img/posts`
 export const usersImagesUrl = `${serverUrl}/img/users`
-
+export const PAGE_SIZE = 2
+export const MIN_PAGES = 8 //means how many pages should we have to display the dots
 export const searchForArray = [
   { label: "Posts", value: "posts" },
   { label: "Users", value: "users" }

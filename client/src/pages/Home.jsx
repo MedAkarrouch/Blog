@@ -1,7 +1,6 @@
 import styled from "styled-components"
 import { usePosts } from "../features/posts/usePosts"
 import Spinner from "../ui/Spinner"
-import HomeContent from "../ui/HomeContent"
 import { Outlet, useNavigate, useParams } from "react-router-dom"
 import Searchbar from "../ui/Searchbar"
 import PostsLayout from "./PostsLayout"
@@ -18,6 +17,7 @@ const StyledContent = styled.div`
   display: flex;
   flex-direction: column;
   gap: 3rem;
+  padding-bottom: 10rem;
 `
 function Home() {
   return (

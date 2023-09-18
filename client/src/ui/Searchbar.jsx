@@ -67,6 +67,7 @@ function Searchbar() {
   }
   const onSubmit = (e) => {
     e.preventDefault()
+    if (!search) return
     setParams(search)
   }
   const onClear = () => {
