@@ -2,6 +2,8 @@ import { styled } from "styled-components"
 import Heading from "../../ui/Heading"
 import { serverUrl, postsImagesUrl } from "../../utils/constants"
 import { Link } from "react-router-dom"
+import { formatDistanceToNow } from "date-fns"
+import { DateTime } from "luxon"
 
 const StyledPost = styled.li`
   border-radius: 20px;
@@ -85,47 +87,79 @@ const Description = styled.p`
 const StyledCoverImg = styled.img`
   border-radius: 20px;
   width: 100%;
-  height: 28rem;
-  object-fit: contain;
+  max-height: 25rem;
+  object-fit: cover;
   justify-self: center;
-  align-self: center;
+  align-self: start;
   @media screen and (max-width: 50em) {
-    object-fit: cover;
-    /* height: auto; */
     grid-row: 1/2;
+    max-height: 35rem;
     border-radius: 10px;
   }
 `
+const StyledLine = styled.div`
+  height: 2px;
+  width: 20%; //20
+  background-color: #eee;
+  background-color: var(--color-grey-200);
+  margin-left: 40%;
+  border-radius: 50px;
+`
+const formatDate = (date) => {
+  // Your createdAt date
+  const createdAtDate = new Date("2023-09-20T10:54:55.782+00:00")
+  // const createdAtDate = new Date(date)
+
+  // Calculate the relative time
+  const relativeTime = formatDistanceToNow(createdAtDate)
+
+  const numbers = relativeTime.match(/\d+/g)
+  console.log(numbers)
+  return "Aug 22"
+}
 
 function Post({ post }) {
-  const { category, title, content, coverImg, author, _id: postId } = post
-  const x = content.replace(/<[^>]*>/g, "").substring(0, 200)
+  const {
+    category,
+    summary,
+    title,
+    coverImg,
+    author,
+    createdAt,
+    _id: postId
+  } = post
   return (
-    <StyledPost>
-      <StyledLink to={`/post/${postId}`}>
-        <StyledContent>
-          <div>
-            <Category>{category}</Category>
-          </div>
-          <Title as="h3">{title}</Title>
-          <Description>{x}...</Description>
-          {/* <Description>{content.substring(0, 20)}...</Description> */}
-          <StyledProfile>
-            <StyledProfileImg src={`${serverUrl}/img/users/${author.photo}`} />
-            {/* <StyledProfileImg src="https://res.cloudinary.com/practicaldev/image/fetch/s--Q9Kwp-uC--/c_fill,f_auto,fl_progressive,h_90,q_auto,w_90/https://dev-to-uploads.s3.amazonaws.com/uploads/user/profile_image/609838/bc3ac0a6-8c2e-4c51-8fdd-83bd3d6ec159.jpeg" /> */}
-            <StyledProfileDiv>
-              <StyledProfileName>{author.fullName}</StyledProfileName>
-              <StyledProfileDate>Aug 22</StyledProfileDate>
-            </StyledProfileDiv>
-          </StyledProfile>
-        </StyledContent>
-        <StyledCoverImg src={`${postsImagesUrl}/${coverImg}`} alt="" />
-        {/* <StyledCoverImg
-        src="https://assets.website-files.com/62747a2d3bf3fca1c45b852a/63e0aa63d88ab8b68761c363_BFCM%20strategies.png"
-        alt=""
-      /> */}
-      </StyledLink>
-    </StyledPost>
+    <>
+      <StyledPost>
+        <StyledLink to={`/post/${postId}`}>
+          <StyledContent>
+            <div>
+              <Category>{category}</Category>
+            </div>
+            <Title as="h3">{title}</Title>
+            <Description>{summary}</Description>
+            <StyledProfile>
+              {/* <StyledProfileImg
+                src={`${serverUrl}/img/users/${author.photo}`}
+              /> */}
+              <StyledProfileImg src="https://res.cloudinary.com/practicaldev/image/fetch/s--Q9Kwp-uC--/c_fill,f_auto,fl_progressive,h_90,q_auto,w_90/https://dev-to-uploads.s3.amazonaws.com/uploads/user/profile_image/609838/bc3ac0a6-8c2e-4c51-8fdd-83bd3d6ec159.jpeg" />
+              <StyledProfileDiv>
+                <StyledProfileName>{author.fullName}</StyledProfileName>
+                <StyledProfileDate>
+                  {DateTime.fromISO(createdAt).toRelative()}
+                </StyledProfileDate>
+              </StyledProfileDiv>
+            </StyledProfile>
+          </StyledContent>
+          <StyledCoverImg src={`${postsImagesUrl}/${coverImg}`} alt="" />
+          {/* <StyledCoverImg
+            src="https://assets.website-files.com/62747a2d3bf3fca1c45b852a/63e0aa63d88ab8b68761c363_BFCM%20strategies.png"
+            alt=""
+          /> */}
+        </StyledLink>
+      </StyledPost>
+      <StyledLine />
+    </>
   )
 }
 

@@ -36,7 +36,7 @@ const StyledTitle = styled.textarea`
   line-height: 1.1;
   width: 100%;
   resize: auto;
-  overflow-y: none;
+  overflow-y: hidden;
   outline: none;
   resize: none;
   border: none;

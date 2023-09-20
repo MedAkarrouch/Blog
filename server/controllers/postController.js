@@ -32,7 +32,7 @@ exports.getPosts = async (req, res) => {
   const filterObj = {};
   if (category && category !== 'all') filterObj.category = category;
   if (search) filterObj.title = { $regex: new RegExp(search, 'i') };
-  let query = Post.find(filterObj);
+  let query = Post.find(filterObj).sort({ createdAt: -1 });
   if (page) {
     const PAGE_SIZE = +pageSize ? +pageSize : 10;
     const skip = +page ? (+page - 1) * PAGE_SIZE : 0;

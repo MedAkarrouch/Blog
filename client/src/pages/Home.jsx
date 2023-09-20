@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import { usePosts } from "../features/posts/usePosts"
+import { usePosts } from "../features/posts/usePosts-v1"
 import Spinner from "../ui/Spinner"
 import { Outlet, useNavigate, useParams } from "react-router-dom"
 import Searchbar from "../ui/Searchbar"

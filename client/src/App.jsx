@@ -40,10 +40,11 @@ function App() {
             duration: 5000
           },
           style: {
-            fontSize: "1.5rem",
-            padding: "1.6rem 2.4rem",
+            fontSize: "1.4rem",
+            // padding: "1.6rem 2.4rem",
+            padding: "1.6rem 1.4rem",
             maxWidth: "50rem",
-            color: "var,(--color-grey-700)",
+            color: "var(--color-grey-700)",
             minWidth: "25rem"
           }
         }}
@@ -65,9 +66,6 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/pageNotFound" element={<PageNotFound />} />
           <Route path="/test" element={<Test />} />
-          {/* <Route path="/Test" element={<ProtectedRoute />}>
-            <Route index element={<Test />} />
-          </Route> */}
         </Routes>
       </BrowserRouter>
     </QueryClientProvider>

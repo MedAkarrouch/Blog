@@ -65,17 +65,21 @@ function Searchbar() {
     searchParams.set("search", val)
     setSearchParams(searchParams)
   }
-  const onSubmit = (e) => {
-    e.preventDefault()
-    if (!search) return
-    setParams(search)
-  }
   const onClear = () => {
     setSearch("")
     if (searchParams.has("search")) {
       searchParams.delete("search")
       setSearchParams(searchParams)
     }
+  }
+  const onSubmit = (e) => {
+    e.preventDefault()
+    if (!search) {
+      searchParams.delete("search")
+      setSearchParams(searchParams)
+      return
+    }
+    setParams(search)
   }
 
   return (

@@ -1,6 +1,7 @@
 import styled from "styled-components"
 import { postsImagesUrl, usersImagesUrl } from "../../utils/constants"
 import Heading from "../../ui/Heading"
+import { DateTime } from "luxon"
 
 const StyledContent = styled.div`
   margin-top: 5rem;
@@ -82,6 +83,8 @@ const PostHeader = styled.div`
 const PostImg = styled.img`
   box-shadow: var(--shadow-sm);
   border-radius: 10px;
+  max-height: 50vh;
+  object-fit: cover;
 `
 const FlexBox = styled.div`
   display: flex;
@@ -103,7 +106,7 @@ const UserName = styled.span`
   /* font-weight: 500; */
   /*  */
   font-size: 1.2rem;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--color-grey-900);
   text-transform: capitalize;
 `
@@ -126,11 +129,11 @@ const Category = styled.span`
 const StyledProfile = styled.div`
   display: flex;
   justify-content: center;
-  gap: 0.5rem;
+  gap: 1rem;
 `
 
 function PostDetail({ post }) {
-  const { category, content, title, coverImg, author } = post
+  const { category, content, title, coverImg, author, createdAt } = post
 
   return (
     <Layout>
@@ -146,17 +149,15 @@ function PostDetail({ post }) {
         />
         <FlexBox>
           <UserName>{author.fullName}</UserName>
-          <PostDate>Posted on Aug 22</PostDate>
+          <PostDate>{DateTime.fromISO(createdAt).toRelative()}</PostDate>
         </FlexBox>
       </StyledProfile>
-      {/* <div>Aug 22</div> */}
-      {/* <PostImg alt="" src={`${postsImagesUrl}/${coverImg}`} /> */}
-      <PostImg
+      <PostImg alt="" src={`${postsImagesUrl}/${coverImg}`} />
+      {/* <PostImg
         alt=""
         src="https://assets.website-files.com/62747a2d3bf3fca1c45b852a/63e0aa63d88ab8b68761c363_BFCM%20strategies.png"
-      />
+      /> */}
       <StyledContent dangerouslySetInnerHTML={{ __html: content }} />
-      {/* <div dangerouslySetInnerHTML={{ __html: content }} /> */}
     </Layout>
   )
 }

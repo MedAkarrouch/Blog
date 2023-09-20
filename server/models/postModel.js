@@ -42,6 +42,8 @@ const postSchema = new mongoose.Schema({
   summary: {
     type: String,
     required: [true, 'Summary is required'],
+    minlength: [200, 'Summary must have more or equal than 200 characters'],
+    maxlength: [300, 'Summary must have less or equal than 300  characters'],
   },
   coverImg: {
     type: String,
