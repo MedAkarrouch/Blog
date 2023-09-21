@@ -19,12 +19,12 @@ const StyledContent = styled.div`
   gap: 3rem;
   padding-bottom: 10rem;
 `
-function Home() {
+function Home({ children }) {
   return (
     <StyledHome>
       <StyledContent>
         <Searchbar />
-        <Outlet />
+        {children}
       </StyledContent>
     </StyledHome>
   )

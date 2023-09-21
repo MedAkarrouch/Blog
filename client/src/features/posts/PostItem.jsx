@@ -2,7 +2,6 @@ import { styled } from "styled-components"
 import Heading from "../../ui/Heading"
 import { serverUrl, postsImagesUrl } from "../../utils/constants"
 import { Link } from "react-router-dom"
-import { formatDistanceToNow } from "date-fns"
 import { DateTime } from "luxon"
 
 const StyledPost = styled.li`
@@ -63,16 +62,6 @@ const StyledProfileDate = styled.span`
   font-size: 1rem;
   color: var(--color-grey-400);
 `
-
-const Category = styled.span`
-  background-color: var(--color-grey-100);
-  border-radius: 5px;
-  padding: 0.5rem 1.25rem;
-  font-size: 1.2rem;
-  font-weight: 500;
-  color: var(--color-orange-500);
-  text-transform: capitalize;
-`
 const Title = styled(Heading)`
   text-transform: capitalize;
   &::first-letter {
@@ -105,18 +94,25 @@ const StyledLine = styled.div`
   margin-left: 40%;
   border-radius: 50px;
 `
-const formatDate = (date) => {
-  // Your createdAt date
-  const createdAtDate = new Date("2023-09-20T10:54:55.782+00:00")
-  // const createdAtDate = new Date(date)
-
-  // Calculate the relative time
-  const relativeTime = formatDistanceToNow(createdAtDate)
-
-  const numbers = relativeTime.match(/\d+/g)
-  console.log(numbers)
-  return "Aug 22"
-}
+const StyledHeader = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 5rem;
+`
+const Category = styled.span`
+  color: var(--color-orange-500);
+  background-color: var(--color-grey-100);
+  border-radius: 5px;
+  padding: 0.5rem 1.25rem;
+  font-size: 1.2rem;
+  font-weight: 500;
+  text-transform: capitalize;
+`
+const ReadingTime = styled(Category)`
+  color: var(--color-grey-400);
+  background-color: #fff;
+  text-transform: none;
+`
 
 function Post({ post }) {
   const {
@@ -126,6 +122,7 @@ function Post({ post }) {
     coverImg,
     author,
     createdAt,
+    readingTime,
     _id: postId
   } = post
   return (
@@ -133,9 +130,10 @@ function Post({ post }) {
       <StyledPost>
         <StyledLink to={`/post/${postId}`}>
           <StyledContent>
-            <div>
+            <StyledHeader>
               <Category>{category}</Category>
-            </div>
+              <ReadingTime>{readingTime}</ReadingTime>
+            </StyledHeader>
             <Title as="h3">{title}</Title>
             <Description>{summary}</Description>
             <StyledProfile>

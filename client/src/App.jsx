@@ -13,8 +13,8 @@ import Login from "./pages/Login"
 import PageNotFound from "./pages/PageNotFound"
 import ProtectedRoute from "./ui/ProtectedRoute"
 import PostsLayout from "./pages/PostsLayout"
-import Users from "./pages/Users"
 import Test from "./pages/Test"
+import Account from "./pages/Account"
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -53,18 +53,23 @@ function App() {
         <Routes>
           <Route element={<AppLayout />}>
             <Route index element={<Navigate replace to="/posts" />} />
-            <Route element={<Home />}>
-              <Route path="/posts" element={<PostsLayout />} />
-              <Route path="/users" element={<Users />} />
-            </Route>
+            <Route
+              path="/posts"
+              element={
+                <Home>
+                  <PostsLayout />
+                </Home>
+              }
+            />
             <Route path="/post/:postId" element={<Post />} />
             <Route element={<ProtectedRoute />}>
               <Route path="/new" element={<CreatePost />} />
+              <Route path="/account" element={<Account />} />
             </Route>
           </Route>
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/pageNotFound" element={<PageNotFound />} />
+          <Route path="*" element={<PageNotFound />} />
           <Route path="/test" element={<Test />} />
         </Routes>
       </BrowserRouter>

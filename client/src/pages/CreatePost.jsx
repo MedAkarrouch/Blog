@@ -11,10 +11,10 @@ const StyledCreatePost = styled.form`
   background-color: var(--color-grey-50);
   height: calc(100vh - 7rem);
   overflow: hidden;
+  padding: 0 2rem;
 `
 const SyledDiv = styled.div`
-  height: calc(100vh - 18rem);
-  height: 86%;
+  height: 85%;
   border-radius: 8px;
   overflow: hidden;
   overflow-y: auto;
@@ -26,10 +26,10 @@ const SyledDiv = styled.div`
   max-width: 90rem;
   margin: 2rem auto;
   background-color: #fff;
-  /* & * img {
-    max-width: 50rem;
-    margin: 0 auto;
-  } */
+  /* 1440px */
+  @media screen and (min-width: 90em) {
+    height: 80vh;
+  }
 `
 const StyledTitle = styled.textarea`
   margin-top: 1.25rem;
@@ -125,7 +125,7 @@ function CreatePost() {
         </Wrapper>
         <Editor content={content} setContent={setContent} />
       </SyledDiv>
-      <CreatePostFooter clear={clear} />
+      <CreatePostFooter isLoading={isLoading} clear={clear} />
     </StyledCreatePost>
   )
 }

@@ -1,10 +1,17 @@
 import { useMutation } from "@tanstack/react-query"
-import { addNewPost as addNewPostApi } from "../../services/apiPosts"
 import { toast } from "react-hot-toast"
+import { useNavigate } from "react-router-dom"
+import { addNewPost as addNewPostApi } from "../../services/apiPosts"
 
 export function useAddNewPost() {
+  const navigate = useNavigate()
   const { mutate: addNewPost, isLoading } = useMutation({
     mutationFn: addNewPostApi,
+    onSuccess: (data) => {
+      const { _id: postId } = data.data.data.post
+      toast.success("Post successfully created")
+      navigate(`/post/${postId}`, { replace: true })
+    },
     onError: (err) => {
       if (err.message === "Network Error")
         toast.error("Something went wrong Try again later")

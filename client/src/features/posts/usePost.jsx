@@ -4,7 +4,6 @@ import { getPost } from "../../services/apiPosts"
 
 export function usePost() {
   const { postId } = useParams()
-  console.log(postId)
   const {
     isLoading,
     data: post,
@@ -15,5 +14,11 @@ export function usePost() {
     queryFn: () => getPost(postId),
     retry: false
   })
-  return { isLoading, post, isError, error }
+  console.log(error)
+  return {
+    isLoading,
+    post,
+    isError,
+    error
+  }
 }

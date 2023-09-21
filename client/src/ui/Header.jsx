@@ -1,13 +1,15 @@
 import styled from "styled-components"
 import Logo from "./Logo"
 import Menu from "./Menu"
+import LoggedInUserMenu from "./LoggedInUserMenu"
+import { useUser } from "../features/auth/useUser"
 const StyledHeader = styled.header`
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   z-index: 1000;
-  padding: 1rem 2rem;
+  padding: 1rem 4rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -17,10 +19,12 @@ const StyledHeader = styled.header`
 `
 
 function Header() {
+  const { isAuthenticated } = useUser()
   return (
     <StyledHeader>
       <Logo />
-      <Menu />
+      {isAuthenticated ? <LoggedInUserMenu /> : <Menu />}
+      {/* <Menu /> */}
     </StyledHeader>
   )
 }

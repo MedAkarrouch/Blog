@@ -2,6 +2,7 @@ import styled from "styled-components"
 import { usePost } from "../features/posts/usePost"
 import Spinner from "../ui/Spinner"
 import PostDetail from "../features/posts/PostDetail"
+import ErrorMessage from "../ui/ErrorMessage"
 
 const StyledPost = styled.div`
   padding: 2rem;

@@ -1,5 +1,7 @@
 import styled, { css } from "styled-components"
+import SpinnerMini from "../../ui/SpinnerMini"
 const Button = styled.button`
+  display: block;
   border: none;
   padding: 1rem 2rem;
   border-radius: 5px;
@@ -29,10 +31,12 @@ const StyledFooter = styled.div`
   align-items: center;
 `
 
-function CreatePostFooter({ clear }) {
+function CreatePostFooter({ isLoading, clear }) {
   return (
     <StyledFooter>
-      <Button>Publish</Button>
+      <Button>
+        {isLoading ? <SpinnerMini publish={"true"} /> : "Publish"}
+      </Button>
       <Button type="button" role="clear" onClick={clear}>
         Clear
       </Button>

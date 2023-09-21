@@ -27,7 +27,8 @@ export function usePosts() {
     getNextPageParam: (lastPage, allPages) => {
       const maxPages = Math.ceil(lastPage.count / PAGE_SIZE)
       return allPages.length < maxPages ? allPages.length + 1 : undefined
-    }
+    },
+    retry: false
   })
 
   const posts = data?.pages?.reduce((acc, page) => {

@@ -52,11 +52,15 @@ const postSchema = new mongoose.Schema({
   author: {
     type: mongoose.Schema.ObjectId,
     ref: 'User',
-    required: ['Author is required'],
+    required: [true, 'Author is required'],
   },
   createdAt: {
     type: Date,
     default: Date.now(),
+  },
+  readingTime: {
+    type: String,
+    required: [true, 'Reading time is required'],
   },
   // Likes
   // Comments

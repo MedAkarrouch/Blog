@@ -1,5 +1,6 @@
 const fs = require('fs').promises;
 const multer = require('multer');
+const readingTime = require('reading-time');
 const Post = require('../models/postModel');
 const renderRes = require('../utils/renderRes');
 
@@ -52,6 +53,7 @@ exports.addNewPost = async (req, res) => {
   const { title, content, category, summary } = req.body;
   const author = req.currentUser;
   const coverImg = req.coverImg;
+  const rd = readingTime(content).text;
   // console.log({ title, summary, content, category, coverImg, author });
   try {
     const post = await Post.create({
@@ -61,6 +63,7 @@ exports.addNewPost = async (req, res) => {
       category,
       coverImg,
       author,
+      readingTime: rd,
     });
     // upload image
     const path = 'public/img/posts';

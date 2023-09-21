@@ -1,10 +1,11 @@
-import styled, { css } from "styled-components"
+import styled from "styled-components"
 import Filter from "../ui/Filter"
 import Posts from "../features/posts/Posts"
 import Spinner from "../ui/Spinner"
 import { usePosts } from "../features/posts/usePosts"
 import SpinnerMini from "../ui/SpinnerMini"
 import { PAGE_SIZE } from "../utils/constants"
+import ErrorMessage from "../ui/ErrorMessage"
 
 const Button = styled.button`
   color: var(--color-grey-500);
@@ -49,12 +50,20 @@ const EndOfList = styled.p`
 `
 
 function PostsLayout() {
-  const { posts, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } =
-    usePosts()
+  const {
+    posts,
+    isLoading,
+    isError,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage
+  } = usePosts()
   return (
     <>
       <Filter />
-      {isLoading ? (
+      {isError ? (
+        <ErrorMessage />
+      ) : isLoading ? (
         <div
           style={{
             display: "flex",

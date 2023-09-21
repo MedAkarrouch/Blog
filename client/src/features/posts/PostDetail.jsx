@@ -115,7 +115,7 @@ const PostDate = styled.div`
   color: var(--color-grey-400);
 `
 const Category = styled.span`
-  display: inline-block;
+  /* display: inline-block;
   background-color: var(--color-grey-100);
   border-radius: 5px;
   padding: 0.5rem 1.25rem;
@@ -124,21 +124,43 @@ const Category = styled.span`
   color: var(--color-orange-500);
   text-transform: capitalize;
   text-align: left;
-  margin-bottom: 2rem;
+  margin-bottom: 2rem; */
+  color: var(--color-orange-500);
+  background-color: var(--color-grey-100);
+  border-radius: 5px;
+  padding: 0.5rem 1.25rem;
+  font-size: 1.2rem;
+  font-weight: 500;
+  text-transform: capitalize;
 `
 const StyledProfile = styled.div`
   display: flex;
   justify-content: center;
   gap: 1rem;
 `
+const StyledHeader = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+`
+const ReadingTime = styled(Category)`
+  color: var(--color-grey-400);
+  background-color: #fff;
+  text-transform: none;
+`
 
 function PostDetail({ post }) {
-  const { category, content, title, coverImg, author, createdAt } = post
+  const { category, content, title, coverImg, author, readingTime, createdAt } =
+    post
 
   return (
     <Layout>
       <PostHeader>
-        <Category>{category}</Category>
+        <StyledHeader>
+          <Category>{category}</Category>
+          <ReadingTime>{readingTime}</ReadingTime>
+        </StyledHeader>
         <Title as="h1">{title}</Title>
       </PostHeader>
       <StyledProfile>
