@@ -1,14 +1,8 @@
+import FileInput from "../../ui/FileInput"
+import Button from "./Button"
 import Form from "./Form"
 import FormRow from "./FormRow"
-import styled from "styled-components"
-
-const Input = styled.input`
-  border: 1px solid var(--color-grey-300);
-  background-color: #fff;
-  border-radius: 5px;
-  padding: 0.6rem 1.2rem;
-  box-shadow: var(--shadow-sm);
-`
+import Input from "./Input"
 
 function UpdateUserDataForm() {
   return (
@@ -20,7 +14,15 @@ function UpdateUserDataForm() {
         <Input id="fullName" />
       </FormRow>
       <FormRow label="Profile image">
-        <Input id="image" />
+        <FileInput id="image" />
+      </FormRow>
+      <FormRow>
+        <Button variation="secondary" size="medium" type="reset">
+          Cancel
+        </Button>
+        <Button size="medium" type="submit">
+          Update account
+        </Button>
       </FormRow>
     </Form>
   )

@@ -6,6 +6,7 @@ const Form = styled.form`
   border: 1px solid va(--color-grey-100);
   border-radius: 7px;
   background-color: #fff;
+  box-shadow: var(--shadow-sm);
 `
 
 export default Form

@@ -19,12 +19,15 @@ const StyledHeader = styled.header`
 `
 
 function Header() {
-  const { isAuthenticated } = useUser()
+  const { isLoading, user, isAuthenticated } = useUser()
   return (
     <StyledHeader>
       <Logo />
-      {isAuthenticated ? <LoggedInUserMenu /> : <Menu />}
-      {/* <Menu /> */}
+      {isLoading ? null : isAuthenticated ? (
+        <LoggedInUserMenu user={user} />
+      ) : (
+        <Menu />
+      )}
     </StyledHeader>
   )
 }

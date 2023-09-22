@@ -38,7 +38,7 @@ const userSchema = new mongoose.Schema({
   },
   photo: {
     type: String,
-    default: 'default-user.jpg',
+    default: 'default.jpg',
   },
   // social media links
   // followers
