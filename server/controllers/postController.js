@@ -1,5 +1,6 @@
 const fs = require('fs').promises;
 const multer = require('multer');
+const { FILE_MAX_SIZE } = require('../utils/constants');
 const readingTime = require('reading-time');
 const Post = require('../models/postModel');
 const renderRes = require('../utils/renderRes');
@@ -17,6 +18,12 @@ const upload = multer({
 exports.upload = (req, res, next) => {
   upload.single('coverImg')(req, res, async (err) => {
     // if there is an error comming from the multerFilter
+    if (req.file?.buffer?.length > FILE_MAX_SIZE)
+      return renderRes({
+        res,
+        status: 400,
+        message: 'Image size should be less than 5 MB',
+      });
     if (err) return renderRes({ res, status: 400, message: err.message });
     req.coverImg = req.file
       ? `cover-img-${req.currentUser._id}-${Date.now()}.${

@@ -35,14 +35,12 @@ const StyledContent = styled.div`
   flex-direction: column;
   gap: 1rem;
 `
-
 const StyledProfile = styled.div`
   display: flex;
   gap: 1rem;
   align-items: center;
   margin-top: auto;
 `
-
 const StyledProfileImg = styled.img`
   border-radius: 50px;
   width: 3.5rem;

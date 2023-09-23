@@ -3,7 +3,7 @@ import styled from "styled-components"
 
 const StyledFormRow = styled.div`
   display: grid;
-  grid-template-columns: 15rem 1fr 1.2fr;
+  grid-template-columns: 24rem 1.2fr 1.2fr;
   align-items: center;
   gap: 2.4rem;
   padding: 1.2rem 0;
@@ -15,10 +15,15 @@ const StyledFormRow = styled.div`
     justify-content: flex-end;
     padding-bottom: 0;
   }
+  &:has(h2),
+  &:has(h3) {
+    grid-template-columns: 1fr;
+    padding-bottom: 2rem;
+  }
 `
 const Label = styled.label`
   font-weight: 500;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   color: var(--color-grey-700);
   cursor: pointer;
 `

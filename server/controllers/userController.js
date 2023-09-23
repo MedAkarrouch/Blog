@@ -1,4 +1,5 @@
 const User = require('../models/userModel');
+const { FILE_MAX_SIZE } = require('../utils/constants');
 const fs = require('fs').promises;
 const sharp = require('sharp');
 const multer = require('multer');
@@ -8,6 +9,7 @@ const { isEmailAlreadyTaken, isNameAlreadyTaken } = require('../utils/utils');
 
 const multerStorage = multer.memoryStorage();
 const multerFilter = (req, file, cb) => {
+  console.log('File', file);
   if (file.mimetype.startsWith('image')) cb(null, true);
   else cb(new Error('Not an image! Please upload only images.'), false);
 };
@@ -18,7 +20,15 @@ const upload = multer({
 
 exports.upload = (req, res, next) => {
   upload.single('photo')(req, res, async (err) => {
+    // console.log('FFF : ', req.file.buffer.length);
+    // console.log('FFF : ', req.file);
     // if there is an error comming from the multerFilter
+    if (req.file?.buffer?.length > FILE_MAX_SIZE)
+      return renderRes({
+        res,
+        status: 400,
+        message: 'Image size should be less than 5 MB',
+      });
     if (err) return renderRes({ res, status: 400, message: err.message });
     req.photo = req.file
       ? `photo-${req.currentUser._id}-${Date.now()}.${
@@ -53,12 +63,14 @@ exports.getCurrentUser = async (req, res) => {
     renderRes({ res, status: 401, message: err.message });
   }
 };
-exports.updateMe = async (req, res, next) => {
+exports.updateMe = async (req, res) => {
   const { email, fullName } = req.body;
   const updateObj = { email, fullName };
   if (req.photo) updateObj.photo = req.photo;
   try {
-    const user = await User.findByIdAndUpdate(req.currentUser._id, updateObj);
+    const user = await User.findByIdAndUpdate(req.currentUser._id, updateObj, {
+      runValidators: true,
+    });
     // upload image
     if (req.photo) {
       const path = 'public/img/users';
@@ -77,6 +89,29 @@ exports.updateMe = async (req, res, next) => {
       status: 400,
       message: error.message,
       errors: err.errors,
+    });
+  }
+};
+exports.updatePassword = async (req, res) => {
+  const { currentPassword, newPassword, confirmPassword } = req.body;
+  try {
+    const user = await User.findById(req.currentUser._id).select('+password');
+    if (!(await user.correctPassword(currentPassword, user.password)))
+      return renderRes({
+        res,
+        status: 401,
+        message: 'Current password is wrong',
+      });
+    // if so
+    user.password = newPassword;
+    user.passwordConfirm = confirmPassword;
+    await user.save();
+  } catch (err) {
+    res.status(400).json({
+      status: 'success',
+      data: {
+        err,
+      },
     });
   }
 };

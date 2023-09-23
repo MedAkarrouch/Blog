@@ -11,5 +11,10 @@ router.patch(
   userController.upload,
   userController.updateMe
 );
+router.patch(
+  '/updatePassword',
+  authController.protect,
+  userController.updatePassword
+);
 
 module.exports = router;
