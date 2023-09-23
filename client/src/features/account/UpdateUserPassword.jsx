@@ -4,19 +4,30 @@ import Button from "./Button"
 import Form from "./Form"
 import FormRow from "./FormRow"
 import Input from "./Input"
-import { useUpdateUser } from "./useUpdateUser"
+import { useUpdatePassword } from "./useUpdatePassword"
 
 function UpdateUserPassword({ children }) {
-  const { isUpdating, updateMe } = useUpdateUser()
+  const { isUpdating, updatePassword } = useUpdatePassword()
   const [currentPassword, setCurrentPassword] = useState("")
   const [newPassword, setNewPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
-  // const errors = error?.response?.data?.validationErrors
-  // console.log(errors)
 
-  const onClear = (e) => {}
+  const onClear = () => {
+    setCurrentPassword("")
+    setNewPassword("")
+    setConfirmPassword("")
+  }
+
   const onSubmit = (e) => {
     e.preventDefault()
+    updatePassword(
+      { currentPassword, newPassword, confirmPassword },
+      {
+        onSuccess: () => {
+          onClear()
+        }
+      }
+    )
   }
 
   return (

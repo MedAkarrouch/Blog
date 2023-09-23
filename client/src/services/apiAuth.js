@@ -29,7 +29,6 @@ export async function login({ email, password }) {
   return res.data.data.user
 }
 export async function logout() {}
-export async function updatePassword() {}
 
 export const updateMe = async (data) =>
   await axios.patch(`${serverUrl}/users/updateMe`, data, {
@@ -38,3 +37,9 @@ export const updateMe = async (data) =>
     },
     withCredentials: true
   })
+
+export const updatePassword = async (data) =>
+  await axios.patch(`${serverUrl}/users/updatePassword`, data, config)
+
+export const deleteMe = async () =>
+  await axios.delete(`${serverUrl}/users/deleteMe`, config)

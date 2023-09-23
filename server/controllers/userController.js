@@ -94,24 +94,29 @@ exports.updateMe = async (req, res) => {
 };
 exports.updatePassword = async (req, res) => {
   const { currentPassword, newPassword, confirmPassword } = req.body;
+  console.log({ currentPassword, newPassword, confirmPassword });
   try {
     const user = await User.findById(req.currentUser._id).select('+password');
-    if (!(await user.correctPassword(currentPassword, user.password)))
+    if (!(await user.correctPassword(currentPassword || '', user.password)))
       return renderRes({
         res,
         status: 401,
-        message: 'Current password is wrong',
+        message: currentPassword
+          ? 'Current password is wrong'
+          : 'Current password is required',
       });
     // if so
     user.password = newPassword;
     user.passwordConfirm = confirmPassword;
     await user.save();
+    renderRes({ res, status: 200, data: { user: req.currentUser } });
   } catch (err) {
-    res.status(400).json({
-      status: 'success',
-      data: {
-        err,
-      },
-    });
+    renderRes({ res, status: 400, message: err.message, errors: err.errors });
   }
+};
+exports.deleteMe = async (req, res) => {
+  try {
+    // 1- delete all user posts
+    // 2- delete user
+  } catch (err) {}
 };
