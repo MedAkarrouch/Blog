@@ -1,4 +1,5 @@
 const User = require('../models/userModel');
+const Post = require('../models/postModel');
 const { FILE_MAX_SIZE } = require('../utils/constants');
 const fs = require('fs').promises;
 const sharp = require('sharp');
@@ -115,8 +116,31 @@ exports.updatePassword = async (req, res) => {
   }
 };
 exports.deleteMe = async (req, res) => {
+  const { currentPassword } = req.body;
   try {
-    // 1- delete all user posts
+    // check if currentPassword is correct
+    const user = await User.findById(req.currentUser._id).select('+password');
+    if (!(await user.correctPassword(currentPassword || '', user.password)))
+      return renderRes({
+        res,
+        status: 401,
+        message: currentPassword
+          ? 'Current password is wrong'
+          : 'Current password is required',
+      });
+    // if so
+    // 2- delete all user posts
+    await Post.deleteMany({ author: req.currentUser._id });
     // 2- delete user
-  } catch (err) {}
+    await User.findByIdAndDelete(req.currentUser._id);
+    // 3- clear cookie
+    res.clearCookie('jwt');
+    renderRes({
+      res,
+      status: 200,
+      data: { message: 'User account successfully deleted' },
+    });
+  } catch (err) {
+    renderRes({ res, status: 400, message: err.message, errors: err.errors });
+  }
 };

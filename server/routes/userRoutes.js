@@ -16,6 +16,6 @@ router.patch(
   authController.protect,
   userController.updatePassword
 );
-router.delete('/deleteMe', authController.protect, userController.deleteMe);
+router.post('/deleteMe', authController.protect, userController.deleteMe);
 
 module.exports = router;

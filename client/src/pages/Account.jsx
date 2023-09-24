@@ -2,6 +2,7 @@ import styled, { css } from "styled-components"
 import Heading from "../ui/Heading"
 import UpdateUserDataForm from "../features/account/UpdateUserDataForm"
 import UpdateUserPassword from "../features/account/UpdateUserPassword"
+import DeleteAccount from "../features/account/DeleteAccount"
 
 const StyledAccount = styled.div`
   background-color: var(--color-grey-50);
@@ -33,15 +34,17 @@ function Account() {
   return (
     <StyledAccount>
       <StyledContent>
-        {/* <StyledHeading as="h2">Update your account</StyledHeading>
+        <StyledHeading as="h2">Update your account</StyledHeading>
 
         <UpdateUserDataForm>
           <StyledHeading as="h3">Update user data</StyledHeading>
-        </UpdateUserDataForm> */}
+        </UpdateUserDataForm>
 
         <UpdateUserPassword>
           <StyledHeading as="h3">Update password</StyledHeading>
         </UpdateUserPassword>
+
+        <DeleteAccount />
       </StyledContent>
     </StyledAccount>
   )
