@@ -56,14 +56,45 @@ const postSchema = new mongoose.Schema({
   },
   createdAt: {
     type: Date,
-    default: Date.now(),
+    default: Date.now,
   },
   readingTime: {
     type: String,
     required: [true, 'Reading time is required'],
   },
-  // Likes
-  // Comments
+  likes: {
+    totalLikes: {
+      type: Number,
+      default: 0,
+    },
+    users: [
+      {
+        user: {
+          type: mongoose.Schema.ObjectId,
+          ref: 'User',
+        },
+        likedAt: { type: Date, default: Date.now },
+      },
+    ],
+  },
+  comments: {
+    totalComments: {
+      type: Number,
+      default: 0,
+    },
+    comments: [
+      {
+        user: {
+          type: mongoose.Schema.ObjectId,
+          ref: 'User',
+        },
+        comment: {
+          type: String,
+        },
+        commentedAt: { type: Date, default: Date.now },
+      },
+    ],
+  },
 });
 postSchema.pre(/^find/, function (next) {
   this.populate({

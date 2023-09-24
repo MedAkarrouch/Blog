@@ -6,6 +6,7 @@ import { DateTime } from "luxon"
 const StyledContent = styled.div`
   margin-top: 5rem;
   font-size: 2rem;
+  font-size: 1.8rem;
   /* color:; */
   color: var(--color-grey-500);
   & p {
@@ -71,8 +72,8 @@ const StyledContent = styled.div`
   }
 `
 const Layout = styled.div`
-  max-width: 90rem;
-  margin: 0 auto;
+  /* max-width: 90rem;
+  margin: 0 auto; */
   display: flex;
   flex-direction: column;
   gap: 3rem;
@@ -115,16 +116,6 @@ const PostDate = styled.div`
   color: var(--color-grey-400);
 `
 const Category = styled.span`
-  /* display: inline-block;
-  background-color: var(--color-grey-100);
-  border-radius: 5px;
-  padding: 0.5rem 1.25rem;
-  font-size: 1.2rem;
-  font-weight: 500;
-  color: var(--color-orange-500);
-  text-transform: capitalize;
-  text-align: left;
-  margin-bottom: 2rem; */
   color: var(--color-orange-500);
   background-color: var(--color-grey-100);
   border-radius: 5px;

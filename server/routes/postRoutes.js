@@ -11,5 +11,11 @@ router.post(
   postController.addNewPost
 );
 router.get('/:postId', postController.getPost);
+router.post('/AddLike', authController.protect, postController.likePost);
+router.post(
+  '/AddComment',
+  authController.protect,
+  postController.commentOnPost
+);
 
 module.exports = router;
