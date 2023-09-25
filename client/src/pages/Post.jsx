@@ -25,10 +25,10 @@ function Post() {
         <Spinner />
       </Spinner.Wrapper>
     )
-  if (isError) return <div>No post found !</div>
+  if (isError || !post) return <div>No post found !</div>
   return (
     <Container>
-      <Aside />
+      <Aside post={post} />
       <StyledPost>
         <PostDetail post={post} />
         <PostComments post={post} />

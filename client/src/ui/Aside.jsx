@@ -1,4 +1,5 @@
-import styled from "styled-components"
+import styled, { css } from "styled-components"
+import { useUser } from "../features/auth/useUser"
 import {
   HiOutlineHandThumbUp,
   HiOutlineChatBubbleOvalLeft,
@@ -7,6 +8,8 @@ import {
   HiOutlineShare,
   HiOutlineHeart
 } from "react-icons/hi2"
+import { useLikePost } from "../features/posts/useLikePost"
+import { useState } from "react"
 
 const StyledAside = styled.aside`
   position: fixed;
@@ -34,12 +37,20 @@ const Item = styled.li`
 `
 
 const Icon = styled.span`
+  cursor: pointer;
   & svg {
     stroke-width: 1.5;
     width: 2.75rem;
     height: 2.75rem;
   }
-  cursor: pointer;
+  ${(props) =>
+    props.active &&
+    css`
+      & svg {
+        fill: var(--color-orange-400);
+        color: var(--color-orange-400);
+      }
+    `}
   /* color: var(--color-grey-400); */
   &:hover {
     color: var(--color-orange-400);
@@ -63,21 +74,45 @@ const Icon = styled.span`
   }
 `
 
-function Aside() {
+function Aside({ post }) {
+  const { user } = useUser()
+  const { likes, comments } = post
+  const { isLoading, likePost } = useLikePost()
+  const [hasUserAlreadyLikedPost, setHasUserAlreadyLikedPost] = useState(() =>
+    likes?.likes?.some((like) => like.user === user._id)
+  )
+  const [totalLikes, setTotalLikes] = useState(likes?.totalLikes || 0)
+
+  const handleLikeClick = () => {
+    setTotalLikes((likes) => (hasUserAlreadyLikedPost ? likes - 1 : likes + 1))
+    setHasUserAlreadyLikedPost((like) => !like)
+    likePost(null, {
+      onError: () => {
+        setHasUserAlreadyLikedPost(hasUserAlreadyLikedPost)
+        setTotalLikes(totalLikes)
+      }
+    })
+  }
   return (
     <StyledAside>
       <List>
         <Item>
-          <Icon title="Like this article">
+          <Icon
+            title={
+              hasUserAlreadyLikedPost ? "Remove like" : "Like this article"
+            }
+            active={hasUserAlreadyLikedPost ? "true" : ""}
+            onClick={handleLikeClick}
+          >
             <HiOutlineHeart />
           </Icon>
-          <span>12</span>
+          <span>{totalLikes}</span>
         </Item>
         <Item>
           <Icon title="Jump to comments">
             <HiOutlineChatBubbleOvalLeft />
           </Icon>
-          <span>86</span>
+          <span>{comments.totalComments}</span>
         </Item>
         <Item>
           <Icon title="Add to bookmark">

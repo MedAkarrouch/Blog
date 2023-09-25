@@ -3,7 +3,11 @@ import { serverUrl } from "../utils/constants"
 import { config } from "../utils/constants"
 
 export const getPost = async (postId) => {
-  const res = await axios.get(`${serverUrl}/posts/${postId}`, config)
+  // const res = await axios.get(`${serverUrl}/posts/${postId}`, config)
+  const res = await axios.get(
+    `${serverUrl}/posts/getPost?post=${postId}`,
+    config
+  )
   return res.data?.data?.post
 }
 
@@ -21,4 +25,18 @@ export async function getPosts({ search, category, page, pageSize }) {
     config
   )
   return res.data?.data
+}
+
+export const likePost = async (post) => {
+  const res = await axios.get(`${serverUrl}/posts/addLike?post=${post}`, config)
+  return res.data?.data?.post
+}
+
+export const commentOnPost = async ({ post, comment }) => {
+  const res = await axios.post(
+    `${serverUrl}/posts/addComment?post=${post}`,
+    { comment },
+    config
+  )
+  return res.data?.data?.post
 }

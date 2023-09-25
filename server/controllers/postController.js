@@ -83,7 +83,8 @@ exports.addNewPost = async (req, res) => {
 };
 
 exports.getPost = async (req, res) => {
-  const { postId } = req.params;
+  // const { postId } = req.params;
+  const { post: postId } = req.query;
   try {
     const post = await Post.findById(postId);
     if (!post) throw new Error('No post could be found');
@@ -106,19 +107,20 @@ exports.likePost = async (req, res) => {
       throw new Error('Post not found');
     }
     // if so, add or delete like
-    const hasAlreadyLikedPost = post.likes.users.some(
-      (user) => user._id === req.currentUser._id
+    const hasAlreadyLikedPost = post.likes.likes.some(
+      (like) => like.user.toHexString() === req.currentUser._id.toHexString()
     );
     const likes = hasAlreadyLikedPost
       ? {
-          totalLikes: post.likes.totalLikes--,
-          users: post.likes.users.filter(
-            (user) => user._id !== req.currentUser._id
+          totalLikes: post.likes.totalLikes - 1,
+          likes: post.likes.likes.filter(
+            (like) =>
+              like.user.toHexString() !== req.currentUser._id.toHexString()
           ),
         }
       : {
-          totalLikes: post.likes.totalLikes++,
-          users: [...post.likes.users, { user: req.currentUser._id }],
+          totalLikes: post.likes.totalLikes + 1,
+          likes: [...post.likes.likes, { user: req.currentUser._id }],
         };
     post = await Post.findByIdAndUpdate(
       post._id,
@@ -128,17 +130,54 @@ exports.likePost = async (req, res) => {
       { new: true }
     );
     //
-    return res.status(200).json({
-      status: 'success',
-      data: { post },
-    });
+    renderRes({ res, status: 200, data: { post } });
   } catch (err) {
     renderRes({ res, status: 400, message: err.message, errors: err.errors });
-    // res.status(400).json({
-    //   status: 'failed',
-    //   data: { err },
-    // });
   }
 };
 
-exports.commentOnPost = async (req, res) => {};
+exports.commentOnPost = async (req, res) => {
+  let post;
+  const { post: postId } = req.query;
+  const { comment } = req.body;
+  try {
+    // 1- check if post exists
+    try {
+      post = await Post.findById(postId || '');
+    } catch {
+      throw new Error('Post not found');
+    }
+    // if so
+    const hasAlreadyCommented = post.comments.comments.some(
+      (commentObj) =>
+        commentObj.user.toHexString() === req.currentUser._id.toHexString()
+    );
+
+    if (hasAlreadyCommented)
+      throw new Error('User can only comment once in each post !');
+    if (!comment || comment.trim().length > 10000)
+      throw new Error('Comment must have less than 10000 characters');
+    // user hasn't commented yet and the comment size is less than 10000 then,
+    const comments = {
+      totalComments: post.comments.totalComments + 1,
+      comments: [
+        ...post.comments.comments,
+        { user: req.currentUser._id, comment },
+      ],
+    };
+    post = await Post.findByIdAndUpdate(
+      post._id,
+      {
+        comments,
+      },
+      { new: true, runValidators: true }
+    );
+    //
+    renderRes({ res, status: 200, data: { post } });
+  } catch (err) {
+    renderRes({ res, status: 400, message: err.message, errors: err.errors });
+  }
+};
+
+exports.deleteComment = async (req, res) => {};
+exports.updateComment = async (req, res) => {};

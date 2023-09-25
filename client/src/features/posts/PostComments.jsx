@@ -2,6 +2,8 @@ import styled from "styled-components"
 import PostComment from "./PostComment"
 import Heading from "../../ui/Heading"
 import AddComment from "./AddComment"
+import { useState } from "react"
+import { useUser } from "../auth/useUser"
 const Container = styled.div`
   padding-top: 3rem;
   border-top: 2px solid var(--color-grey-200);
@@ -15,18 +17,26 @@ const NumComments = styled.span`
   font-size: 3rem;
 `
 
-function PostComments() {
+function PostComments({ post }) {
+  const { comments } = post
+  const { user } = useUser()
+  // const [hasAlreadyCommented, setHasAlreadyCommented] = useState(false)
+  const [hasAlreadyCommented, setHasAlreadyCommented] = useState(() =>
+    comments?.comments?.some((comment) => comment.user._id === user._id)
+  )
+
   return (
     <Container>
       <StyledHeading as="h1">
         Comments
         <NumComments> (27)</NumComments>
       </StyledHeading>
-      <AddComment />
-      <PostComment />
-      <PostComment />
-      <PostComment />
-      <PostComment />
+      {!hasAlreadyCommented && <AddComment user={user} />}
+      {comments?.comments
+        ?.sort((a, b) => new Date(b.commentedAt) - new Date(a.commentedAt))
+        .map((postComment) => (
+          <PostComment key={postComment._id} postComment={postComment} />
+        ))}
     </Container>
   )
 }

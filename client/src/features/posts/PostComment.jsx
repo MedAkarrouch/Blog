@@ -1,5 +1,7 @@
 import styled, { css } from "styled-components"
 import PostLayout from "./PostLayout"
+import { usersImagesUrl } from "../../utils/constants"
+import { DateTime } from "luxon"
 // const Layout = styled.div`
 //   display: grid;
 //   grid-template-columns: max-content 1fr;
@@ -49,24 +51,24 @@ import PostLayout from "./PostLayout"
 //   flex-direction: column;
 //   gap: 0.5rem;
 // `
-function PostComment({ post }) {
+function PostComment({ postComment }) {
+  const { comment, commentedAt, user } = postComment
   return (
     <PostLayout>
       <PostLayout.UserImg
         alt=""
-        src="https://res.cloudinary.com/practicaldev/image/fetch/s--Q9Kwp-uC--/c_fill,f_auto,fl_progressive,h_90,q_auto,w_90/https://dev-to-uploads.s3.amazonaws.com/uploads/user/profile_image/609838/bc3ac0a6-8c2e-4c51-8fdd-83bd3d6ec159.jpeg"
+        src={`${usersImagesUrl}/${user.photo}`}
+        // src="https://res.cloudinary.com/practicaldev/image/fetch/s--Q9Kwp-uC--/c_fill,f_auto,fl_progressive,h_90,q_auto,w_90/https://dev-to-uploads.s3.amazonaws.com/uploads/user/profile_image/609838/bc3ac0a6-8c2e-4c51-8fdd-83bd3d6ec159.jpeg"
       />
       <PostLayout.Content>
         <PostLayout.Row>
-          <PostLayout.UserName>Alex Johnson</PostLayout.UserName>
+          <PostLayout.UserName>{user.fullName}</PostLayout.UserName>
         </PostLayout.Row>
-        <PostLayout.Comment>
-          Whenever you learn programming in a truly passionate way, there is a
-          lot of fun waiting, and this is why programming is the heart of
-          digital earth.
-        </PostLayout.Comment>
+        <PostLayout.Comment>{comment}</PostLayout.Comment>
       </PostLayout.Content>
-      <PostLayout.PostDate>1 hour ago</PostLayout.PostDate>
+      <PostLayout.PostDate>
+        {DateTime.fromISO(commentedAt).toRelative()}
+      </PostLayout.PostDate>
     </PostLayout>
   )
 }

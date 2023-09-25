@@ -10,10 +10,11 @@ router.post(
   postController.upload,
   postController.addNewPost
 );
-router.get('/:postId', postController.getPost);
-router.post('/AddLike', authController.protect, postController.likePost);
+// router.get('/:postId', postController.getPost);
+router.get('/getPost', postController.getPost);
+router.get('/addLike', authController.protect, postController.likePost);
 router.post(
-  '/AddComment',
+  '/addComment',
   authController.protect,
   postController.commentOnPost
 );

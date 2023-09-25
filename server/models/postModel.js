@@ -67,7 +67,7 @@ const postSchema = new mongoose.Schema({
       type: Number,
       default: 0,
     },
-    users: [
+    likes: [
       {
         user: {
           type: mongoose.Schema.ObjectId,
@@ -90,6 +90,10 @@ const postSchema = new mongoose.Schema({
         },
         comment: {
           type: String,
+          required: [true, 'Comment is required'],
+          trim: true,
+          lowercase: true,
+          // maxlength: [1000, 'Comment must have less than 10000 characters'],
         },
         commentedAt: { type: Date, default: Date.now },
       },
@@ -99,6 +103,9 @@ const postSchema = new mongoose.Schema({
 postSchema.pre(/^find/, function (next) {
   this.populate({
     path: 'author',
+    select: 'fullName photo',
+  }).populate({
+    path: 'comments.comments.user',
     select: 'fullName photo',
   });
   next();
