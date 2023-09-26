@@ -2,6 +2,9 @@ export const serverUrl = "http://localhost:8000"
 export const postsImagesUrl = `${serverUrl}/img/posts`
 export const usersImagesUrl = `${serverUrl}/img/users`
 //
+export const MAX_COMMENT_LENGTH = 10000
+export const DEFAULT_IMG = "default.jpg"
+//
 export const PAGE_SIZE = 4
 export const MIN_PAGES = 8 //means how many pages should we have to display the dots
 //

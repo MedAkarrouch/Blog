@@ -4,7 +4,13 @@ import { useAutoTextareaResize } from "../../hooks/useAutoTextareaResize"
 import Button from "../account/Button"
 import PostLayout from "./PostLayout"
 import { useCommentOnPost } from "./useCommentOnPost"
-import { usersImagesUrl } from "../../utils/constants"
+import {
+  DEFAULT_IMG,
+  MAX_COMMENT_LENGTH,
+  usersImagesUrl
+} from "../../utils/constants"
+import SpinnerMini from "../../ui/SpinnerMini"
+import { toast } from "react-hot-toast"
 
 const TextInput = styled.textarea`
   width: 100%;
@@ -49,6 +55,10 @@ function AddComment({ user }) {
 
   const onSubmit = () => {
     if (!comment) return
+    if (comment.trim().length > MAX_COMMENT_LENGTH)
+      return toast.error(
+        `Comment must have less than ${MAX_COMMENT_LENGTH} characters`
+      )
     commentOnPost(comment)
   }
 
@@ -56,8 +66,7 @@ function AddComment({ user }) {
     <PostLayout>
       <PostLayout.UserImg
         alt=""
-        src={`${usersImagesUrl}/${user.photo}`}
-        // src="https://res.cloudinary.com/practicaldev/image/fetch/s--Q9Kwp-uC--/c_fill,f_auto,fl_progressive,h_90,q_auto,w_90/https://dev-to-uploads.s3.amazonaws.com/uploads/user/profile_image/609838/bc3ac0a6-8c2e-4c51-8fdd-83bd3d6ec159.jpeg"
+        src={`${usersImagesUrl}/${user?.photo || DEFAULT_IMG}`}
       />
       {/* <PostLayout.Content> */}
       <TextInput
@@ -75,7 +84,11 @@ function AddComment({ user }) {
             disabled={isLoading || !comment}
             onClick={onSubmit}
           >
-            Submit
+            {!isLoading ? (
+              "Submit"
+            ) : (
+              <SpinnerMini size={"2rem"} publish={"true"} />
+            )}
           </Button>
           <Button
             size="medium"
@@ -83,7 +96,7 @@ function AddComment({ user }) {
             disabled={isLoading}
             onClick={() => setComment("")}
           >
-            Cancel
+            Clear
           </Button>
         </ButtonsContainer>
       )}

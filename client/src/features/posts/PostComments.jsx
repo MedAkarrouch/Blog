@@ -20,22 +20,25 @@ const NumComments = styled.span`
 function PostComments({ post }) {
   const { comments } = post
   const { user } = useUser()
-  // const [hasAlreadyCommented, setHasAlreadyCommented] = useState(false)
-  const [hasAlreadyCommented, setHasAlreadyCommented] = useState(() =>
-    comments?.comments?.some((comment) => comment.user._id === user._id)
+  const hasAlreadyCommented = comments?.comments?.some(
+    (comment) => comment.user._id === user?._id
   )
 
   return (
     <Container>
       <StyledHeading as="h1">
         Comments
-        <NumComments> (27)</NumComments>
+        <NumComments> ({comments?.totalComments})</NumComments>
       </StyledHeading>
       {!hasAlreadyCommented && <AddComment user={user} />}
       {comments?.comments
         ?.sort((a, b) => new Date(b.commentedAt) - new Date(a.commentedAt))
         .map((postComment) => (
-          <PostComment key={postComment._id} postComment={postComment} />
+          <PostComment
+            belongsToUser={postComment.user._id === user?._id}
+            key={postComment._id}
+            postComment={postComment}
+          />
         ))}
     </Container>
   )

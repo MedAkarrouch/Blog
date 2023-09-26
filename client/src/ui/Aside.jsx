@@ -79,7 +79,7 @@ function Aside({ post }) {
   const { likes, comments } = post
   const { isLoading, likePost } = useLikePost()
   const [hasUserAlreadyLikedPost, setHasUserAlreadyLikedPost] = useState(() =>
-    likes?.likes?.some((like) => like.user === user._id)
+    likes?.likes?.some((like) => like.user === user?._id)
   )
   const [totalLikes, setTotalLikes] = useState(likes?.totalLikes || 0)
 

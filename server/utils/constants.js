@@ -1,1 +1,2 @@
 exports.FILE_MAX_SIZE = 5 * 1024 * 1024;
+exports.COMMENT_MAX_LENGTH = 10000;

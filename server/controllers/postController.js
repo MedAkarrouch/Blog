@@ -4,6 +4,7 @@ const { FILE_MAX_SIZE } = require('../utils/constants');
 const readingTime = require('reading-time');
 const Post = require('../models/postModel');
 const renderRes = require('../utils/renderRes');
+const { MAX_COMMENT_LENGTH } = require('../utils/constants');
 
 const multerStorage = multer.memoryStorage();
 const multerFilter = (req, file, cb) => {
@@ -150,12 +151,12 @@ exports.commentOnPost = async (req, res) => {
     // if so
     const hasAlreadyCommented = post.comments.comments.some(
       (commentObj) =>
-        commentObj.user.toHexString() === req.currentUser._id.toHexString()
+        commentObj.user._id.toHexString() === req.currentUser._id.toHexString()
     );
 
     if (hasAlreadyCommented)
       throw new Error('User can only comment once in each post !');
-    if (!comment || comment.trim().length > 10000)
+    if (!comment || comment.trim().length > MAX_COMMENT_LENGTH)
       throw new Error('Comment must have less than 10000 characters');
     // user hasn't commented yet and the comment size is less than 10000 then,
     const comments = {

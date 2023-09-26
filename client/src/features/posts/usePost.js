@@ -14,7 +14,6 @@ export function usePost() {
     queryFn: () => getPost(postId),
     retry: false
   })
-  console.log(error)
   return {
     isLoading,
     post,

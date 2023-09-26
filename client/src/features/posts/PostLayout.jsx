@@ -12,7 +12,7 @@ const UserImg = styled.img`
   height: 3.5rem;
 `
 const UserName = styled.span`
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   font-weight: 500;
   color: var(--color-grey-900);
   text-transform: capitalize;
