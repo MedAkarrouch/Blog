@@ -3,7 +3,7 @@ import { usePost } from "../features/posts/usePost"
 import Spinner from "../ui/Spinner"
 import PostDetail from "../features/posts/PostDetail"
 import Aside from "../ui/Aside"
-import PostComments from "../features/posts/PostComments"
+import PostComments from "../features/comments/PostComments"
 
 const StyledPost = styled.div`
   max-width: 90rem;

@@ -1,8 +1,12 @@
 import styled, { css } from "styled-components"
 import { HiOutlineEllipsisHorizontal } from "react-icons/hi2"
-import PostLayout from "./PostLayout"
+import PostLayout from "../posts/PostLayout"
 import { usersImagesUrl } from "../../utils/constants"
 import { DateTime } from "luxon"
+import { HiPencil, HiTrash } from "react-icons/hi2"
+import Modal from "../../ui/Modal"
+import ConfirmDelete from "../../ui/ConfirmDelete"
+import { useState } from "react"
 // const Layout = styled.div`
 //   display: grid;
 //   grid-template-columns: max-content 1fr;
@@ -57,35 +61,18 @@ const StyledRow = styled(PostLayout.Row)`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-`
-const StyledOptionsBtn = styled.span`
-  display: flex;
-  & svg {
-    width: 2.5rem;
-    height: 2.5rem;
-    cursor: pointer;
-    line-height: 0;
-  }
+  position: relative;
 `
 
-function PostComment({ belongsToUser, postComment }) {
+function PostComment({ postComment }) {
   const { comment, commentedAt, user } = postComment
 
   return (
     <PostLayout>
-      <PostLayout.UserImg
-        alt=""
-        src={`${usersImagesUrl}/${user.photo}`}
-        // src="https://res.cloudinary.com/practicaldev/image/fetch/s--Q9Kwp-uC--/c_fill,f_auto,fl_progressive,h_90,q_auto,w_90/https://dev-to-uploads.s3.amazonaws.com/uploads/user/profile_image/609838/bc3ac0a6-8c2e-4c51-8fdd-83bd3d6ec159.jpeg"
-      />
+      <PostLayout.UserImg alt="" src={`${usersImagesUrl}/${user.photo}`} />
       <PostLayout.Content>
         <StyledRow>
           <PostLayout.UserName>{user.fullName}</PostLayout.UserName>
-          {belongsToUser && (
-            <StyledOptionsBtn>
-              <HiOutlineEllipsisHorizontal />
-            </StyledOptionsBtn>
-          )}
         </StyledRow>
         <PostLayout.Comment>{comment}</PostLayout.Comment>
       </PostLayout.Content>

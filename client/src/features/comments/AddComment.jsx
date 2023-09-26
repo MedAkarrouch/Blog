@@ -2,7 +2,7 @@ import styled from "styled-components"
 import { useState } from "react"
 import { useAutoTextareaResize } from "../../hooks/useAutoTextareaResize"
 import Button from "../account/Button"
-import PostLayout from "./PostLayout"
+import PostLayout from "../posts/PostLayout"
 import { useCommentOnPost } from "./useCommentOnPost"
 import {
   DEFAULT_IMG,
@@ -11,6 +11,8 @@ import {
 } from "../../utils/constants"
 import SpinnerMini from "../../ui/SpinnerMini"
 import { toast } from "react-hot-toast"
+import Modal from "../../ui/Modal"
+import LogInToContinue from "../../ui/LogInToContinue"
 
 const TextInput = styled.textarea`
   width: 100%;
@@ -61,6 +63,24 @@ function AddComment({ user }) {
       )
     commentOnPost(comment)
   }
+  const onFocus = () => {
+    setInputIsFocused(true)
+  }
+
+  if (!user)
+    return (
+      <PostLayout>
+        <PostLayout.UserImg alt="" src={`${usersImagesUrl}/${DEFAULT_IMG}`} />
+        <Modal>
+          <Modal.Open window={"confirm-window"}>
+            <TextInput placeholder="Add a comment" value={""} />
+          </Modal.Open>
+          <Modal.Window window={"confirm-window"}>
+            <LogInToContinue />
+          </Modal.Window>
+        </Modal>
+      </PostLayout>
+    )
 
   return (
     <PostLayout>
@@ -68,14 +88,13 @@ function AddComment({ user }) {
         alt=""
         src={`${usersImagesUrl}/${user?.photo || DEFAULT_IMG}`}
       />
-      {/* <PostLayout.Content> */}
       <TextInput
         placeholder="Add a comment"
         ref={ref}
         value={comment}
         onChange={(e) => setComment(e.target.value)}
         disabled={isLoading}
-        onFocus={() => setInputIsFocused(true)}
+        onFocus={onFocus}
       />
       {inputIsFocused && (
         <ButtonsContainer>
@@ -100,7 +119,6 @@ function AddComment({ user }) {
           </Button>
         </ButtonsContainer>
       )}
-      {/* </PostLayout.Content> */}
     </PostLayout>
   )
 }
