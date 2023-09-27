@@ -8,7 +8,7 @@ const Container = styled.div`
   gap: 3rem;
   max-height: 50rem;
 `
-function EditComment({ comment }) {
+function EditComment({ comment, onCloseModal }) {
   const { user } = useUser()
   return (
     <Container>
@@ -18,6 +18,8 @@ function EditComment({ comment }) {
         onEditMode={true}
         defaultComment={comment}
         inputOnFocus={true}
+        onCloseModal={onCloseModal}
+        inputHeight="25rem"
       />
     </Container>
   )

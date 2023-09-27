@@ -1,4 +1,4 @@
-import styled from "styled-components"
+import styled, { css } from "styled-components"
 import { useRef, useState } from "react"
 import { useAutoTextareaResize } from "../../hooks/useAutoTextareaResize"
 import Button from "../account/Button"
@@ -32,7 +32,10 @@ const TextInput = styled.textarea`
   border-radius: 5px;
   box-shadow: var(--shadow-sm);
   padding: 0.75rem 1rem;
-  height: 10rem;
+  /* height: 10rem; */
+  ${(props) => css`
+    height: ${props.height};
+  `}
   /*  */
   &::placeholder {
     padding-top: 0.25rem;
@@ -56,7 +59,9 @@ function AddComment({
   user,
   onEditMode = false,
   defaultComment = "",
-  inputOnFocus = false
+  inputOnFocus = false,
+  onCloseModal,
+  inputHeight = "10rem"
 }) {
   const ref = useRef(null)
   const [comment, setComment] = useState(defaultComment)
@@ -70,10 +75,11 @@ function AddComment({
       return toast.error(
         `Comment must have less than ${MAX_COMMENT_LENGTH} characters`
       )
-    if (onEditMode) updateComment(comment)
+    if (onEditMode) updateComment(comment, { onSettled: onCloseModal })
     else commentOnPost(comment)
   }
   const onFocus = () => {
+    if (onEditMode) return
     setInputIsFocused(true)
     ref.current.style.height = "17rem"
   }
@@ -106,6 +112,7 @@ function AddComment({
         onChange={(e) => setComment(e.target.value)}
         disabled={isLoading || isUpdating}
         onFocus={onFocus}
+        height={inputHeight}
       />
       {inputIsFocused && (
         <ButtonsContainer>

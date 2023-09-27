@@ -6,7 +6,7 @@ export function useDeleteComment() {
   const { postId: post } = useParams()
   const queryClient = useQueryClient()
   const { isLoading: isDeleting, mutate: deleteComment } = useMutation({
-    mutationFn: () => deleteCommentApi(`post`),
+    mutationFn: () => deleteCommentApi(post),
     onSuccess: (post) => {
       toast.success("Comment successfully deleted")
       queryClient.setQueryData(["post", post._id], post)

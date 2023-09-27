@@ -11,6 +11,8 @@ import { useOutsideClick } from "../../hooks/useOutsideClick"
 import { useDeleteComment } from "./useDeleteComment"
 import EditComment from "./EditComment"
 import { useUpdateComment } from "./useUpdateComment"
+import Button from "../account/Button"
+import { useTextExpander } from "../../hooks/useTextExpander"
 
 const StyledRow = styled(PostLayout.Row)`
   flex-direction: row;
@@ -66,11 +68,8 @@ function PostCommentForLoggedInUser({ postComment }) {
   const [showList, setShowList] = useState(false)
   const ref = useOutsideClick(() => setShowList(false))
   const { isDeleting, deleteComment } = useDeleteComment()
-  // const [showMore, setShowMore] = useState(false)
-  // const commentText = showMore
-  //   ? comment
-  //   : comment.split(" ").slice(0, 50).join(" ") + "..."
-  const commentText = comment
+  const [showModal, setShowModal] = useState(true)
+  const { text: commentText, show, isHidden } = useTextExpander(comment)
 
   return (
     <PostLayout>
@@ -82,48 +81,57 @@ function PostCommentForLoggedInUser({ postComment }) {
             ref={ref}
             onClick={(e) => {
               e.stopPropagation()
-              console.log("DDD")
+              setShowModal(true)
               setShowList((show) => !show)
             }}
           >
             <HiOutlineEllipsisHorizontal />
           </StyledOptionsBtn>
-          <Modal>
-            {showList && (
-              <OptionsMenu>
-                <OptionsList>
-                  <Modal.Open window="edit-comment">
-                    <OptionsItem>
-                      <HiPencil />
-                      <span>Edit</span>
-                    </OptionsItem>
-                  </Modal.Open>
-                  <Modal.Open window="delete-comment">
-                    <OptionsItem>
-                      <HiTrash />
-                      <span>Delete</span>
-                    </OptionsItem>
-                  </Modal.Open>
-                </OptionsList>
-              </OptionsMenu>
-            )}
-            <Modal.Window window="delete-comment">
-              <ConfirmDelete
-                resourceName={"comment"}
-                disabled={isDeleting}
-                onConfirm={deleteComment}
-              />
-            </Modal.Window>
-            <Modal.Window window="edit-comment">
-              <EditComment comment={comment} />
-            </Modal.Window>
-          </Modal>
+          {showModal && (
+            <Modal>
+              {showList && (
+                <OptionsMenu>
+                  <OptionsList>
+                    <Modal.Open window="edit-comment">
+                      <OptionsItem>
+                        <HiPencil />
+                        <span>Edit</span>
+                      </OptionsItem>
+                    </Modal.Open>
+                    <Modal.Open window="delete-comment">
+                      <OptionsItem>
+                        <HiTrash />
+                        <span>Delete</span>
+                      </OptionsItem>
+                    </Modal.Open>
+                  </OptionsList>
+                </OptionsMenu>
+              )}
+              <Modal.Window window="delete-comment">
+                <ConfirmDelete
+                  resourceName={"comment"}
+                  disabled={isDeleting}
+                  onConfirm={() =>
+                    deleteComment(null, { onError: () => setShowModal(false) })
+                  }
+                />
+              </Modal.Window>
+              <Modal.Window window="edit-comment">
+                <EditComment
+                  onCloseModal={() => setShowModal(false)}
+                  comment={comment}
+                />
+              </Modal.Window>
+            </Modal>
+          )}
         </StyledRow>
         <PostLayout.Comment>
           {commentText}
-          {/* <span onClick={() => setShowMore((show) => !show)}>
-            {showMore ? "See less" : "See more"}
-          </span> */}
+          {isHidden && (
+            <Button variation="showMore" onClick={show}>
+              See more
+            </Button>
+          )}
         </PostLayout.Comment>
       </PostLayout.Content>
       <PostLayout.PostDate>

@@ -41,6 +41,15 @@ const variations = {
     &:hover {
       background-color: var(--color-red-700);
     }
+  `,
+  showMore: css`
+    background-color: transparent;
+    box-shadow: none;
+    text-transform: capitalize;
+    padding: 0;
+    padding-left: 0.5rem;
+    font-size: 1.25rem;
+    color: var(--color-grey-500);
   `
 }
 const Button = styled.button`
@@ -48,6 +57,7 @@ const Button = styled.button`
   border-radius: 5px;
   box-shadow: var(--shadow-sm);
   transition: all 0.2s;
+  font: inherit;
   ${(props) => sizes[props.size]}
   ${(props) => variations[props.variation]}
 `
