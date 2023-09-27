@@ -40,3 +40,18 @@ export const commentOnPost = async ({ post, comment }) => {
   )
   return res.data?.data?.post
 }
+export const deleteComment = async (post) => {
+  const res = await axios.delete(
+    `${serverUrl}/posts/deleteComment?post=${post}`,
+    config
+  )
+  return res.data?.data?.post
+}
+export const editComment = async ({ post, comment }) => {
+  const res = await axios.patch(
+    `${serverUrl}/posts/updateComment?post=${post}`,
+    { comment },
+    config
+  )
+  return res.data?.data?.post
+}

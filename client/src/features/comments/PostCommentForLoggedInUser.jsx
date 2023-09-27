@@ -8,6 +8,9 @@ import Modal from "../../ui/Modal"
 import ConfirmDelete from "../../ui/ConfirmDelete"
 import { useState } from "react"
 import { useOutsideClick } from "../../hooks/useOutsideClick"
+import { useDeleteComment } from "./useDeleteComment"
+import EditComment from "./EditComment"
+import { useUpdateComment } from "./useUpdateComment"
 
 const StyledRow = styled(PostLayout.Row)`
   flex-direction: row;
@@ -58,10 +61,16 @@ const OptionsItem = styled.li`
   }
 `
 
-function PostComment({ postComment }) {
+function PostCommentForLoggedInUser({ postComment }) {
   const { comment, commentedAt, user } = postComment
   const [showList, setShowList] = useState(false)
   const ref = useOutsideClick(() => setShowList(false))
+  const { isDeleting, deleteComment } = useDeleteComment()
+  // const [showMore, setShowMore] = useState(false)
+  // const commentText = showMore
+  //   ? comment
+  //   : comment.split(" ").slice(0, 50).join(" ") + "..."
+  const commentText = comment
 
   return (
     <PostLayout>
@@ -83,10 +92,12 @@ function PostComment({ postComment }) {
             {showList && (
               <OptionsMenu>
                 <OptionsList>
-                  <OptionsItem>
-                    <HiPencil />
-                    <span>Edit</span>
-                  </OptionsItem>
+                  <Modal.Open window="edit-comment">
+                    <OptionsItem>
+                      <HiPencil />
+                      <span>Edit</span>
+                    </OptionsItem>
+                  </Modal.Open>
                   <Modal.Open window="delete-comment">
                     <OptionsItem>
                       <HiTrash />
@@ -97,11 +108,23 @@ function PostComment({ postComment }) {
               </OptionsMenu>
             )}
             <Modal.Window window="delete-comment">
-              <ConfirmDelete resourceName={"comment"} />
+              <ConfirmDelete
+                resourceName={"comment"}
+                disabled={isDeleting}
+                onConfirm={deleteComment}
+              />
+            </Modal.Window>
+            <Modal.Window window="edit-comment">
+              <EditComment comment={comment} />
             </Modal.Window>
           </Modal>
         </StyledRow>
-        <PostLayout.Comment>{comment}</PostLayout.Comment>
+        <PostLayout.Comment>
+          {commentText}
+          {/* <span onClick={() => setShowMore((show) => !show)}>
+            {showMore ? "See less" : "See more"}
+          </span> */}
+        </PostLayout.Comment>
       </PostLayout.Content>
       <PostLayout.PostDate>
         {DateTime.fromISO(commentedAt).toRelative()}
@@ -110,4 +133,4 @@ function PostComment({ postComment }) {
   )
 }
 
-export default PostComment
+export default PostCommentForLoggedInUser

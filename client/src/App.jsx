@@ -31,7 +31,7 @@ function App() {
       <GlobalStyles />
       <Toaster
         gutter={15}
-        containerStyle={{ margin: "0" }}
+        containerStyle={{ margin: "0", zIndex: "100000" }}
         toastOptions={{
           success: {
             duration: 3000

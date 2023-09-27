@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { useAutoTextareaResize } from "../../hooks/useAutoTextareaResize"
 import Button from "../account/Button"
 import PostLayout from "../posts/PostLayout"
@@ -13,11 +13,13 @@ import SpinnerMini from "../../ui/SpinnerMini"
 import { toast } from "react-hot-toast"
 import Modal from "../../ui/Modal"
 import LogInToContinue from "../../ui/LogInToContinue"
+import { useDeleteComment } from "./useDeleteComment"
+import { useUpdateComment } from "./useUpdateComment"
 
 const TextInput = styled.textarea`
   width: 100%;
   resize: auto;
-  overflow-y: hidden;
+  /* overflow-y: hidden; */
   outline: none;
   resize: none;
   border: none;
@@ -28,9 +30,9 @@ const TextInput = styled.textarea`
   /* Temporary */
   border: 1px solid var(--color-grey-200);
   border-radius: 5px;
-  /* box-shadow: var(--shadow-sm); */
+  box-shadow: var(--shadow-sm);
   padding: 0.75rem 1rem;
-  min-height: 10rem;
+  height: 10rem;
   /*  */
   &::placeholder {
     padding-top: 0.25rem;
@@ -40,6 +42,7 @@ const TextInput = styled.textarea`
     font-weight: 300;
   }
   &:focus {
+    /* height: 15rem; */
   }
 `
 const ButtonsContainer = styled.div`
@@ -49,11 +52,17 @@ const ButtonsContainer = styled.div`
   gap: 2rem;
   align-items: center;
 `
-function AddComment({ user }) {
-  const ref = useAutoTextareaResize()
-  const [comment, setComment] = useState("")
-  const [inputIsFocused, setInputIsFocused] = useState(false)
+function AddComment({
+  user,
+  onEditMode = false,
+  defaultComment = "",
+  inputOnFocus = false
+}) {
+  const ref = useRef(null)
+  const [comment, setComment] = useState(defaultComment)
+  const [inputIsFocused, setInputIsFocused] = useState(inputOnFocus)
   const { isLoading, commentOnPost } = useCommentOnPost()
+  const { isUpdating, updateComment } = useUpdateComment()
 
   const onSubmit = () => {
     if (!comment) return
@@ -61,10 +70,12 @@ function AddComment({ user }) {
       return toast.error(
         `Comment must have less than ${MAX_COMMENT_LENGTH} characters`
       )
-    commentOnPost(comment)
+    if (onEditMode) updateComment(comment)
+    else commentOnPost(comment)
   }
   const onFocus = () => {
     setInputIsFocused(true)
+    ref.current.style.height = "17rem"
   }
 
   if (!user)
@@ -93,26 +104,28 @@ function AddComment({ user }) {
         ref={ref}
         value={comment}
         onChange={(e) => setComment(e.target.value)}
-        disabled={isLoading}
+        disabled={isLoading || isUpdating}
         onFocus={onFocus}
       />
       {inputIsFocused && (
         <ButtonsContainer>
           <Button
             size="medium"
-            disabled={isLoading || !comment}
+            disabled={isLoading || isUpdating || !comment}
             onClick={onSubmit}
           >
-            {!isLoading ? (
-              "Submit"
-            ) : (
+            {isLoading ? (
               <SpinnerMini size={"2rem"} publish={"true"} />
+            ) : onEditMode ? (
+              "Edit"
+            ) : (
+              "Submit"
             )}
           </Button>
           <Button
             size="medium"
             variation="secondary"
-            disabled={isLoading}
+            disabled={isLoading || isUpdating}
             onClick={() => setComment("")}
           >
             Clear

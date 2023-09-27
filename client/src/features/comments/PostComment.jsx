@@ -66,7 +66,6 @@ const StyledRow = styled(PostLayout.Row)`
 
 function PostComment({ postComment }) {
   const { comment, commentedAt, user } = postComment
-
   return (
     <PostLayout>
       <PostLayout.UserImg alt="" src={`${usersImagesUrl}/${user.photo}`} />

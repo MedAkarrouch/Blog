@@ -18,5 +18,16 @@ router.post(
   authController.protect,
   postController.commentOnPost
 );
+router.patch(
+  '/updateComment',
+  authController.protect,
+  postController.updateComment
+);
+router.delete(
+  '/deleteComment',
+  authController.protect,
+  postController.deleteComment
+);
+router.post('/deletePost', authController.protect, postController.deletePost);
 
 module.exports = router;

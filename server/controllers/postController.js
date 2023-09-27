@@ -4,7 +4,7 @@ const { FILE_MAX_SIZE } = require('../utils/constants');
 const readingTime = require('reading-time');
 const Post = require('../models/postModel');
 const renderRes = require('../utils/renderRes');
-const { MAX_COMMENT_LENGTH } = require('../utils/constants');
+const { COMMENT_MAX_LENGTH } = require('../utils/constants');
 
 const multerStorage = multer.memoryStorage();
 const multerFilter = (req, file, cb) => {
@@ -156,7 +156,7 @@ exports.commentOnPost = async (req, res) => {
 
     if (hasAlreadyCommented)
       throw new Error('User can only comment once in each post !');
-    if (!comment || comment.trim().length > MAX_COMMENT_LENGTH)
+    if (!comment || comment.trim().length > COMMENT_MAX_LENGTH)
       throw new Error('Comment must have less than 10000 characters');
     // user hasn't commented yet and the comment size is less than 10000 then,
     const comments = {
@@ -180,5 +180,75 @@ exports.commentOnPost = async (req, res) => {
   }
 };
 
-exports.deleteComment = async (req, res) => {};
-exports.updateComment = async (req, res) => {};
+exports.deleteComment = async (req, res) => {
+  let post;
+  const { post: postId } = req.query;
+  try {
+    // 1- check if post exists
+    try {
+      post = await Post.findById(postId || '');
+    } catch {
+      throw new Error('Post not found');
+    }
+    // 2- check if the user has commented on the post before
+    const hasNotCommented = post.comments.comments.every(
+      (com) => com.user._id.toHexString() !== req.currentUser._id.toHexString()
+    );
+    // if not
+    if (hasNotCommented)
+      throw new Error("User didn't comment on this post before");
+    // if so
+    const postCommentsAfterUpdate = post.comments?.comments?.filter(
+      (com) => com.user._id.toHexString() !== req.currentUser._id.toHexString()
+    );
+    post.comments.comments = postCommentsAfterUpdate;
+    post.comments.totalComments = post.comments.totalComments - 1;
+    await post.save();
+    //
+    renderRes({ res, status: 200, data: { post } });
+  } catch (err) {
+    renderRes({
+      res,
+      status: 400,
+      message: err.message,
+      errors: err.errors,
+    });
+  }
+};
+exports.updateComment = async (req, res) => {
+  let post;
+  const { post: postId } = req.query;
+  const { comment } = req.body;
+  try {
+    // 1- check if post exists
+    try {
+      post = await Post.findById(postId || '');
+    } catch {
+      throw new Error('Post not found');
+    }
+    // if so
+    const hasAlreadyCommented = post.comments.comments.some(
+      (commentObj) =>
+        commentObj.user._id.toHexString() === req.currentUser._id.toHexString()
+    );
+
+    if (!hasAlreadyCommented)
+      throw new Error("User didn't comment on this post before");
+    console.log(comment.trim().length, COMMENT_MAX_LENGTH);
+    console.log(comment.trim().length > COMMENT_MAX_LENGTH);
+    if (!comment || comment.trim().length > COMMENT_MAX_LENGTH)
+      throw new Error('Comment must have less than 10000 characters');
+    // if everything is ok then,
+    const comments = post.comments?.comments.map((comObj) => {
+      if (comObj.user._id.toHexString() === req.currentUser._id.toHexString())
+        return { ...comObj, comment };
+      else return comObj;
+    });
+    post.comments.comments = comments;
+    await post.save();
+    //
+    renderRes({ res, status: 200, data: { post } });
+  } catch (err) {
+    renderRes({ res, status: 400, message: err.message, errors: err.errors });
+  }
+};
