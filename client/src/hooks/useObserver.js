@@ -16,9 +16,7 @@ export function useObserver(handler) {
     const observer = new IntersectionObserver(callBack, options)
 
     if (ref.current) observer.observe(ref.current)
-    return () => {
-      if (ref.current) observer.unobserve(ref.current)
-    }
+    return () => observer.disconnect()
   }, [ref, handler])
   return ref
 }

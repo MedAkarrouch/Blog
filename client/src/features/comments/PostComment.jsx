@@ -1,9 +1,10 @@
-import styled from "styled-components"
-import PostLayout from "../posts/PostLayout"
-import { usersImagesUrl } from "../../utils/constants"
-import { DateTime } from "luxon"
-import { useTextExpander } from "../../hooks/useTextExpander"
-import Button from "../account/Button"
+import styled from 'styled-components'
+import PostLayout from '../posts/PostLayout'
+import { usersImagesUrl } from '../../utils/constants'
+import { DateTime } from 'luxon'
+import { useTextExpander } from '../../hooks/useTextExpander'
+import Button from '../account/Button'
+import { forwardRef } from 'react'
 
 const StyledRow = styled(PostLayout.Row)`
   flex-direction: row;
@@ -12,11 +13,11 @@ const StyledRow = styled(PostLayout.Row)`
   position: relative;
 `
 
-function PostComment({ postComment }) {
+const PostComment = forwardRef(function PostComment({ postComment }, ref) {
   const { comment, commentedAt, user } = postComment
   const { text: commentText, show, isHidden } = useTextExpander(comment)
   return (
-    <PostLayout>
+    <PostLayout ref={ref}>
       <PostLayout.UserImg alt="" src={`${usersImagesUrl}/${user.photo}`} />
       <PostLayout.Content>
         <StyledRow>
@@ -36,6 +37,6 @@ function PostComment({ postComment }) {
       </PostLayout.PostDate>
     </PostLayout>
   )
-}
+})
 
 export default PostComment

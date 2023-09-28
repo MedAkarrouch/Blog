@@ -154,8 +154,8 @@ exports.commentOnPost = async (req, res) => {
         commentObj.user._id.toHexString() === req.currentUser._id.toHexString()
     );
 
-    if (hasAlreadyCommented)
-      throw new Error('User can only comment once in each post !');
+    // if (hasAlreadyCommented)
+    // throw new Error('User can only comment once on each post !');
     if (!comment || comment.trim().length > COMMENT_MAX_LENGTH)
       throw new Error('Comment must have less than 10000 characters');
     // user hasn't commented yet and the comment size is less than 10000 then,
@@ -234,8 +234,6 @@ exports.updateComment = async (req, res) => {
 
     if (!hasAlreadyCommented)
       throw new Error("User didn't comment on this post before");
-    console.log(comment.trim().length, COMMENT_MAX_LENGTH);
-    console.log(comment.trim().length > COMMENT_MAX_LENGTH);
     if (!comment || comment.trim().length > COMMENT_MAX_LENGTH)
       throw new Error('Comment must have less than 10000 characters');
     // if everything is ok then,

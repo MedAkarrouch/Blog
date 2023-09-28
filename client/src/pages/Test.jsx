@@ -2,7 +2,7 @@ import styled from "styled-components"
 import { useInfiniteQuery } from "@tanstack/react-query"
 import { getPosts } from "../services/apiPosts"
 import { PAGE_SIZE } from "../utils/constants"
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 
 const StyledContent = styled.div`
   max-width: 90rem;
@@ -107,5 +107,33 @@ function Test() {
     </StyledContent>
   )
 }
+
+// function Test() {
+//   const [count, setCount] = useState(0)
+//   const ref = useRef(null)
+//   useEffect(() => {
+//     console.log(ref.current)
+//     return () => {
+//       console.log("Cleanup Fn count = ", ref.current)
+//     }
+//   }, [count])
+//   return (
+//     <div>
+//       <h1>Count = {count}</h1>
+//       <button
+//         ref={count > 0 ? ref : null}
+//         onClick={() => setCount((c) => c + 1)}
+//       >
+//         +
+//       </button>
+//       <button
+//         ref={count <= 0 ? ref : null}
+//         onClick={() => setCount((c) => c - 1)}
+//       >
+//         -
+//       </button>
+//     </div>
+//   )
+// }
 
 export default Test

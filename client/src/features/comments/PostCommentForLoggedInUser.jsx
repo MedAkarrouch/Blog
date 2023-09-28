@@ -6,7 +6,7 @@ import { DateTime } from "luxon"
 import { HiPencil, HiTrash } from "react-icons/hi2"
 import Modal from "../../ui/Modal"
 import ConfirmDelete from "../../ui/ConfirmDelete"
-import { useState } from "react"
+import { forwardRef, useState } from "react"
 import { useOutsideClick } from "../../hooks/useOutsideClick"
 import { useDeleteComment } from "./useDeleteComment"
 import EditComment from "./EditComment"
@@ -63,82 +63,86 @@ const OptionsItem = styled.li`
   }
 `
 
-function PostCommentForLoggedInUser({ postComment }) {
-  const { comment, commentedAt, user } = postComment
-  const [showList, setShowList] = useState(false)
-  const ref = useOutsideClick(() => setShowList(false))
-  const { isDeleting, deleteComment } = useDeleteComment()
-  const [showModal, setShowModal] = useState(true)
-  const { text: commentText, show, isHidden } = useTextExpander(comment)
+const PostCommentForLoggedInUser = forwardRef(
+  function PostCommentForLoggedInUser({ postComment }, ref) {
+    const { comment, commentedAt, user } = postComment
+    const [showList, setShowList] = useState(false)
+    const refOptionsBtn = useOutsideClick(() => setShowList(false))
+    const { isDeleting, deleteComment } = useDeleteComment()
+    const [showModal, setShowModal] = useState(true)
+    const { text: commentText, show, isHidden } = useTextExpander(comment)
 
-  return (
-    <PostLayout>
-      <PostLayout.UserImg alt="" src={`${usersImagesUrl}/${user.photo}`} />
-      <PostLayout.Content>
-        <StyledRow>
-          <PostLayout.UserName>{user.fullName}</PostLayout.UserName>
-          <StyledOptionsBtn
-            ref={ref}
-            onClick={(e) => {
-              e.stopPropagation()
-              setShowModal(true)
-              setShowList((show) => !show)
-            }}
-          >
-            <HiOutlineEllipsisHorizontal />
-          </StyledOptionsBtn>
-          {showModal && (
-            <Modal>
-              {showList && (
-                <OptionsMenu>
-                  <OptionsList>
-                    <Modal.Open window="edit-comment">
-                      <OptionsItem>
-                        <HiPencil />
-                        <span>Edit</span>
-                      </OptionsItem>
-                    </Modal.Open>
-                    <Modal.Open window="delete-comment">
-                      <OptionsItem>
-                        <HiTrash />
-                        <span>Delete</span>
-                      </OptionsItem>
-                    </Modal.Open>
-                  </OptionsList>
-                </OptionsMenu>
-              )}
-              <Modal.Window window="delete-comment">
-                <ConfirmDelete
-                  resourceName={"comment"}
-                  disabled={isDeleting}
-                  onConfirm={() =>
-                    deleteComment(null, { onError: () => setShowModal(false) })
-                  }
-                />
-              </Modal.Window>
-              <Modal.Window window="edit-comment">
-                <EditComment
-                  onCloseModal={() => setShowModal(false)}
-                  comment={comment}
-                />
-              </Modal.Window>
-            </Modal>
-          )}
-        </StyledRow>
-        <PostLayout.Comment>
-          {commentText}
-          {isHidden && (
-            <Button variation="showMore" onClick={show}>
-              See more
-            </Button>
-          )}
-        </PostLayout.Comment>
-      </PostLayout.Content>
-      <PostLayout.PostDate>
-        {DateTime.fromISO(commentedAt).toRelative()}
-      </PostLayout.PostDate>
-    </PostLayout>
-  )
-}
+    return (
+      <PostLayout ref={ref}>
+        <PostLayout.UserImg alt="" src={`${usersImagesUrl}/${user.photo}`} />
+        <PostLayout.Content>
+          <StyledRow>
+            <PostLayout.UserName>{user.fullName}</PostLayout.UserName>
+            <StyledOptionsBtn
+              ref={refOptionsBtn}
+              onClick={(e) => {
+                e.stopPropagation()
+                setShowModal(true)
+                setShowList((show) => !show)
+              }}
+            >
+              <HiOutlineEllipsisHorizontal />
+            </StyledOptionsBtn>
+            {showModal && (
+              <Modal>
+                {showList && (
+                  <OptionsMenu>
+                    <OptionsList>
+                      <Modal.Open window="edit-comment">
+                        <OptionsItem>
+                          <HiPencil />
+                          <span>Edit</span>
+                        </OptionsItem>
+                      </Modal.Open>
+                      <Modal.Open window="delete-comment">
+                        <OptionsItem>
+                          <HiTrash />
+                          <span>Delete</span>
+                        </OptionsItem>
+                      </Modal.Open>
+                    </OptionsList>
+                  </OptionsMenu>
+                )}
+                <Modal.Window window="delete-comment">
+                  <ConfirmDelete
+                    resourceName={"comment"}
+                    disabled={isDeleting}
+                    onConfirm={() =>
+                      deleteComment(null, {
+                        onError: () => setShowModal(false)
+                      })
+                    }
+                  />
+                </Modal.Window>
+                <Modal.Window window="edit-comment">
+                  <EditComment
+                    onCloseModal={() => setShowModal(false)}
+                    comment={comment}
+                  />
+                </Modal.Window>
+              </Modal>
+            )}
+          </StyledRow>
+          <PostLayout.Comment>
+            {commentText}
+            {isHidden && (
+              <Button variation="showMore" onClick={show}>
+                See more
+              </Button>
+            )}
+          </PostLayout.Comment>
+        </PostLayout.Content>
+        <PostLayout.PostDate>
+          {DateTime.fromISO(commentedAt).toRelative()}
+        </PostLayout.PostDate>
+      </PostLayout>
+    )
+  }
+)
 
 export default PostCommentForLoggedInUser
