@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 const commentSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.ObjectId,
@@ -14,14 +14,14 @@ const commentSchema = new mongoose.Schema({
     type: String,
     trim: true,
     lowercase: true,
-    requierd: [true, 'Comment is required'],
+    required: [true, 'Comment is required'],
     maxlength: [10000, 'Comment must have less than 10000 characters'],
   },
   createdAt: {
     type: Date,
     default: Date.now,
   },
-});
+})
 
-const Comment = mongoose.model('Comment', commentSchema);
-module.exports = Comment;
+const Comment = mongoose.model('Comment', commentSchema)
+module.exports = Comment

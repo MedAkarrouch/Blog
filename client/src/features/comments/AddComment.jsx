@@ -1,20 +1,20 @@
-import styled, { css } from "styled-components"
-import { useRef, useState } from "react"
-import { useAutoTextareaResize } from "../../hooks/useAutoTextareaResize"
-import Button from "../account/Button"
-import PostLayout from "../posts/PostLayout"
-import { useCommentOnPost } from "./useCommentOnPost"
+import styled, { css } from 'styled-components'
+import { useRef, useState } from 'react'
+import { useAutoTextareaResize } from '../../hooks/useAutoTextareaResize'
+import Button from '../account/Button'
+import PostLayout from '../posts/PostLayout'
 import {
   DEFAULT_IMG,
   MAX_COMMENT_LENGTH,
-  usersImagesUrl
-} from "../../utils/constants"
-import SpinnerMini from "../../ui/SpinnerMini"
-import { toast } from "react-hot-toast"
-import Modal from "../../ui/Modal"
-import LogInToContinue from "../../ui/LogInToContinue"
-import { useDeleteComment } from "./useDeleteComment"
-import { useUpdateComment } from "./useUpdateComment"
+  usersImagesUrl,
+} from '../../utils/constants'
+import SpinnerMini from '../../ui/SpinnerMini'
+import { toast } from 'react-hot-toast'
+import Modal from '../../ui/Modal'
+import LogInToContinue from '../../ui/LogInToContinue'
+// import { useDeleteComment } from './useDeleteComment'
+// import { useUpdateComment } from './useUpdateComment'
+import { useAddComment } from './useAddComment'
 
 const TextInput = styled.textarea`
   width: 100%;
@@ -45,7 +45,6 @@ const TextInput = styled.textarea`
     font-weight: 300;
   }
   &:focus {
-    /* height: 15rem; */
   }
 `
 const ButtonsContainer = styled.div`
@@ -58,30 +57,36 @@ const ButtonsContainer = styled.div`
 function AddComment({
   user,
   onEditMode = false,
-  defaultComment = "",
+  defaultComment = '',
   inputOnFocus = false,
   onCloseModal,
-  inputHeight = "10rem"
+  inputHeight = '10rem',
 }) {
   const ref = useRef(null)
   const [comment, setComment] = useState(defaultComment)
   const [inputIsFocused, setInputIsFocused] = useState(inputOnFocus)
-  const { isLoading, commentOnPost } = useCommentOnPost()
-  const { isUpdating, updateComment } = useUpdateComment()
+  const { isAddingComment, addComment } = useAddComment()
 
   const onSubmit = () => {
     if (!comment) return
     if (comment.trim().length > MAX_COMMENT_LENGTH)
       return toast.error(
-        `Comment must have less than ${MAX_COMMENT_LENGTH} characters`
+        `Comment must have less than ${MAX_COMMENT_LENGTH} characters`,
       )
-    if (onEditMode) updateComment(comment, { onSettled: onCloseModal })
-    else commentOnPost(comment)
+    // if (onEditMode) updateComment(comment, { onSettled: onCloseModal })
+    else
+      addComment(comment, {
+        onSuccess: () => {
+          setComment('')
+          setInputIsFocused(false)
+          ref.current.style.height = '10rem'
+        },
+      })
   }
   const onFocus = () => {
     if (onEditMode) return
     setInputIsFocused(true)
-    ref.current.style.height = "17rem"
+    ref.current.style.height = '17rem'
   }
 
   if (!user)
@@ -89,10 +94,10 @@ function AddComment({
       <PostLayout>
         <PostLayout.UserImg alt="" src={`${usersImagesUrl}/${DEFAULT_IMG}`} />
         <Modal>
-          <Modal.Open window={"confirm-window"}>
-            <TextInput placeholder="Add a comment" value={""} />
+          <Modal.Open window={'confirm-window'}>
+            <TextInput placeholder="Add a comment" value={''} />
           </Modal.Open>
-          <Modal.Window window={"confirm-window"}>
+          <Modal.Window window={'confirm-window'}>
             <LogInToContinue />
           </Modal.Window>
         </Modal>
@@ -110,7 +115,7 @@ function AddComment({
         ref={ref}
         value={comment}
         onChange={(e) => setComment(e.target.value)}
-        disabled={isLoading || isUpdating}
+        disabled={isAddingComment}
         onFocus={onFocus}
         height={inputHeight}
       />
@@ -118,22 +123,22 @@ function AddComment({
         <ButtonsContainer>
           <Button
             size="medium"
-            disabled={isLoading || isUpdating || !comment}
+            disabled={isAddingComment || !comment}
             onClick={onSubmit}
           >
-            {isLoading ? (
-              <SpinnerMini size={"2rem"} publish={"true"} />
+            {isAddingComment ? (
+              <SpinnerMini size={'2rem'} publish={'true'} />
             ) : onEditMode ? (
-              "Edit"
+              'Edit'
             ) : (
-              "Submit"
+              'Submit'
             )}
           </Button>
           <Button
             size="medium"
             variation="secondary"
-            disabled={isLoading || isUpdating}
-            onClick={() => setComment("")}
+            disabled={isAddingComment}
+            onClick={() => setComment('')}
           >
             Clear
           </Button>

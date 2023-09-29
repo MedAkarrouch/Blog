@@ -13,8 +13,8 @@ const StyledRow = styled(PostLayout.Row)`
   position: relative;
 `
 
-const PostComment = forwardRef(function PostComment({ postComment }, ref) {
-  const { comment, commentedAt, user } = postComment
+const PostComment = forwardRef(function PostComment({ commentObj }, ref) {
+  const { comment, createdAt, user } = commentObj
   const { text: commentText, show, isHidden } = useTextExpander(comment)
   return (
     <PostLayout ref={ref}>
@@ -33,7 +33,7 @@ const PostComment = forwardRef(function PostComment({ postComment }, ref) {
         </PostLayout.Comment>
       </PostLayout.Content>
       <PostLayout.PostDate>
-        {DateTime.fromISO(commentedAt).toRelative()}
+        {DateTime.fromISO(createdAt).toRelative()}
       </PostLayout.PostDate>
     </PostLayout>
   )

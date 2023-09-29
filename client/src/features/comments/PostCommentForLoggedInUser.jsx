@@ -1,18 +1,18 @@
-import styled, { css } from "styled-components"
-import { HiOutlineEllipsisHorizontal } from "react-icons/hi2"
-import PostLayout from "../posts/PostLayout"
-import { usersImagesUrl } from "../../utils/constants"
-import { DateTime } from "luxon"
-import { HiPencil, HiTrash } from "react-icons/hi2"
-import Modal from "../../ui/Modal"
-import ConfirmDelete from "../../ui/ConfirmDelete"
-import { forwardRef, useState } from "react"
-import { useOutsideClick } from "../../hooks/useOutsideClick"
-import { useDeleteComment } from "./useDeleteComment"
-import EditComment from "./EditComment"
-import { useUpdateComment } from "./useUpdateComment"
-import Button from "../account/Button"
-import { useTextExpander } from "../../hooks/useTextExpander"
+import styled, { css } from 'styled-components'
+import { HiOutlineEllipsisHorizontal } from 'react-icons/hi2'
+import PostLayout from '../posts/PostLayout'
+import { usersImagesUrl } from '../../utils/constants'
+import { DateTime } from 'luxon'
+import { HiPencil, HiTrash } from 'react-icons/hi2'
+import Modal from '../../ui/Modal'
+import ConfirmDelete from '../../ui/ConfirmDelete'
+import { forwardRef, useState } from 'react'
+import { useOutsideClick } from '../../hooks/useOutsideClick'
+import { useDeleteComment } from './useDeleteComment'
+import EditComment from './EditComment'
+import { useUpdateComment } from './useUpdateComment'
+import Button from '../account/Button'
+import { useTextExpander } from '../../hooks/useTextExpander'
 
 const StyledRow = styled(PostLayout.Row)`
   flex-direction: row;
@@ -64,8 +64,8 @@ const OptionsItem = styled.li`
 `
 
 const PostCommentForLoggedInUser = forwardRef(
-  function PostCommentForLoggedInUser({ postComment }, ref) {
-    const { comment, commentedAt, user } = postComment
+  function PostCommentForLoggedInUser({ commentObj }, ref) {
+    const { comment, commentedAt, user } = commentObj
     const [showList, setShowList] = useState(false)
     const refOptionsBtn = useOutsideClick(() => setShowList(false))
     const { isDeleting, deleteComment } = useDeleteComment()
@@ -110,11 +110,11 @@ const PostCommentForLoggedInUser = forwardRef(
                 )}
                 <Modal.Window window="delete-comment">
                   <ConfirmDelete
-                    resourceName={"comment"}
+                    resourceName={'comment'}
                     disabled={isDeleting}
                     onConfirm={() =>
                       deleteComment(null, {
-                        onError: () => setShowModal(false)
+                        onError: () => setShowModal(false),
                       })
                     }
                   />
@@ -142,7 +142,7 @@ const PostCommentForLoggedInUser = forwardRef(
         </PostLayout.PostDate>
       </PostLayout>
     )
-  }
+  },
 )
 
 export default PostCommentForLoggedInUser

@@ -1,10 +1,11 @@
-import styled from "styled-components"
-import PostComment from "./PostComment"
-import Heading from "../../ui/Heading"
-import AddComment from "./AddComment"
-import { useUser } from "../auth/useUser"
-import PostCommentForLoggedInUser from "./PostCommentForLoggedInUser"
-import { useEffect, useMemo, useRef, useState } from "react"
+import styled from 'styled-components'
+import PostComment from './PostComment'
+import Heading from '../../ui/Heading'
+// import AddComment from './AddComment'
+import { useUser } from '../auth/useUser'
+import { usePostComments } from './usePostComments'
+import AddComment from './AddComment'
+import PostCommentForLoggedInUser from './PostCommentForLoggedInUser'
 const Container = styled.div`
   padding-top: 3rem;
   border-top: 2px solid var(--color-grey-200);
@@ -18,69 +19,82 @@ const NumComments = styled.span`
   font-size: 3rem;
 `
 
-function PostComments({ post }) {
-  const {
-    comments: { totalComments, comments }
-  } = post
+// function PostComments({ post }) {
+//   const {
+//     comments: { totalComments, comments },
+//   } = post
+
+//   const { user } = useUser()
+//   const [maxNumComments, setMaxNumComments] = useState(5)
+//   const ref = useRef(null)
+
+//   useEffect(() => {
+//     const observer = new IntersectionObserver(
+//       (entries) => {
+//         const [entry] = entries
+//         if (!entry.isIntersecting) return
+//         if (maxNumComments < totalComments)
+//           setMaxNumComments((prev) => prev + 5)
+//       },
+//       {
+//         root: null,
+//         rootMargin: '0px',
+//         threshold: 0,
+//       },
+//     )
+//     if (ref.current) observer.observe(ref.current)
+
+//     return () => observer.disconnect()
+//   }, [maxNumComments, totalComments])
+
+//   return (
+//     <Container>
+//       <StyledHeading as="h1">
+//         Comments
+//         <NumComments> ({totalComments})</NumComments>
+//       </StyledHeading>
+//       {!hasAlreadyCommented && <AddComment user={user} />}
+//       {visibleComments
+//         ?.slice(0, maxNumComments)
+//         .map((postComment, index) =>
+//           postComment.user._id === user?._id ? (
+//             <PostCommentForLoggedInUser
+//               key={postComment._id}
+//               postComment={postComment}
+//               ref={index === maxNumComments - 1 ? ref : null}
+//             />
+//           ) : (
+//             <PostComment
+//               key={postComment._id}
+//               postComment={postComment}
+//               ref={index === maxNumComments - 1 ? ref : null}
+//             />
+//           ),
+//         )}
+//     </Container>
+//   )
+// }
+function PostComments() {
   const { user } = useUser()
-  const [maxNumComments, setMaxNumComments] = useState(5)
-  const ref = useRef(null)
-  const hasAlreadyCommented = useMemo(
-    () => comments?.some((comment) => comment.user._id === user?._id),
-    [totalComments]
-  )
-
-  const visibleComments = useMemo(
-    () =>
-      comments?.sort(
-        (a, b) => new Date(b.commentedAt) - new Date(a.commentedAt)
-      ),
-    [totalComments]
-  )
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const [entry] = entries
-        if (!entry.isIntersecting) return
-        if (maxNumComments < totalComments)
-          setMaxNumComments((prev) => prev + 5)
-      },
-      {
-        root: null,
-        rootMargin: "0px",
-        threshold: 0
-      }
-    )
-    if (ref.current) observer.observe(ref.current)
-
-    return () => observer.disconnect()
-  }, [maxNumComments, totalComments])
-
+  const { isLoading, comments, totalComments } = usePostComments()
+  console.log(isLoading, totalComments, comments)
   return (
     <Container>
       <StyledHeading as="h1">
         Comments
         <NumComments> ({totalComments})</NumComments>
       </StyledHeading>
-      {!hasAlreadyCommented && <AddComment user={user} />}
-      {visibleComments
-        ?.slice(0, maxNumComments)
-        .map((postComment, index) =>
-          postComment.user._id === user?._id ? (
-            <PostCommentForLoggedInUser
-              key={postComment._id}
-              postComment={postComment}
-              ref={index === maxNumComments - 1 ? ref : null}
-            />
-          ) : (
-            <PostComment
-              key={postComment._id}
-              postComment={postComment}
-              ref={index === maxNumComments - 1 ? ref : null}
-            />
-          )
-        )}
+      <AddComment user={user} />
+      {comments?.map((commentObj) =>
+        user?._id === commentObj.user._id ? (
+          <PostCommentForLoggedInUser
+            key={commentObj._id}
+            commentObj={commentObj}
+          />
+        ) : (
+          <PostComment key={commentObj._id} commentObj={commentObj} />
+        ),
+      )}
     </Container>
   )
 }

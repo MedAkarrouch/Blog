@@ -1,15 +1,16 @@
-const express = require('express');
-const cors = require('cors');
-const cookieParser = require('cookie-parser');
-const bodyParser = require('body-parser');
+const express = require('express')
+const cors = require('cors')
+const cookieParser = require('cookie-parser')
+const bodyParser = require('body-parser')
 
-const authRouter = require('./routes/authRouters');
-const userRouter = require('./routes/userRoutes');
-const postRouter = require('./routes/postRoutes');
+const authRouter = require('./routes/authRouters')
+const userRouter = require('./routes/userRoutes')
+const postRouter = require('./routes/postRoutes')
+const commentRouter = require('./routes/commentRouters')
 
-const app = express();
+const app = express()
 
-app.use(express.json());
+app.use(express.json())
 // app.use(
 //   cors({
 //     origin: 'http://localhost:5173',
@@ -31,14 +32,15 @@ app.use(
     credentials: true,
     sameSite: 'none',
   })
-);
+)
 // app.use(cors({ credentials: true, origin: 'http://localhost:5173' }));
-app.use(cookieParser());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static('public'));
+app.use(cookieParser())
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(express.static('public'))
 
-app.use('/auth', authRouter);
-app.use('/users', userRouter);
-app.use('/posts', postRouter);
+app.use('/auth', authRouter)
+app.use('/users', userRouter)
+app.use('/posts', postRouter)
+app.use('/comments', commentRouter)
 
-module.exports = app;
+module.exports = app

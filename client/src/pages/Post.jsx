@@ -1,9 +1,9 @@
-import styled from "styled-components"
-import { usePost } from "../features/posts/usePost"
-import Spinner from "../ui/Spinner"
-import PostDetail from "../features/posts/PostDetail"
-import Aside from "../ui/Aside"
-import PostComments from "../features/comments/PostComments"
+import styled from 'styled-components'
+import { usePost } from '../features/posts/usePost'
+import Spinner from '../ui/Spinner'
+import PostDetail from '../features/posts/PostDetail'
+import Aside from '../ui/Aside'
+import PostComments from '../features/comments/PostComments'
 
 const StyledPost = styled.div`
   max-width: 90rem;
@@ -28,10 +28,10 @@ function Post() {
   if (isError || !post) return <div>No post found !</div>
   return (
     <Container>
-      <Aside post={post} />
+      {/* <Aside post={post} /> */}
       <StyledPost>
         <PostDetail post={post} />
-        <PostComments post={post} />
+        <PostComments />
       </StyledPost>
     </Container>
   )
