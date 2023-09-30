@@ -24,10 +24,12 @@ exports.deleteComment = async (req, res) => {
       throw new Error('Comment not found')
     }
     await Comment.findByIdAndDelete(commentDoc._id)
-    renderRes({
-      res,
-      status: 200,
-      data: { message: 'Comment successfully deleted' },
+    res.status(200).json({
+      status: 'success',
+      message: 'Comment successfully deleted',
+      data: {
+        comment: commentDoc,
+      },
     })
   } catch (err) {
     renderRes({ res, status: 400, message: err.message, errors: err.errors })
@@ -53,7 +55,11 @@ exports.updateComment = async (req, res) => {
         new: true,
       }
     )
-    renderRes({ res, status: 200, data: { comment } })
+    renderRes({
+      res,
+      status: 200,
+      data: { message: 'Comment successfully updated', comment },
+    })
   } catch (err) {
     renderRes({ res, status: 400, message: err.message, errors: err.errors })
   }

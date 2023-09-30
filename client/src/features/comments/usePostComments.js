@@ -4,9 +4,13 @@ import { getPostComments } from '../../services/apiComments'
 
 export function usePostComments() {
   const { postId: post } = useParams()
-  const { isLoading, data: { totalComments, comments } = {} } = useQuery({
+  const {
+    isFetching,
+    isLoading,
+    data: { totalComments, comments } = {},
+  } = useQuery({
     queryKey: ['post-comments', post],
     queryFn: () => getPostComments({ post }),
   })
-  return { isLoading, totalComments, comments }
+  return { isFetching, isLoading, totalComments, comments }
 }

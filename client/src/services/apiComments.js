@@ -16,12 +16,12 @@ export const addComment = async ({ post, comment }) => {
   console.log(res)
   return res?.data?.data
 }
-export const deleteComment = async ({ comment }) => {
+export const deleteComment = async (comment) => {
   const res = await axios.delete(
     `${serverUrl}/comments/deleteComment?comment=${comment}`,
     config,
   )
-  console.log(res)
+  return res?.data?.data
 }
 export const updateComment = async ({ comment, newComment }) => {
   const res = await axios.patch(
@@ -31,5 +31,5 @@ export const updateComment = async ({ comment, newComment }) => {
     },
     config,
   )
-  console.log(res)
+  return res?.data?.data
 }

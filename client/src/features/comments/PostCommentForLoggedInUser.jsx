@@ -1,16 +1,16 @@
 import styled, { css } from 'styled-components'
 import { HiOutlineEllipsisHorizontal } from 'react-icons/hi2'
+import { addSeconds, isEqual, differenceInSeconds } from 'date-fns'
 import PostLayout from '../posts/PostLayout'
 import { usersImagesUrl } from '../../utils/constants'
 import { DateTime } from 'luxon'
 import { HiPencil, HiTrash } from 'react-icons/hi2'
 import Modal from '../../ui/Modal'
 import ConfirmDelete from '../../ui/ConfirmDelete'
-import { forwardRef, useState } from 'react'
+import { forwardRef, useEffect, useRef, useState } from 'react'
 import { useOutsideClick } from '../../hooks/useOutsideClick'
-import { useDeleteComment } from './useDeleteComment'
 import EditComment from './EditComment'
-import { useUpdateComment } from './useUpdateComment'
+import { useDeleteComment } from './useDeleteComment'
 import Button from '../account/Button'
 import { useTextExpander } from '../../hooks/useTextExpander'
 
@@ -65,7 +65,7 @@ const OptionsItem = styled.li`
 
 const PostCommentForLoggedInUser = forwardRef(
   function PostCommentForLoggedInUser({ commentObj }, ref) {
-    const { comment, commentedAt, user } = commentObj
+    const { comment, createdAt, user, _id: commentId } = commentObj
     const [showList, setShowList] = useState(false)
     const refOptionsBtn = useOutsideClick(() => setShowList(false))
     const { isDeleting, deleteComment } = useDeleteComment()
@@ -113,7 +113,7 @@ const PostCommentForLoggedInUser = forwardRef(
                     resourceName={'comment'}
                     disabled={isDeleting}
                     onConfirm={() =>
-                      deleteComment(null, {
+                      deleteComment(commentId, {
                         onError: () => setShowModal(false),
                       })
                     }
@@ -122,7 +122,7 @@ const PostCommentForLoggedInUser = forwardRef(
                 <Modal.Window window="edit-comment">
                   <EditComment
                     onCloseModal={() => setShowModal(false)}
-                    comment={comment}
+                    commentObj={commentObj}
                   />
                 </Modal.Window>
               </Modal>
@@ -138,7 +138,10 @@ const PostCommentForLoggedInUser = forwardRef(
           </PostLayout.Comment>
         </PostLayout.Content>
         <PostLayout.PostDate>
-          {DateTime.fromISO(commentedAt).toRelative()}
+          {differenceInSeconds(new Date(), new Date(createdAt)) <= 1
+            ? 'Now'
+            : DateTime.fromISO(createdAt).toRelative()}
+          {/* {DateTime.fromISO(createdAt).toRelative()} */}
         </PostLayout.PostDate>
       </PostLayout>
     )

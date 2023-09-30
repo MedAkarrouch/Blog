@@ -15,6 +15,7 @@ import LogInToContinue from '../../ui/LogInToContinue'
 // import { useDeleteComment } from './useDeleteComment'
 // import { useUpdateComment } from './useUpdateComment'
 import { useAddComment } from './useAddComment'
+import { useUpdateComment } from './useUpdateComment'
 
 const TextInput = styled.textarea`
   width: 100%;
@@ -57,15 +58,17 @@ const ButtonsContainer = styled.div`
 function AddComment({
   user,
   onEditMode = false,
-  defaultComment = '',
+  commentObj = {},
   inputOnFocus = false,
   onCloseModal,
   inputHeight = '10rem',
 }) {
   const ref = useRef(null)
-  const [comment, setComment] = useState(defaultComment)
+  const [comment, setComment] = useState(commentObj?.comment || '')
   const [inputIsFocused, setInputIsFocused] = useState(inputOnFocus)
   const { isAddingComment, addComment } = useAddComment()
+  const { isUpdating, updateComment } = useUpdateComment()
+  const isLoading = isAddingComment || isUpdating
 
   const onSubmit = () => {
     if (!comment) return
@@ -73,7 +76,11 @@ function AddComment({
       return toast.error(
         `Comment must have less than ${MAX_COMMENT_LENGTH} characters`,
       )
-    // if (onEditMode) updateComment(comment, { onSettled: onCloseModal })
+    if (onEditMode)
+      updateComment(
+        { comment: commentObj?._id, newComment: comment },
+        { onSettled: onCloseModal },
+      )
     else
       addComment(comment, {
         onSuccess: () => {
@@ -115,7 +122,7 @@ function AddComment({
         ref={ref}
         value={comment}
         onChange={(e) => setComment(e.target.value)}
-        disabled={isAddingComment}
+        disabled={isLoading}
         onFocus={onFocus}
         height={inputHeight}
       />
@@ -123,7 +130,7 @@ function AddComment({
         <ButtonsContainer>
           <Button
             size="medium"
-            disabled={isAddingComment || !comment}
+            disabled={isLoading || !comment}
             onClick={onSubmit}
           >
             {isAddingComment ? (
@@ -137,7 +144,7 @@ function AddComment({
           <Button
             size="medium"
             variation="secondary"
-            disabled={isAddingComment}
+            disabled={isLoading}
             onClick={() => setComment('')}
           >
             Clear

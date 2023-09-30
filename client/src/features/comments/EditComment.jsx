@@ -1,6 +1,6 @@
-import styled from "styled-components"
-import AddComment from "./AddComment"
-import { useUser } from "../auth/useUser"
+import styled from 'styled-components'
+import AddComment from './AddComment'
+import { useUser } from '../auth/useUser'
 const Container = styled.div`
   width: 70rem;
   display: flex;
@@ -8,7 +8,7 @@ const Container = styled.div`
   gap: 3rem;
   max-height: 50rem;
 `
-function EditComment({ comment, onCloseModal }) {
+function EditComment({ commentObj, onCloseModal }) {
   const { user } = useUser()
   return (
     <Container>
@@ -16,7 +16,7 @@ function EditComment({ comment, onCloseModal }) {
       <AddComment
         user={user}
         onEditMode={true}
-        defaultComment={comment}
+        commentObj={commentObj}
         inputOnFocus={true}
         onCloseModal={onCloseModal}
         inputHeight="25rem"
