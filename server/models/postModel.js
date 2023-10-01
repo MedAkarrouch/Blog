@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 const postSchema = new mongoose.Schema({
   category: {
     type: String,
@@ -17,9 +17,9 @@ const postSchema = new mongoose.Schema({
           'finance',
           'education',
           'news',
-        ];
+        ]
         // return categories.includes(el.toLowerCase().trim());
-        return categories.includes(el);
+        return categories.includes(el)
       },
       message: 'Category is invalid',
     },
@@ -77,38 +77,13 @@ const postSchema = new mongoose.Schema({
       },
     ],
   },
-  comments: {
-    totalComments: {
-      type: Number,
-      default: 0,
-    },
-    comments: [
-      {
-        user: {
-          type: mongoose.Schema.ObjectId,
-          ref: 'User',
-        },
-        comment: {
-          type: String,
-          required: [true, 'Comment is required'],
-          trim: true,
-          lowercase: true,
-          // maxlength: [1000, 'Comment must have less than 10000 characters'],
-        },
-        commentedAt: { type: Date, default: Date.now },
-      },
-    ],
-  },
-});
+})
 postSchema.pre(/^find/, function (next) {
   this.populate({
     path: 'author',
     select: 'fullName photo',
-  }).populate({
-    path: 'comments.comments.user',
-    select: 'fullName photo',
-  });
-  next();
-});
-const Post = mongoose.model('Post', postSchema);
-module.exports = Post;
+  })
+  next()
+})
+const Post = mongoose.model('Post', postSchema)
+module.exports = Post

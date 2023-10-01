@@ -1,4 +1,4 @@
-import { createGlobalStyle } from "styled-components"
+import { createGlobalStyle } from 'styled-components'
 const GlobalStyles = createGlobalStyle`
   &:root{
     // 
@@ -21,6 +21,18 @@ const GlobalStyles = createGlobalStyle`
     --color-orange-800:rgb(154 52 18) ;
     --color-orange-900: rgb(124 45 18) ;
     --color-orange-950: rgb(67 20 7) ;
+    /* Gr */
+    --color-green-50:rgb(240 253 244);
+    --color-green-100: rgb(220 252 231);
+    --color-green-200:rgb(187 247 208);
+    --color-green-300:   rgb(134 239 172);
+    --color-green-400:rgb(74 222 128);
+    --color-green-500: rgb(34 197 94);
+    --color-green-600:rgb(22 163 74);
+    --color-green-700: rgb(21 128 61);
+    --color-green-800:rgb(22 101 52);
+    --color-green-900: rgb(20 83 45);
+    --color-green-950: rgb(5 46 22);
     /* Grey */
     --color-grey-50:rgb(249 250 251) ;
     --color-grey-100: rgb(243 244 246) ;
@@ -113,6 +125,7 @@ const GlobalStyles = createGlobalStyle`
 
   html {
     font-size: 62.5%;
+    scroll-behavior: smooth;
     // 75em = 1200px
     // 56.25em = 800px
     // 37.5em = 600

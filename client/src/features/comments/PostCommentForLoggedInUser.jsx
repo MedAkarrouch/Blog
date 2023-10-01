@@ -62,12 +62,11 @@ const OptionsItem = styled.li`
     height: 1.5rem;
   }
 `
-
 const PostCommentForLoggedInUser = forwardRef(
-  function PostCommentForLoggedInUser({ commentObj }, ref) {
+  function PostCommentForLoggedInUser({ commentObj, showWindow }, ref) {
     const { comment, createdAt, user, _id: commentId } = commentObj
     const [showList, setShowList] = useState(false)
-    const refOptionsBtn = useOutsideClick(() => setShowList(false))
+    // const refOptionsBtn = useOutsideClick(() => setShowList(false))
     const { isDeleting, deleteComment } = useDeleteComment()
     const [showModal, setShowModal] = useState(true)
     const { text: commentText, show, isHidden } = useTextExpander(comment)
@@ -79,7 +78,7 @@ const PostCommentForLoggedInUser = forwardRef(
           <StyledRow>
             <PostLayout.UserName>{user.fullName}</PostLayout.UserName>
             <StyledOptionsBtn
-              ref={refOptionsBtn}
+              // ref={refOptionsBtn}
               onClick={(e) => {
                 e.stopPropagation()
                 setShowModal(true)
@@ -88,44 +87,31 @@ const PostCommentForLoggedInUser = forwardRef(
             >
               <HiOutlineEllipsisHorizontal />
             </StyledOptionsBtn>
-            {showModal && (
-              <Modal>
-                {showList && (
-                  <OptionsMenu>
-                    <OptionsList>
-                      <Modal.Open window="edit-comment">
-                        <OptionsItem>
-                          <HiPencil />
-                          <span>Edit</span>
-                        </OptionsItem>
-                      </Modal.Open>
-                      <Modal.Open window="delete-comment">
-                        <OptionsItem>
-                          <HiTrash />
-                          <span>Delete</span>
-                        </OptionsItem>
-                      </Modal.Open>
-                    </OptionsList>
-                  </OptionsMenu>
-                )}
-                <Modal.Window window="delete-comment">
-                  <ConfirmDelete
-                    resourceName={'comment'}
-                    disabled={isDeleting}
-                    onConfirm={() =>
-                      deleteComment(commentId, {
-                        onError: () => setShowModal(false),
-                      })
-                    }
-                  />
-                </Modal.Window>
-                <Modal.Window window="edit-comment">
-                  <EditComment
-                    onCloseModal={() => setShowModal(false)}
-                    commentObj={commentObj}
-                  />
-                </Modal.Window>
-              </Modal>
+            {showList && (
+              <OptionsMenu>
+                <OptionsList>
+                  <Modal.Open window={commentId}>
+                    <OptionsItem
+                      onClick={() =>
+                        showWindow({ comment: commentObj, mode: 'editing' })
+                      }
+                    >
+                      <HiPencil />
+                      <span>Edit</span>
+                    </OptionsItem>
+                  </Modal.Open>
+                  <Modal.Open window={commentId}>
+                    <OptionsItem
+                      onClick={() =>
+                        showWindow({ comment: commentObj, mode: 'deleting' })
+                      }
+                    >
+                      <HiTrash />
+                      <span>Delete</span>
+                    </OptionsItem>
+                  </Modal.Open>
+                </OptionsList>
+              </OptionsMenu>
             )}
           </StyledRow>
           <PostLayout.Comment>

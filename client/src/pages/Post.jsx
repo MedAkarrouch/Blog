@@ -4,6 +4,7 @@ import Spinner from '../ui/Spinner'
 import PostDetail from '../features/posts/PostDetail'
 import Aside from '../ui/Aside'
 import PostComments from '../features/comments/PostComments'
+import { useRef } from 'react'
 
 const StyledPost = styled.div`
   max-width: 90rem;
@@ -19,6 +20,7 @@ const Container = styled.div`
 
 function Post() {
   const { isLoading, post, isError } = usePost()
+  const commentsSection = useRef(null)
   if (isLoading)
     return (
       <Spinner.Wrapper subtract="7rem">
@@ -28,10 +30,10 @@ function Post() {
   if (isError || !post) return <div>No post found !</div>
   return (
     <Container>
-      {/* <Aside post={post} /> */}
+      {/* <Aside post={post} commentsSection={commentsSection} /> */}
       <StyledPost>
         <PostDetail post={post} />
-        <PostComments />
+        <PostComments ref={commentsSection} />
       </StyledPost>
     </Container>
   )

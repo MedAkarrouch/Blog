@@ -1,8 +1,8 @@
-import styled from "styled-components"
-import { createPortal } from "react-dom"
-import { cloneElement, createContext, useContext, useState } from "react"
-import { HiXMark } from "react-icons/hi2"
-import { useOutsideClick } from "../hooks/useOutsideClick"
+import styled from 'styled-components'
+import { createPortal } from 'react-dom'
+import { cloneElement, createContext, useContext, useState } from 'react'
+import { HiXMark } from 'react-icons/hi2'
+import { useOutsideClick } from '../hooks/useOutsideClick'
 
 const Overlay = styled.div`
   position: fixed;
@@ -51,9 +51,9 @@ const Button = styled.button`
 const ModalContext = createContext()
 
 function Modal({ children }) {
-  const [currentOpenedWindow, setCurrentOpenedWindow] = useState("")
+  const [currentOpenedWindow, setCurrentOpenedWindow] = useState('')
   const openWindow = (window) => setCurrentOpenedWindow(window)
-  const closeWindow = () => setCurrentOpenedWindow("")
+  const closeWindow = () => setCurrentOpenedWindow('')
 
   return (
     <ModalContext.Provider
@@ -77,7 +77,7 @@ function Window({ children, window }) {
         <div>{cloneElement(children, { onCloseModal: closeWindow })}</div>
       </StyledModal>
     </Overlay>,
-    document.body
+    document.body,
   )
 }
 
@@ -89,9 +89,10 @@ function Open({ window, children }) {
     //   openWindow(window)
     // }
     onClick: (e) => {
-      console.log("Click open window")
+      console.log('Click open window')
+      if (children.props.onClick) children.props.onClick()
       openWindow(window)
-    }
+    },
   })
 }
 

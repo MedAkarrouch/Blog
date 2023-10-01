@@ -15,7 +15,7 @@ import LogInToContinue from '../../ui/LogInToContinue'
 // import { useDeleteComment } from './useDeleteComment'
 // import { useUpdateComment } from './useUpdateComment'
 import { useAddComment } from './useAddComment'
-import { useUpdateComment } from './useUpdateComment'
+// import { useUpdateComment } from './useUpdateComment'
 
 const TextInput = styled.textarea`
   width: 100%;
@@ -59,15 +59,16 @@ function AddComment({
   user,
   onEditMode = false,
   commentObj = {},
+  onConfirm,
+  isUpdating = false,
   inputOnFocus = false,
-  onCloseModal,
   inputHeight = '10rem',
 }) {
   const ref = useRef(null)
   const [comment, setComment] = useState(commentObj?.comment || '')
   const [inputIsFocused, setInputIsFocused] = useState(inputOnFocus)
   const { isAddingComment, addComment } = useAddComment()
-  const { isUpdating, updateComment } = useUpdateComment()
+  // const { isUpdating, updateComment } = useUpdateComment()
   const isLoading = isAddingComment || isUpdating
 
   const onSubmit = () => {
@@ -76,11 +77,7 @@ function AddComment({
       return toast.error(
         `Comment must have less than ${MAX_COMMENT_LENGTH} characters`,
       )
-    if (onEditMode)
-      updateComment(
-        { comment: commentObj?._id, newComment: comment },
-        { onSettled: onCloseModal },
-      )
+    if (onEditMode) onConfirm({ comment: commentObj?._id, newComment: comment })
     else
       addComment(comment, {
         onSuccess: () => {

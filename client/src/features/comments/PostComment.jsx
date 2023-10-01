@@ -1,10 +1,11 @@
+import { forwardRef } from 'react'
 import styled from 'styled-components'
+import { differenceInSeconds } from 'date-fns'
+import { DateTime } from 'luxon'
 import PostLayout from '../posts/PostLayout'
 import { usersImagesUrl } from '../../utils/constants'
-import { DateTime } from 'luxon'
 import { useTextExpander } from '../../hooks/useTextExpander'
 import Button from '../account/Button'
-import { forwardRef } from 'react'
 
 const StyledRow = styled(PostLayout.Row)`
   flex-direction: row;
@@ -33,7 +34,10 @@ const PostComment = forwardRef(function PostComment({ commentObj }, ref) {
         </PostLayout.Comment>
       </PostLayout.Content>
       <PostLayout.PostDate>
-        {DateTime.fromISO(createdAt).toRelative()}
+        {differenceInSeconds(new Date(), new Date(createdAt)) <= 1
+          ? 'Now'
+          : DateTime.fromISO(createdAt).toRelative()}
+        {/* {DateTime.fromISO(createdAt).toRelative()} */}
       </PostLayout.PostDate>
     </PostLayout>
   )
