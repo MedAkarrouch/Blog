@@ -1,12 +1,11 @@
-import styled, { css } from 'styled-components'
-import { HiOutlineEllipsisHorizontal } from 'react-icons/hi2'
-import { addSeconds, isEqual, differenceInSeconds } from 'date-fns'
+import { forwardRef } from 'react'
+import styled from 'styled-components'
+import { differenceInSeconds } from 'date-fns'
+import { DateTime } from 'luxon'
 import PostLayout from '../posts/PostLayout'
 import { usersImagesUrl } from '../../utils/constants'
-import { DateTime } from 'luxon'
-import { forwardRef } from 'react'
-import Button from '../account/Button'
 import { useTextExpander } from '../../hooks/useTextExpander'
+import Button from '../account/Button'
 
 const StyledRow = styled(PostLayout.Row)`
   flex-direction: row;
@@ -14,22 +13,9 @@ const StyledRow = styled(PostLayout.Row)`
   align-items: center;
   position: relative;
 `
-const StyledOptionsBtn = styled.span`
-  display: flex;
-  & svg {
-    width: 2.5rem;
-    height: 2.5rem;
-    stroke-width: 2;
-    cursor: pointer;
-    color: var(--color-grey-500);
-    line-height: 0;
-  }
-`
-const PostComment = forwardRef(function PostComment(
-  { commentObj, children, showMenu, belongsToUser },
-  ref,
-) {
-  const { comment, createdAt, user, _id: commentId } = commentObj
+
+const PostComment = forwardRef(function PostComment({ commentObj }, ref) {
+  const { comment, createdAt, user } = commentObj
   const { text: commentText, show, isHidden } = useTextExpander(comment)
 
   return (
@@ -38,19 +24,6 @@ const PostComment = forwardRef(function PostComment(
       <PostLayout.Content>
         <StyledRow>
           <PostLayout.UserName>{user.fullName}</PostLayout.UserName>
-          {belongsToUser && (
-            <>
-              <StyledOptionsBtn
-                onClick={(e) => {
-                  e.stopPropagation()
-                  showMenu(commentObj)
-                }}
-              >
-                <HiOutlineEllipsisHorizontal />
-              </StyledOptionsBtn>
-              {children}
-            </>
-          )}
         </StyledRow>
         <PostLayout.Comment>
           {commentText}
