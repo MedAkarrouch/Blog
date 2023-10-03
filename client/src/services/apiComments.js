@@ -1,8 +1,10 @@
 import axios from 'axios'
 import { serverUrl, config } from '../utils/constants'
-export const getPostComments = async ({ post }) => {
+export const getPostComments = async ({ post, page, pageSize }) => {
+  let queries = `post=${post}`
+  if (page) queries += `&page=${page}&pageSize=${pageSize}`
   const res = await axios.get(
-    `${serverUrl}/comments/getPostComments?post=${post}`,
+    `${serverUrl}/comments/getPostComments?${queries}`,
     config,
   )
   return res?.data?.data

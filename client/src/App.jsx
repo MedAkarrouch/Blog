@@ -1,27 +1,27 @@
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom"
-import { QueryClientProvider, QueryClient } from "@tanstack/react-query"
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
-import { Toaster } from "react-hot-toast"
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { Toaster } from 'react-hot-toast'
 
-import AppLayout from "./ui/AppLayout"
-import Home from "./pages/Home"
-import GlobalStyles from "./styles/GlobalStyles"
-import Post from "./pages/Post"
-import CreatePost from "./pages/CreatePost"
-import Signup from "./pages/Signup"
-import Login from "./pages/Login"
-import PageNotFound from "./pages/PageNotFound"
-import ProtectedRoute from "./ui/ProtectedRoute"
-import PostsLayout from "./pages/PostsLayout"
-import Test from "./pages/Test"
-import Account from "./pages/Account"
+import AppLayout from './ui/AppLayout'
+import Home from './pages/Home'
+import GlobalStyles from './styles/GlobalStyles'
+import Post from './pages/Post'
+import CreatePost from './pages/CreatePost'
+import Signup from './pages/Signup'
+import Login from './pages/Login'
+import PageNotFound from './pages/PageNotFound'
+import ProtectedRoute from './ui/ProtectedRoute'
+import PostsLayout from './pages/PostsLayout'
+import Test from './pages/Test'
+import Account from './pages/Account'
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 0
-    }
-  }
+      staleTime: 0,
+    },
+  },
 })
 
 function App() {
@@ -31,22 +31,22 @@ function App() {
       <GlobalStyles />
       <Toaster
         gutter={15}
-        containerStyle={{ margin: "0", zIndex: "100000" }}
+        containerStyle={{ margin: '0', zIndex: '100000' }}
         toastOptions={{
           success: {
-            duration: 3000
+            duration: 3000,
           },
           error: {
-            duration: 5000
+            duration: 5000,
           },
           style: {
-            fontSize: "1.4rem",
+            fontSize: '1.4rem',
             // padding: "1.6rem 2.4rem",
-            padding: "1.6rem 1.4rem",
-            maxWidth: "50rem",
-            color: "var(--color-grey-700)",
-            minWidth: "25rem"
-          }
+            padding: '1.6rem 1.4rem',
+            maxWidth: '50rem',
+            color: 'var(--color-grey-700)',
+            minWidth: '25rem',
+          },
         }}
       />
       <BrowserRouter>

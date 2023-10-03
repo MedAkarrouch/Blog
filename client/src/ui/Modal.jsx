@@ -1,6 +1,12 @@
 import styled from 'styled-components'
 import { createPortal } from 'react-dom'
-import { cloneElement, createContext, useContext, useState } from 'react'
+import {
+  cloneElement,
+  createContext,
+  useContext,
+  useMemo,
+  useState,
+} from 'react'
 import { HiXMark } from 'react-icons/hi2'
 import { useOutsideClick } from '../hooks/useOutsideClick'
 
@@ -54,27 +60,33 @@ function Modal({ children }) {
   const [currentOpenedWindow, setCurrentOpenedWindow] = useState('')
   const openWindow = (window) => setCurrentOpenedWindow(window)
   const closeWindow = () => setCurrentOpenedWindow('')
-
+  const valueObj = useMemo(() => {
+    return { currentOpenedWindow, openWindow, closeWindow }
+  }, [currentOpenedWindow])
   return (
-    <ModalContext.Provider
-      value={{ currentOpenedWindow, openWindow, closeWindow }}
-    >
-      {children}
-    </ModalContext.Provider>
+    <ModalContext.Provider value={valueObj}>{children}</ModalContext.Provider>
   )
 }
 
-function Window({ children, window }) {
+function Window({ children, window, onClose }) {
   const { currentOpenedWindow, closeWindow } = useContext(ModalContext)
-  const ref = useOutsideClick(closeWindow, true)
+  const close = () => {
+    onClose?.()
+    closeWindow()
+  }
+  const ref = useOutsideClick(close, true)
   if (window !== currentOpenedWindow) return null
   return createPortal(
     <Overlay>
       <StyledModal ref={ref}>
-        <Button onClick={closeWindow}>
+        <Button onClick={close}>
           <HiXMark />
         </Button>
-        <div>{cloneElement(children, { onCloseModal: closeWindow })}</div>
+        <div>
+          {cloneElement(children, {
+            onCloseModal: close,
+          })}
+        </div>
       </StyledModal>
     </Overlay>,
     document.body,
@@ -94,6 +106,14 @@ function Open({ window, children }) {
       openWindow(window)
     },
   })
+}
+export function useModalContext() {
+  const context = useContext(ModalContext)
+  if (context === undefined)
+    throw new Error(
+      'ModalContext is used outside of the ModalContext provider ',
+    )
+  return context
 }
 
 Modal.Open = Open

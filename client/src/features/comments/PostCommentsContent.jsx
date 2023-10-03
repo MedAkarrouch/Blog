@@ -1,7 +1,7 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import { useOutsideClick } from '../../hooks/useOutsideClick'
-import Modal from '../../ui/Modal'
+import Modal, { useModalContext } from '../../ui/Modal'
 import PostComment from './PostComment'
 import { HiPencil, HiTrash } from 'react-icons/hi2'
 import ConfirmDelete from '../../ui/ConfirmDelete'
@@ -41,41 +41,65 @@ const OptionsItem = styled.li`
   }
 `
 
-function PostCommentsContent({ user, comments }) {
+function PostCommentsContent({
+  user,
+  comments,
+  hasNextPage,
+  fetchNextPage,
+  isFetchingNextPage,
+}) {
   const { isDeleting, deleteComment } = useDeleteComment()
   const { isUpdating, updateComment } = useUpdateComment()
   const [currentComment, setCurrentComment] = useState(null)
-  const [onMode, setOnMode] = useState(null)
-  const menuRef = useOutsideClick(closeWindow)
+  const menuRef = useOutsideClick(handler)
+  const { currentOpenedWindow, closeWindow: closeModalWindow } =
+    useModalContext()
+
+  const lastCommentRef = useRef(null)
 
   const showWindow = ({ mode, comment }) => {
     setCurrentComment(comment)
-    setOnMode(mode)
   }
   function closeWindow() {
-    console.log('handler')
     setCurrentComment(null)
-    setOnMode(null)
+    closeModalWindow()
   }
+  function handler() {
+    if (currentOpenedWindow) return
+    closeWindow()
+  }
+  useEffect(() => {
+    const options = { root: null, rootMargin: '0px', threshold: 1 }
+    const callBackFn = (entries) => {
+      const [entry] = entries
+      console.log(lastCommentRef.current)
+      if (!entry.isIntersecting) return
+      if (!isFetchingNextPage && hasNextPage) fetchNextPage()
+    }
+    const observer = new IntersectionObserver(callBackFn, options)
+    if (lastCommentRef.current && hasNextPage)
+      observer.observe(lastCommentRef.current)
+    return () => observer.disconnect()
+  }, [isFetchingNextPage, hasNextPage, fetchNextPage])
+
   return (
-    <Modal>
-      {comments?.map((commentObj) => (
+    <>
+      {comments?.map((commentObj, index) => (
         <PostComment
+          ref={index === comments.length - 1 ? lastCommentRef : null}
           key={commentObj._id}
           commentObj={commentObj}
           belongsToUser={user?._id === commentObj.user._id}
-          // showMenu={(commentObj) => setCurrentComment(commentObj)}
-          showMenu={(commentObj) => {
-            console.log('OnClick')
+          showMenu={(commentObj) =>
             setCurrentComment((currentComment) =>
               currentComment?._id === commentObj._id ? null : commentObj,
             )
-          }}
+          }
         >
           {currentComment?._id === commentObj._id && (
             <OptionsMenu ref={menuRef}>
               <OptionsList>
-                <Modal.Open window={currentComment._id}>
+                <Modal.Open window={`onEdit--${currentComment?._id}`}>
                   <OptionsItem
                     onClick={() =>
                       showWindow({ comment: commentObj, mode: 'editing' })
@@ -85,7 +109,7 @@ function PostCommentsContent({ user, comments }) {
                     <span>Edit</span>
                   </OptionsItem>
                 </Modal.Open>
-                <Modal.Open window={currentComment._id}>
+                <Modal.Open window={`onDelete--${currentComment?._id}`}>
                   <OptionsItem
                     onClick={() =>
                       showWindow({
@@ -103,31 +127,33 @@ function PostCommentsContent({ user, comments }) {
           )}
         </PostComment>
       ))}
-      {onMode === 'deleting' && currentComment && (
-        <Modal.Window window={currentComment?._id}>
-          <ConfirmDelete
-            resourceName={'comment'}
-            disabled={isDeleting}
-            onConfirm={() =>
-              deleteComment(currentComment._id, {
-                onSettled: closeWindow,
-              })
-            }
-          />
-        </Modal.Window>
-      )}
-      {onMode === 'editing' && currentComment && (
-        <Modal.Window window={currentComment?._id}>
-          <EditComment
-            commentObj={currentComment}
-            disabled={isUpdating}
-            onConfirm={({ comment, newComment }) =>
-              updateComment({ comment, newComment }, { onSettled: closeWindow })
-            }
-          />
-        </Modal.Window>
-      )}
-    </Modal>
+      <Modal.Window
+        onClose={closeWindow}
+        window={`onDelete--${currentComment?._id}`}
+      >
+        <ConfirmDelete
+          resourceName={'comment'}
+          disabled={isDeleting}
+          onConfirm={() =>
+            deleteComment(currentComment._id, {
+              onSettled: closeWindow,
+            })
+          }
+        />
+      </Modal.Window>
+      <Modal.Window
+        onClose={closeWindow}
+        window={`onEdit--${currentComment?._id}`}
+      >
+        <EditComment
+          commentObj={currentComment}
+          disabled={isUpdating}
+          onConfirm={({ comment, newComment }) =>
+            updateComment({ comment, newComment }, { onSettled: closeWindow })
+          }
+        />
+      </Modal.Window>
+    </>
   )
 }
 

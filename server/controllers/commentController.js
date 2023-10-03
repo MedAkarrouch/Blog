@@ -65,23 +65,31 @@ exports.updateComment = async (req, res) => {
   }
 }
 exports.getPostComments = async (req, res) => {
-  let comments
-  const { post } = req.query
+  let comments, count
+  const { post, page, pageSize } = req.query
+  let query = Comment.find({ post })
+    .populate({
+      path: 'user',
+      select: 'photo fullName',
+    })
+    .sort({ createdAt: -1 })
+  if (page) {
+    const PAGE_SIZE = +pageSize ? +pageSize : 10
+    const skip = +page ? (+page - 1) * PAGE_SIZE : 0
+    const limit = PAGE_SIZE
+    query = query.skip(skip).limit(limit)
+  }
   try {
     try {
-      comments = await Comment.find({ post })
-        .populate({
-          path: 'user',
-          select: 'photo fullName',
-        })
-        .sort({ createdAt: -1 })
+      comments = await query
+      count = await Comment.countDocuments({ post })
     } catch (error) {
       throw new Error('Post not found')
     }
     renderRes({
       res,
       status: 200,
-      data: { totalComments: comments.length, comments },
+      data: { count, totalComments: comments.length, comments },
     })
   } catch (err) {
     renderRes({ res, status: 400, message: err.message, errors: err.errors })

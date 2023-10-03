@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import AddComment from './AddComment'
 import { useUser } from '../auth/useUser'
+import { forwardRef } from 'react'
 const Container = styled.div`
   width: 70rem;
   display: flex;

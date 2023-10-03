@@ -1,8 +1,9 @@
-import styled from "styled-components"
-import { useInfiniteQuery } from "@tanstack/react-query"
-import { getPosts } from "../services/apiPosts"
-import { PAGE_SIZE } from "../utils/constants"
-import { useEffect, useRef, useState } from "react"
+import styled from 'styled-components'
+import { useInfiniteQuery } from '@tanstack/react-query'
+import { getPosts } from '../services/apiPosts'
+import { PAGE_SIZE } from '../utils/constants'
+import { useEffect, useRef, useState } from 'react'
+import { getPostComments } from '../services/apiComments'
 
 const StyledContent = styled.div`
   max-width: 90rem;
@@ -17,33 +18,29 @@ const StyledContent = styled.div`
 function Test() {
   const ref = useRef()
   const {
-    data,
-    isSuccess,
-    isError,
     isLoading,
+    isError,
     error,
-    isFetching,
-    hasNextPage,
+    data,
+    isFetchingNextPage,
     fetchNextPage,
-    isFetchingNextPage
-  } = useInfiniteQuery(
-    ["repositories"],
-    ({ pageParam = 1 }) =>
-      getPosts({
-        search: "",
-        category: "",
+    hasNextPage,
+  } = useInfiniteQuery({
+    queryKey: ['p-c'],
+    queryFn: ({ pageParam = 1 }) =>
+      getPostComments({
+        post: '651571f324aa6c0e887b6384',
         page: pageParam,
-        pageSize: PAGE_SIZE
+        pageSize: 10,
       }),
-    {
-      getNextPageParam: (lastPage, allPages) => {
-        const maxPages = Math.ceil(lastPage.count / PAGE_SIZE)
-        const nextPage =
-          allPages.length < maxPages ? allPages.length + 1 : undefined
-        return nextPage
-      }
-    }
-  )
+    getNextPageParam: (lastPage, allPages) => {
+      const totalPages = Math.ceil(lastPage.count / 10)
+      if (allPages.length < totalPages) return allPages.length + 1
+      else return undefined
+      // console.log({ lastPage, allPages })
+    },
+  })
+  console.log(data)
   //
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -54,59 +51,164 @@ function Test() {
       },
       {
         root: null,
-        rootMargin: "0px",
-        threshold: 1.0
-      }
+        rootMargin: '0px',
+        threshold: 1.0,
+      },
     )
     if (ref.current) observer.observe(ref.current)
-    return () => observer.unobserve(ref.current)
+    return () => observer.disconnect()
   }, [ref, hasNextPage, isFetchingNextPage, fetchNextPage])
   //
   if (isError) return <h1>{error}</h1>
   if (isLoading) return <h1>Loading....</h1>
   //
-  const posts = data.pages.reduce((acc, page) => {
-    return [...acc, ...page.posts]
+  const comments = data.pages.reduce((acc, page) => {
+    return [...acc, ...page.comments]
   }, [])
-
+  console.log(comments)
   return (
     <StyledContent>
-      {posts.map((post, index) => {
-        if (index + 1 === posts.length)
-          return (
-            <div
-              ref={ref}
-              style={{ border: "3px solid #EEE", padding: "10rem" }}
-              key={post._id}
-            >
-              <h1>#{index + 1}</h1>
-              <p>{post.title}</p>
-            </div>
-          )
-        else
-          return (
-            <div
-              style={{ border: "3px solid #EEE", padding: "10rem" }}
-              key={post._id}
-            >
-              <h1>#{index + 1}</h1>
-              <p>{post.title}</p>
-            </div>
-          )
+      {comments.map((comment, index) => {
+        return (
+          <div
+            ref={index + 1 === comments.length ? ref : null}
+            style={{ border: '3px solid #EEE', padding: '10rem' }}
+            key={comment._id}
+          >
+            <h1>#{index + 1}</h1>
+            <p>{comment._id}</p>
+            <p>{comment.comment}</p>
+          </div>
+        )
+        // else
+        //   return (
+        //     <div
+        //       style={{ border: '3px solid #EEE', padding: '10rem' }}
+        //       key={comment._id}
+        //     >
+        //       <h1>#{index + 1}</h1>
+        //       <p>{comment._id}</p>
+        //       <p>{comment.comment}</p>
+        //     </div>
+        //   )
       })}
+      {/* <button
+        onClick={() => fetchNextPage()}
+        disabled={isFetchingNextPage || !hasNextPage}
+      >
+        {isFetchingNextPage
+          ? 'Fetching...'
+          : hasNextPage
+          ? 'ShowMore'
+          : 'No more comments'}
+      </button> */}
       {/* <button
         disabled={isFetchingNextPage || !hasNextPage}
         onClick={() => fetchNextPage()}
       > */}
-      {isFetchingNextPage
-        ? "Fetching..."
+      {/* {isFetchingNextPage
+        ? 'Fetching...'
         : hasNextPage
-        ? "Show more"
-        : "No more results"}
+        ? 'Show more'
+        : 'No more results'} */}
       {/* </button> */}
     </StyledContent>
   )
 }
+// function Test() {
+//   const ref = useRef()
+//   const {
+//     data,
+//     isSuccess,
+//     isError,
+//     isLoading,
+//     error,
+//     isFetching,
+//     hasNextPage,
+//     fetchNextPage,
+//     isFetchingNextPage,
+//   } = useInfiniteQuery(
+//     ['repositories'],
+//     ({ pageParam = 1 }) =>
+//       getPosts({
+//         search: '',
+//         category: '',
+//         page: pageParam,
+//         pageSize: PAGE_SIZE,
+//       }),
+//     {
+//       getNextPageParam: (lastPage, allPages) => {
+//         const maxPages = Math.ceil(lastPage.count / PAGE_SIZE)
+//         const nextPage =
+//           allPages.length < maxPages ? allPages.length + 1 : undefined
+//         return nextPage
+//       },
+//     },
+//   )
+//   console.log(data)
+//   //
+//   useEffect(() => {
+//     const observer = new IntersectionObserver(
+//       (entries) => {
+//         const [entry] = entries
+//         if (!entry.isIntersecting) return
+//         if (!isFetchingNextPage && hasNextPage) fetchNextPage()
+//       },
+//       {
+//         root: null,
+//         rootMargin: '0px',
+//         threshold: 1.0,
+//       },
+//     )
+//     if (ref.current) observer.observe(ref.current)
+//     return () => observer.unobserve(ref.current)
+//   }, [ref, hasNextPage, isFetchingNextPage, fetchNextPage])
+//   //
+//   if (isError) return <h1>{error}</h1>
+//   if (isLoading) return <h1>Loading....</h1>
+//   //
+//   const posts = data.pages.reduce((acc, page) => {
+//     return [...acc, ...page.posts]
+//   }, [])
+
+//   return (
+//     <StyledContent>
+//       {posts.map((post, index) => {
+//         if (index + 1 === posts.length)
+//           return (
+//             <div
+//               ref={ref}
+//               style={{ border: '3px solid #EEE', padding: '10rem' }}
+//               key={post._id}
+//             >
+//               <h1>#{index + 1}</h1>
+//               <p>{post.title}</p>
+//             </div>
+//           )
+//         else
+//           return (
+//             <div
+//               style={{ border: '3px solid #EEE', padding: '10rem' }}
+//               key={post._id}
+//             >
+//               <h1>#{index + 1}</h1>
+//               <p>{post.title}</p>
+//             </div>
+//           )
+//       })}
+//       {/* <button
+//         disabled={isFetchingNextPage || !hasNextPage}
+//         onClick={() => fetchNextPage()}
+//       > */}
+//       {isFetchingNextPage
+//         ? 'Fetching...'
+//         : hasNextPage
+//         ? 'Show more'
+//         : 'No more results'}
+//       {/* </button> */}
+//     </StyledContent>
+//   )
+// }
 
 // function Test() {
 //   const [count, setCount] = useState(0)

@@ -3,15 +3,8 @@ import Heading from '../../ui/Heading'
 import { useUser } from '../auth/useUser'
 import { usePostComments } from './usePostComments'
 import AddComment from './AddComment'
-import PostComment from './PostComment'
-import { forwardRef, useState } from 'react'
+import { forwardRef } from 'react'
 import Modal from '../../ui/Modal'
-import ConfirmDelete from '../../ui/ConfirmDelete'
-import EditComment from './EditComment'
-import { useDeleteComment } from './useDeleteComment'
-import { useUpdateComment } from './useUpdateComment'
-import { HiPencil, HiTrash } from 'react-icons/hi2'
-import { useOutsideClick } from '../../hooks/useOutsideClick'
 import Spinner from '../../ui/Spinner'
 import PostCommentsContent from './PostCommentsContent'
 
@@ -35,9 +28,17 @@ const SpinnerWrapper = styled.div`
 
 const PostComments = forwardRef(function PostComments(_, ref) {
   const { user } = useUser()
-  const { isFetching, isLoading, comments, totalComments } = usePostComments()
+  const {
+    isError,
+    isFetchingNextPage,
+    isLoading,
+    comments,
+    totalComments,
+    fetchNextPage,
+    hasNextPage,
+  } = usePostComments()
 
-  console.log({ isFetching, isLoading, totalComments, comments })
+  // console.log({ isFetching, isLoading, totalComments, comments })
 
   return (
     <Container ref={ref}>
@@ -45,6 +46,8 @@ const PostComments = forwardRef(function PostComments(_, ref) {
         <SpinnerWrapper>
           <Spinner />
         </SpinnerWrapper>
+      ) : isError ? (
+        <span>Something went wrong, try again later</span>
       ) : (
         <>
           <StyledHeading as="h1">
@@ -52,7 +55,15 @@ const PostComments = forwardRef(function PostComments(_, ref) {
             <NumComments> ({totalComments})</NumComments>
           </StyledHeading>
           <AddComment user={user} />
-          <PostCommentsContent user={user} comments={comments} />
+          <Modal>
+            <PostCommentsContent
+              user={user}
+              comments={comments}
+              hasNextPage={hasNextPage}
+              fetchNextPage={fetchNextPage}
+              isFetchingNextPage={isFetchingNextPage}
+            />
+          </Modal>
         </>
       )}
     </Container>
