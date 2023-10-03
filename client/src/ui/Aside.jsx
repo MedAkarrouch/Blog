@@ -150,7 +150,7 @@ function Aside({ post, commentsSection }) {
   }
   const handleCommentClick = () => {
     console.log(commentsSection.current.getBoundingClientRect())
-    window.scrollBy(0, commentsSection.current.getBoundingClientRect().top - 40)
+    window.scrollBy(0, commentsSection.current.getBoundingClientRect().top - 80)
   }
   const handleShareClick = (e) => {
     setShowLSocialsList((show) => !show)
@@ -216,7 +216,8 @@ function Aside({ post, commentsSection }) {
                     to={social.link.replace(
                       'URL',
                       encodeURIComponent(
-                        'https://www.youtube.com/watch?v=yWDHYKTaRmo',
+                        window.location.href,
+                        // 'https://www.youtube.com/watch?v=yWDHYKTaRmo',
                       ),
                     )}
                   >

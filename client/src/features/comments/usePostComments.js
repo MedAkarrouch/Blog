@@ -1,6 +1,7 @@
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
 import { getPostComments } from '../../services/apiComments'
+import { COMMENTS_PER_PAGE } from '../../utils/constants'
 
 export function usePostComments() {
   const { postId: post } = useParams()
@@ -18,11 +19,10 @@ export function usePostComments() {
       getPostComments({
         post,
         page: pageParam,
-        pageSize: 10,
+        pageSize: COMMENTS_PER_PAGE,
       }),
     getNextPageParam: (lastPage, allPages) => {
-      // console.log({ lastPage, allPages })
-      const totalPages = Math.ceil(lastPage.count / 10)
+      const totalPages = Math.ceil(lastPage.count / COMMENTS_PER_PAGE)
       if (allPages.length < totalPages) return allPages.length + 1
       else return undefined
     },

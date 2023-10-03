@@ -10,12 +10,17 @@ const StyledPost = styled.div`
   max-width: 90rem;
   margin: 0 auto;
   padding: 2rem;
+  padding-bottom: 10rem;
   display: flex;
   flex-direction: column;
   gap: 4rem;
+  grid-column: 2/-1;
+  /* background-color: green; */
 `
 const Container = styled.div`
   /* padding-left: 8rem; */
+  display: grid;
+  grid-template-columns: 10rem 1fr;
 `
 
 function Post() {
@@ -30,7 +35,7 @@ function Post() {
   if (isError || !post) return <div>No post found !</div>
   return (
     <Container>
-      {/* <Aside post={post} commentsSection={commentsSection} /> */}
+      <Aside post={post} commentsSection={commentsSection} />
       <StyledPost>
         <PostDetail post={post} />
         <PostComments ref={commentsSection} />

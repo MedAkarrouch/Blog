@@ -2,6 +2,8 @@ export const serverUrl = 'http://localhost:8000'
 export const postsImagesUrl = `${serverUrl}/img/posts`
 export const usersImagesUrl = `${serverUrl}/img/users`
 //
+export const COMMENTS_PER_PAGE = 10
+//
 export const MAX_COMMENT_LENGTH = 10000
 export const DEFAULT_IMG = 'default.jpg'
 //

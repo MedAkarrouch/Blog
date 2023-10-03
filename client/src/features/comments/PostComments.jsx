@@ -3,7 +3,7 @@ import Heading from '../../ui/Heading'
 import { useUser } from '../auth/useUser'
 import { usePostComments } from './usePostComments'
 import AddComment from './AddComment'
-import { forwardRef } from 'react'
+import { forwardRef, useCallback, useMemo } from 'react'
 import Modal from '../../ui/Modal'
 import Spinner from '../../ui/Spinner'
 import PostCommentsContent from './PostCommentsContent'
@@ -38,7 +38,7 @@ const PostComments = forwardRef(function PostComments(_, ref) {
     hasNextPage,
   } = usePostComments()
 
-  // console.log({ isFetching, isLoading, totalComments, comments })
+  // console.log({ comments, isLoading, totalComments, comments })
 
   return (
     <Container ref={ref}>
