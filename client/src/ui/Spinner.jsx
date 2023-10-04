@@ -1,4 +1,4 @@
-import styled, { css, keyframes } from "styled-components"
+import styled, { css, keyframes } from 'styled-components'
 
 const rotate = keyframes`
     0% {
@@ -18,6 +18,12 @@ const Spinner = styled.span`
   display: inline-block;
   box-sizing: border-box;
   animation: ${rotate} 1s linear infinite;
+  ${(props) =>
+    props.size &&
+    css`
+      width: ${props.size};
+      height: ${props.size};
+    `}
 `
 const Wrapper = styled.div`
   ${(props) => css`
@@ -29,7 +35,7 @@ const Wrapper = styled.div`
   /* padding: 4.8rem 0; */
 `
 Wrapper.defaultProps = {
-  subtract: "0px"
+  subtract: '0px',
 }
 Spinner.Wrapper = Wrapper
 

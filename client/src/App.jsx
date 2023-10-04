@@ -15,6 +15,7 @@ import ProtectedRoute from './ui/ProtectedRoute'
 import PostsLayout from './pages/PostsLayout'
 import Test from './pages/Test'
 import Account from './pages/Account'
+import Dashboard from './pages/Dashboard'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -65,6 +66,7 @@ function App() {
             <Route element={<ProtectedRoute />}>
               <Route path="/new" element={<CreatePost />} />
               <Route path="/account" element={<Account />} />
+              <Route path="/dashboard" element={<Dashboard />} />
             </Route>
           </Route>
           <Route path="/signup" element={<Signup />} />

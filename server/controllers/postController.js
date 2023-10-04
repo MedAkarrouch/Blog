@@ -1,8 +1,9 @@
+const Post = require('../models/postModel')
+const Comment = require('../models/commentModel')
 const fs = require('fs').promises
 const multer = require('multer')
 const { FILE_MAX_SIZE } = require('../utils/constants')
 const readingTime = require('reading-time')
-const Post = require('../models/postModel')
 const renderRes = require('../utils/renderRes')
 const { COMMENT_MAX_LENGTH } = require('../utils/constants')
 
@@ -132,6 +133,32 @@ exports.likePost = async (req, res) => {
     )
     //
     renderRes({ res, status: 200, data: { post } })
+  } catch (err) {
+    renderRes({ res, status: 400, message: err.message, errors: err.errors })
+  }
+}
+exports.getUserPosts = async (req, res) => {
+  try {
+    let posts = await Post.find({ author: req.currentUser._id })
+    posts = await Promise.all(
+      posts?.map(async (post) => {
+        // const comments = await Comment.find({ post: post._id })
+        const comments = await Comment.countDocuments({ post: post._id })
+        return {
+          ...post._doc,
+          comments: { totalComments: comments },
+        }
+      })
+    )
+    renderRes({
+      res,
+      status: 200,
+      data: { count: posts?.length, posts },
+    })
+    // res.status(200).json({
+    //   status: 'success',
+    //   data: { posts, count: posts?.length },
+    // })
   } catch (err) {
     renderRes({ res, status: 400, message: err.message, errors: err.errors })
   }

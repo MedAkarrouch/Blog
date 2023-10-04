@@ -16,6 +16,7 @@ import { usePostComments } from '../features/comments/usePostComments'
 import { useOutsideClick } from '../hooks/useOutsideClick'
 import { Link } from 'react-router-dom'
 import { socialsLinks } from '../utils/constants'
+import Spinner from './Spinner'
 
 const StyledAside = styled.aside`
   position: fixed;
@@ -122,7 +123,7 @@ const SocialLink = styled(Link)`
 
 function Aside({ post, commentsSection }) {
   const { user } = useUser()
-  const { totalComments } = usePostComments()
+  const { totalComments, isLoading } = usePostComments()
   const [showSocialsList, setShowLSocialsList] = useState(false)
   const [linkCopied, setLinkcopied] = useState(false)
   const linkCopiedTimeout = useRef(null)
@@ -131,7 +132,7 @@ function Aside({ post, commentsSection }) {
     false,
   )
   const { likes } = post
-  const { isLoading, likePost } = useLikePost()
+  const { likePost } = useLikePost()
   const [hasUserAlreadyLikedPost, setHasUserAlreadyLikedPost] = useState(() =>
     likes?.likes?.some((like) => like.user === user?._id),
   )
@@ -165,70 +166,73 @@ function Aside({ post, commentsSection }) {
       linkCopiedTimeout.current = setTimeout(handler, 1000)
     } catch {}
   }
-
   return (
     <StyledAside ref={asideRef}>
-      <List>
-        <Item>
-          <Icon
-            title={
-              hasUserAlreadyLikedPost ? 'Remove like' : 'Like this article'
-            }
-            active={hasUserAlreadyLikedPost ? 'true' : ''}
-            onClick={handleLikeClick}
-          >
-            <HiOutlineHeart />
-          </Icon>
-          <span>{totalLikes}</span>
-        </Item>
-        <Item>
-          <Icon onClick={handleCommentClick} title="Jump to comments">
-            <HiOutlineChatBubbleOvalLeft />
-          </Icon>
-          <span>{totalComments}</span>
-        </Item>
-        <Item>
-          <Icon title="Add to bookmark">
-            <HiOutlineBookmark />
-          </Icon>
-        </Item>
-        <Item>
-          <Icon onClick={handleShareClick} title="Share this article">
-            <HiOutlineShare />
-          </Icon>
-          {showSocialsList && (
-            <SocialsList ref={socialsListRef}>
-              <SocialsItem
-                onClick={handleCopyLink}
-                linkCopied={linkCopied ? 'true' : ''}
-              >
-                <span>{linkCopied ? 'Copied !' : 'Copy link'}</span>
-                {linkCopied ? (
-                  <HiOutlineCheckCircle />
-                ) : (
-                  <HiOutlineSquare2Stack />
-                )}
-              </SocialsItem>
-              {socialsLinks.map((social) => (
-                <SocialsItem>
-                  <SocialLink
-                    target="_blank"
-                    to={social.link.replace(
-                      'URL',
-                      encodeURIComponent(
-                        window.location.href,
-                        // 'https://www.youtube.com/watch?v=yWDHYKTaRmo',
-                      ),
-                    )}
-                  >
-                    Share to {social.social}
-                  </SocialLink>
+      {isLoading ? (
+        <Spinner size={'4rem'} />
+      ) : (
+        <List>
+          <Item>
+            <Icon
+              title={
+                hasUserAlreadyLikedPost ? 'Remove like' : 'Like this article'
+              }
+              active={hasUserAlreadyLikedPost ? 'true' : ''}
+              onClick={handleLikeClick}
+            >
+              <HiOutlineHeart />
+            </Icon>
+            <span>{totalLikes}</span>
+          </Item>
+          <Item>
+            <Icon onClick={handleCommentClick} title="Jump to comments">
+              <HiOutlineChatBubbleOvalLeft />
+            </Icon>
+            <span>{totalComments}</span>
+          </Item>
+          <Item>
+            <Icon title="Add to bookmark">
+              <HiOutlineBookmark />
+            </Icon>
+          </Item>
+          <Item>
+            <Icon onClick={handleShareClick} title="Share this article">
+              <HiOutlineShare />
+            </Icon>
+            {showSocialsList && (
+              <SocialsList ref={socialsListRef}>
+                <SocialsItem
+                  onClick={handleCopyLink}
+                  linkCopied={linkCopied ? 'true' : ''}
+                >
+                  <span>{linkCopied ? 'Copied !' : 'Copy link'}</span>
+                  {linkCopied ? (
+                    <HiOutlineCheckCircle />
+                  ) : (
+                    <HiOutlineSquare2Stack />
+                  )}
                 </SocialsItem>
-              ))}
-            </SocialsList>
-          )}
-        </Item>
-      </List>
+                {socialsLinks.map((social) => (
+                  <SocialsItem>
+                    <SocialLink
+                      target="_blank"
+                      to={social.link.replace(
+                        'URL',
+                        encodeURIComponent(
+                          window.location.href,
+                          // 'https://www.youtube.com/watch?v=yWDHYKTaRmo',
+                        ),
+                      )}
+                    >
+                      Share to {social.social}
+                    </SocialLink>
+                  </SocialsItem>
+                ))}
+              </SocialsList>
+            )}
+          </Item>
+        </List>
+      )}
     </StyledAside>
   )
 }

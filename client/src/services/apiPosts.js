@@ -55,3 +55,8 @@ export const editComment = async ({ post, comment }) => {
   )
   return res.data?.data?.post
 }
+export const getUserPosts = async ({}) => {
+  const res = await axios.get(`${serverUrl}/posts/getUserPosts`, config)
+  console.log(res)
+  return res?.data?.data
+}

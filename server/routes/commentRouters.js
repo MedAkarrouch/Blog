@@ -15,5 +15,10 @@ router.patch(
   commentController.updateComment
 )
 router.get('/getPostComments', commentController.getPostComments)
+// router.get(
+//   '/getUserPosts',
+//   authController.protect,
+//   commentController.getUserPosts
+// )
 
 module.exports = router

@@ -44,7 +44,7 @@ const PostComments = forwardRef(function PostComments(_, ref) {
     <Container ref={ref}>
       {isLoading ? (
         <SpinnerWrapper>
-          <Spinner />
+          <Spinner size={'5rem'} />
         </SpinnerWrapper>
       ) : isError ? (
         <span>Something went wrong, try again later</span>
