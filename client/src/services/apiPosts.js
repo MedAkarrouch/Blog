@@ -32,8 +32,11 @@ export const likePost = async (post) => {
   return res.data?.data?.post
 }
 
-export const getUserPosts = async ({}) => {
-  const res = await axios.get(`${serverUrl}/posts/getUserPosts`, config)
+export const getUserPosts = async ({ page, pageSize }) => {
+  const res = await axios.get(
+    `${serverUrl}/posts/getUserPosts?page=${page}&pageSize=${pageSize}`,
+    config,
+  )
   console.log(res)
   return res?.data?.data
 }

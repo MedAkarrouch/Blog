@@ -6,14 +6,34 @@ import ConfirmDelete from './ConfirmDelete'
 import { useDeletePost } from '../features/posts/useDeletePost'
 import { useOutsideClick } from '../hooks/useOutsideClick'
 import Pagination from './Pagination'
+import { useUserPosts } from '../features/posts/useUserPosts'
+import Spinner from './Spinner'
+import styled from 'styled-components'
 
-function DashboardTable({ posts, count }) {
+const SpinnerWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
+function DashboardTable() {
+  const { isLoading, count, posts } = useUserPosts()
   const [selectedId, setSelectedId] = useState(null)
   const { isDeleting, deletePost } = useDeletePost()
   const { currentOpenedWindow, closeWindow } = useModalContext()
   const menuRef = useOutsideClick(() => {
     if (!currentOpenedWindow) setSelectedId(null)
   })
+
+  console.log(isLoading, count, posts)
+
+  if (isLoading)
+    return (
+      <SpinnerWrapper>
+        <Spinner size="5rem" />
+      </SpinnerWrapper>
+    )
+
   return (
     <Table columns="7rem 2fr 1fr 0.7fr 0.7fr 0.1fr">
       <Table.Header>
@@ -25,7 +45,6 @@ function DashboardTable({ posts, count }) {
         <div></div>
       </Table.Header>
       <Table.Body
-        // data={[posts.at(0)]}
         data={posts}
         render={(post) => (
           <DashboardRow

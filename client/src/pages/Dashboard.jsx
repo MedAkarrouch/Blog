@@ -8,17 +8,20 @@ const Container = styled.div`
   max-width: 95rem;
   margin: 10rem auto;
 `
+const SpinnerWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
 
 function Dashboard() {
-  const { isLoading, count, posts } = useUserPosts()
-  console.log(isLoading, count, posts)
+  // const { isLoading, count, posts } = useUserPosts()
+  // console.log(isLoading, count, posts)
   return (
     <Container>
-      {isLoading ? null : (
-        <Modal>
-          <DashboardTable posts={posts} count={count} />
-        </Modal>
-      )}
+      <Modal>
+        <DashboardTable />
+      </Modal>
     </Container>
   )
 }

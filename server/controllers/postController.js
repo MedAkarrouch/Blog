@@ -167,8 +167,18 @@ exports.likePost = async (req, res) => {
   }
 }
 exports.getUserPosts = async (req, res) => {
+  const { page, pageSize } = req.query
+  let query = Post.find({ author: req.currentUser._id })
+  if (page) {
+    const PAGE_SIZE = Number(pageSize) || 10
+    const skip = Number(page) ? (+page - 1) * PAGE_SIZE : 0
+    const limit = PAGE_SIZE
+    query = query.skip(skip).limit(limit)
+  }
+
   try {
-    let posts = await Post.find({ author: req.currentUser._id })
+    const count = await Post.countDocuments({ author: req.currentUser._id })
+    let posts = await query
     posts = await Promise.all(
       posts?.map(async (post) => {
         // const comments = await Comment.find({ post: post._id })
@@ -182,12 +192,8 @@ exports.getUserPosts = async (req, res) => {
     renderRes({
       res,
       status: 200,
-      data: { count: posts?.length, posts },
+      data: { count, posts },
     })
-    // res.status(200).json({
-    //   status: 'success',
-    //   data: { posts, count: posts?.length },
-    // })
   } catch (err) {
     renderRes({ res, status: 400, message: err.message, errors: err.errors })
   }

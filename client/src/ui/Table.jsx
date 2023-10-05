@@ -42,9 +42,9 @@ const StyledTableFooter = styled.footer`
   /* display: flex; */
   /* justify-content: center; */
   padding: 1.2rem;
-  &:not(:has(*)) {
+  /* &:not(:has(*)) {
     display: none;
-  }
+  } */
 `
 
 const Empty = styled.p`

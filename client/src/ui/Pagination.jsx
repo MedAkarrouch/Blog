@@ -1,6 +1,7 @@
 import { HiChevronLeft, HiChevronRight } from 'react-icons/hi2'
 import { useSearchParams } from 'react-router-dom'
 import styled from 'styled-components'
+import { MAX_POSTS_ON_DASHBOARD } from '../utils/constants'
 const StyledPagination = styled.div`
   display: flex;
   justify-content: space-between;
@@ -13,13 +14,20 @@ const Button = styled.button`
   gap: 0.25rem;
   padding: 0.6rem 1.2rem;
   font: inherit;
-  background: none;
+  background-color: transparent;
+  color: inherit;
   border: none;
   border-radius: 5px;
-  &:hover {
+  &:hover,
+  &:active,
+  &:focus {
     background-color: var(--color-orange-400);
     color: #fff;
   }
+  /* &:hover:not(:disabled) {
+    background-color: var(--color-orange-400);
+    color: #fff;
+  } */
   & span {
     font-weight: 500;
   }
@@ -39,13 +47,17 @@ const P = styled.p`
     font-weight: 600;
   }
 `
-const MAX_POSTS_ON_DASHBOARD = 2
 
 function Pagination({ count }) {
   const [searchParams, setSearchParams] = useSearchParams()
-  const currentPage = Number(searchParams.get('page')) || 0
+  const currentPage = Number(searchParams.get('page')) || 1
 
   const totalPages = Math.ceil(count / MAX_POSTS_ON_DASHBOARD)
+  const from = (currentPage - 1) * MAX_POSTS_ON_DASHBOARD + 1
+  const to =
+    currentPage === totalPages ? count : currentPage * MAX_POSTS_ON_DASHBOARD
+
+  if (count <= MAX_POSTS_ON_DASHBOARD) return null
 
   const next = () => {
     searchParams.set('page', currentPage + 1)
@@ -56,8 +68,6 @@ function Pagination({ count }) {
     setSearchParams(searchParams)
   }
 
-  const from = 1
-  const to = 10
   return (
     <StyledPagination>
       <P>
@@ -66,11 +76,11 @@ function Pagination({ count }) {
         results
       </P>
       <Buttons>
-        <Button onClick={previous}>
+        <Button disabled={from === 1} onClick={previous}>
           <HiChevronLeft />
           <span>Previous</span>
         </Button>
-        <Button onClick={next}>
+        <Button disabled={to === count} onClick={next}>
           <span>Next</span>
           <HiChevronRight />
         </Button>
