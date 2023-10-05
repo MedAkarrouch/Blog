@@ -1,125 +1,80 @@
-import { HiOutlineChevronRight, HiOutlineChevronLeft } from "react-icons/hi2"
-import { useSearchParams } from "react-router-dom"
-import styled, { css } from "styled-components"
-import { PAGE_SIZE, MIN_PAGES } from "../utils/constants"
-
+import { HiChevronLeft, HiChevronRight } from 'react-icons/hi2'
+import { useSearchParams } from 'react-router-dom'
+import styled from 'styled-components'
 const StyledPagination = styled.div`
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  gap: 3rem;
-`
-const List = styled.ul`
-  display: flex;
-  gap: 1rem;
-`
-const Item = styled.li`
-  color: var(--color-grey-600);
-  font-size: 1.6rem;
-  border-radius: 100%;
-  font-weight: 500;
-  width: 4rem;
-  height: 4rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  &:hover {
-    background-color: var(--color-grey-200);
-  }
-  ${(props) =>
-    props.active &&
-    css`
-      background-color: var(--color-grey-200);
-    `};
+  padding: 0 0.6rem;
 `
 const Button = styled.button`
-  display: block;
-  background-color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.6rem 1.2rem;
+  font: inherit;
+  background: none;
   border: none;
-  &:disabled {
-    color: var(--color-grey-300);
+  border-radius: 5px;
+  &:hover {
+    background-color: var(--color-orange-400);
+    color: #fff;
+  }
+  & span {
+    font-weight: 500;
   }
   & svg {
-    font-size: 2rem;
-    stroke-width: 3;
+    font-size: 1.5rem;
+    stroke-width: 1.5;
+    /* width: 1.8rem; */
+    /* height: 1.8rem; */
   }
 `
-
-const generateItems = (start, end) => {
-  const length = end - start + 1
-  return Array.from({ length }, (_, index) => index + start)
-}
+const Buttons = styled.div`
+  display: flex;
+  gap: 2rem;
+`
+const P = styled.p`
+  & span {
+    font-weight: 600;
+  }
+`
+const MAX_POSTS_ON_DASHBOARD = 2
 
 function Pagination({ count }) {
   const [searchParams, setSearchParams] = useSearchParams()
+  const currentPage = Number(searchParams.get('page')) || 0
 
-  const pageCount = Math.ceil(count / PAGE_SIZE)
-  if (pageCount < 2) return null
-
-  const currentPage = +searchParams.get("page") || 1
-  let items
-  console.log({ count, pageCount })
-  // we use the MIN_PAGES to determine whether we display the dots or not
-  const showLeftDots = pageCount < MIN_PAGES ? false : currentPage > 3
-  const showRightDots =
-    pageCount < MIN_PAGES ? false : currentPage < pageCount - 2
-  //
-  if (!showLeftDots && showRightDots) items = generateItems(2, 5)
-  if (showLeftDots && showRightDots)
-    items = generateItems(currentPage - 1, currentPage + 1)
-  if (showLeftDots && !showRightDots)
-    items = generateItems(pageCount - 4, pageCount - 1)
-  if (!showLeftDots && !showRightDots) items = generateItems(2, pageCount - 1)
+  const totalPages = Math.ceil(count / MAX_POSTS_ON_DASHBOARD)
 
   const next = () => {
-    searchParams.set("page", currentPage - 1)
+    searchParams.set('page', currentPage + 1)
     setSearchParams(searchParams)
   }
-  const prev = () => {
-    searchParams.set("page", currentPage + 1)
-    setSearchParams(searchParams)
-  }
-  const onClick = (page) => {
-    searchParams.set("page", page)
+  const previous = () => {
+    searchParams.set('page', currentPage - 1)
     setSearchParams(searchParams)
   }
 
+  const from = 1
+  const to = 10
   return (
     <StyledPagination>
-      <Button disabled={currentPage === 1} onClick={next}>
-        <HiOutlineChevronLeft />
-      </Button>
-      <List>
-        <Item
-          active={currentPage === 1 ? "active" : null}
-          key={1}
-          onClick={() => onClick(1)}
-        >
-          1
-        </Item>
-        {showLeftDots && <Item>...</Item>}
-        {items.map((item) => (
-          <Item
-            active={currentPage === item ? "active" : null}
-            key={item}
-            onClick={() => onClick(item)}
-          >
-            {item}
-          </Item>
-        ))}
-        {showRightDots && <Item>...</Item>}
-        <Item
-          active={currentPage === pageCount ? "active" : null}
-          key={pageCount}
-          onClick={() => onClick(pageCount)}
-        >
-          {pageCount}
-        </Item>
-      </List>
-      <Button disabled={currentPage === pageCount} onClick={prev}>
-        <HiOutlineChevronRight />
-      </Button>
+      <P>
+        Showing <span>{from}</span> to <span>{to}</span> of{' '}
+        <span>{count} </span>
+        results
+      </P>
+      <Buttons>
+        <Button onClick={previous}>
+          <HiChevronLeft />
+          <span>Previous</span>
+        </Button>
+        <Button onClick={next}>
+          <span>Next</span>
+          <HiChevronRight />
+        </Button>
+      </Buttons>
     </StyledPagination>
   )
 }

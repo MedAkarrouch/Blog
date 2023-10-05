@@ -95,7 +95,36 @@ exports.getPost = async (req, res) => {
     renderRes({ res, status: 400, message: err.message })
   }
 }
-exports.deletePost = async (req, res) => {}
+exports.deletePost = async (req, res) => {
+  let postDoc
+  const { post: postId } = req.query
+  try {
+    // check if post exists and belongs to the current user
+    try {
+      postDoc = await Post.findOne({
+        _id: postId,
+        author: req.currentUser._id,
+      })
+      if (!postDoc) throw Error()
+    } catch {
+      throw new Error('Post not found')
+    }
+    // Delete post
+    await Post.findByIdAndDelete(postId)
+    // await Post.findOneAndDelete({ author: req.currentUser._id, post: postId })
+    // Delete comments
+    await Comment.deleteMany({ post: postId })
+    res.status(200).json({
+      status: 'success',
+      message: 'Post successfully deleted',
+    })
+  } catch (err) {
+    res.status(400).json({
+      status: 'error',
+      error: err.message,
+    })
+  }
+}
 exports.updatePost = async (req, res) => {}
 
 exports.likePost = async (req, res) => {

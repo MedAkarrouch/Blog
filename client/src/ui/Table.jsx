@@ -37,7 +37,15 @@ const StyledTableRow = styled(CommonRow).attrs({ role: 'row' })`
     font-size: 2rem; */
   }
 `
-const StyledTableFooter = styled.footer``
+const StyledTableFooter = styled.footer`
+  background-color: var(--color-grey-50);
+  /* display: flex; */
+  /* justify-content: center; */
+  padding: 1.2rem;
+  &:not(:has(*)) {
+    display: none;
+  }
+`
 
 const Empty = styled.p`
   font-size: 1.6rem;

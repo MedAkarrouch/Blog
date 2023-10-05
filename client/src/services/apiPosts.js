@@ -32,31 +32,15 @@ export const likePost = async (post) => {
   return res.data?.data?.post
 }
 
-export const commentOnPost = async ({ post, comment }) => {
-  const res = await axios.post(
-    `${serverUrl}/posts/addComment?post=${post}`,
-    { comment },
-    config,
-  )
-  return res.data?.data?.post
-}
-export const deleteComment = async (post) => {
-  const res = await axios.delete(
-    `${serverUrl}/posts/deleteComment?post=${post}`,
-    config,
-  )
-  return res.data?.data?.post
-}
-export const editComment = async ({ post, comment }) => {
-  const res = await axios.patch(
-    `${serverUrl}/posts/updateComment?post=${post}`,
-    { comment },
-    config,
-  )
-  return res.data?.data?.post
-}
 export const getUserPosts = async ({}) => {
   const res = await axios.get(`${serverUrl}/posts/getUserPosts`, config)
   console.log(res)
   return res?.data?.data
+}
+export const deletePost = async (post) => {
+  const res = await axios.delete(
+    `${serverUrl}/posts/deletePost?post=${post}`,
+    config,
+  )
+  return res
 }

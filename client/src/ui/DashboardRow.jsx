@@ -14,6 +14,8 @@ import {
 } from 'react-icons/hi2'
 import styled, { css } from 'styled-components'
 import { Link } from 'react-router-dom'
+import Modal from './Modal'
+import { forwardRef } from 'react'
 
 const Img = styled.img`
   width: 100%;
@@ -39,10 +41,9 @@ const Flex = styled.div`
   }
 `
 const ToggleIcon = styled(HiOutlineEllipsisVertical)`
-  cursor: pointer;
-  justify-self: end;
   stroke-width: 1.5;
-  font-size: 2rem;
+  width: 2.4rem;
+  height: 2.4rem;
 `
 const Title = styled.div`
   /* font-weight: 500; */
@@ -69,7 +70,7 @@ const Dates = styled.div`
 const OptionsMenu = styled.menu`
   position: absolute;
   background-color: #fff;
-  top: 70%;
+  top: 75%;
   right: 1.5rem;
   border: 1px solid var(--color-grey-50);
   border-radius: 7px;
@@ -110,16 +111,30 @@ const OptionsLink = styled(Link)`
   align-items: center;
   gap: 1.6rem;
 `
+const IconBtn = styled.button`
+  justify-self: end;
+  border: none;
+  background: none;
+  padding: 0.4rem;
+  border-radius: 5px;
+  &:hover {
+    background-color: var(--color-grey-100);
+  }
+`
+
 const Icon = styled.span`
   stroke-width: 1.5;
   font-size: 2rem;
 `
 
-function DashboardRow({ post, isMenuOpen, openMenu, closeMenu }) {
+const DashboardRow = forwardRef(function DashboardRow(
+  { post, isMenuOpen, openMenu, closeMenu },
+  ref,
+) {
   return (
     <Table.Row>
       {isMenuOpen && (
-        <OptionsMenu ref={null}>
+        <OptionsMenu ref={ref}>
           <OptionsList>
             <OptionsItem>
               <OptionsLink to={`/post/${post._id}`}>
@@ -131,10 +146,12 @@ function DashboardRow({ post, isMenuOpen, openMenu, closeMenu }) {
               <HiPencil />
               <span>Edit</span>
             </OptionsItem>
-            <OptionsItem>
-              <HiTrash />
-              <span>Delete</span>
-            </OptionsItem>
+            <Modal.Open window={post._id}>
+              <OptionsItem>
+                <HiTrash />
+                <span>Delete</span>
+              </OptionsItem>
+            </Modal.Open>
           </OptionsList>
         </OptionsMenu>
       )}
@@ -159,9 +176,16 @@ function DashboardRow({ post, isMenuOpen, openMenu, closeMenu }) {
           <span>{post.comments.totalComments}</span>
         </Flex>
       </Flex>
-      <ToggleIcon onClick={() => openMenu(post._id)} />
+      <IconBtn
+        onClick={(e) => {
+          e.stopPropagation()
+          openMenu()
+        }}
+      >
+        <ToggleIcon />
+      </IconBtn>
     </Table.Row>
   )
-}
+})
 
 export default DashboardRow

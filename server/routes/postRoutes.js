@@ -12,7 +12,7 @@ router.post(
 )
 router.get('/getPost', postController.getPost)
 router.get('/addLike', authController.protect, postController.likePost)
-router.post('/deletePost', authController.protect, postController.deletePost)
+router.delete('/deletePost', authController.protect, postController.deletePost)
 router.get('/getUserPosts', authController.protect, postController.getUserPosts)
 
 module.exports = router
