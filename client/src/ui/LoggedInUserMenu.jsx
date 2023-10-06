@@ -1,5 +1,6 @@
-import styled from "styled-components"
-import { usersImagesUrl } from "../utils/constants"
+import styled from 'styled-components'
+import { usersImagesUrl } from '../utils/constants'
+import { Link } from 'react-router-dom'
 const UserImage = styled.img`
   width: 3.5rem;
   height: 3.5rem;
@@ -10,7 +11,10 @@ const UserImage = styled.img`
 function LoggedInUserMenu({ user }) {
   const { photo, fullName } = user
   return (
-    <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
+    <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+      <Link to="/dashboard">Dashboard</Link>
+      <Link to="/account">Account</Link>
+      <Link to="/new">New</Link>
       <p>{fullName}</p>
       <UserImage src={`${usersImagesUrl}/${photo}`} />
     </div>

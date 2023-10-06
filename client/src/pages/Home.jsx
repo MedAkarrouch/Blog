@@ -1,11 +1,6 @@
-import styled from "styled-components"
-import { usePosts } from "../features/posts/usePosts-v1"
-import Spinner from "../ui/Spinner"
-import { Outlet, useNavigate, useParams } from "react-router-dom"
-import Searchbar from "../ui/Searchbar"
-import PostsLayout from "./PostsLayout"
-import Users from "./Users"
-import { useEffect } from "react"
+import styled from 'styled-components'
+import Searchbar from '../ui/Searchbar'
+import PostsLayout from './PostsLayout'
 
 const StyledHome = styled.div`
   padding: 0 2rem;
@@ -19,16 +14,26 @@ const StyledContent = styled.div`
   gap: 3rem;
   padding-bottom: 10rem;
 `
-function Home({ children }) {
+function Home() {
   return (
     <StyledHome>
       <StyledContent>
         <Searchbar />
-        {children}
+        <PostsLayout />
       </StyledContent>
     </StyledHome>
   )
 }
+// function Home({ children }) {
+//   return (
+//     <StyledHome>
+//       <StyledContent>
+//         <Searchbar />
+//         {children}
+//       </StyledContent>
+//     </StyledHome>
+//   )
+// }
 // function Home() {
 //   const { isLoading, posts } = usePosts()
 //   console.log(posts)

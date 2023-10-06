@@ -10,6 +10,7 @@ export function useUserPosts() {
   const { isLoading, data: { posts, count } = {} } = useQuery({
     queryKey: ['user-posts', page],
     queryFn: () => getUserPosts({ page, pageSize: MAX_POSTS_ON_DASHBOARD }),
+    retry: false,
   })
   // Prefetch the data
   if (count) {
@@ -19,12 +20,14 @@ export function useUserPosts() {
         queryKey: ['user-posts', page + 1],
         queryFn: () =>
           getUserPosts({ page: page + 1, pageSize: MAX_POSTS_ON_DASHBOARD }),
+        retry: false,
       })
     page > 1 &&
       queryClient.prefetchQuery({
         queryKey: ['user-posts', page - 1],
         queryFn: () =>
           getUserPosts({ page: page - 1, pageSize: MAX_POSTS_ON_DASHBOARD }),
+        retry: false,
       })
   }
 

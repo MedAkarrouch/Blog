@@ -1,8 +1,8 @@
-import { styled } from "styled-components"
-import Heading from "../../ui/Heading"
-import { serverUrl, postsImagesUrl } from "../../utils/constants"
-import { Link } from "react-router-dom"
-import { DateTime } from "luxon"
+import { styled } from 'styled-components'
+import Heading from '../../ui/Heading'
+import { serverUrl, postsImagesUrl } from '../../utils/constants'
+import { Link } from 'react-router-dom'
+import { DateTime } from 'luxon'
 
 const StyledPost = styled.li`
   border-radius: 20px;
@@ -121,7 +121,7 @@ function Post({ post }) {
     author,
     createdAt,
     readingTime,
-    _id: postId
+    _id: postId,
   } = post
   return (
     <>
@@ -138,7 +138,10 @@ function Post({ post }) {
               {/* <StyledProfileImg
                 src={`${serverUrl}/img/users/${author.photo}`}
               /> */}
-              <StyledProfileImg src="https://res.cloudinary.com/practicaldev/image/fetch/s--Q9Kwp-uC--/c_fill,f_auto,fl_progressive,h_90,q_auto,w_90/https://dev-to-uploads.s3.amazonaws.com/uploads/user/profile_image/609838/bc3ac0a6-8c2e-4c51-8fdd-83bd3d6ec159.jpeg" />
+              <StyledProfileImg
+                loading="lazy"
+                src="https://res.cloudinary.com/practicaldev/image/fetch/s--Q9Kwp-uC--/c_fill,f_auto,fl_progressive,h_90,q_auto,w_90/https://dev-to-uploads.s3.amazonaws.com/uploads/user/profile_image/609838/bc3ac0a6-8c2e-4c51-8fdd-83bd3d6ec159.jpeg"
+              />
               <StyledProfileDiv>
                 <StyledProfileName>{author.fullName}</StyledProfileName>
                 <StyledProfileDate>
@@ -147,7 +150,11 @@ function Post({ post }) {
               </StyledProfileDiv>
             </StyledProfile>
           </StyledContent>
-          <StyledCoverImg src={`${postsImagesUrl}/${coverImg}`} alt="" />
+          <StyledCoverImg
+            loading="lazy"
+            src={`${postsImagesUrl}/${coverImg}`}
+            alt=""
+          />
           {/* <StyledCoverImg
             src="https://assets.website-files.com/62747a2d3bf3fca1c45b852a/63e0aa63d88ab8b68761c363_BFCM%20strategies.png"
             alt=""

@@ -1,11 +1,11 @@
-import styled from "styled-components"
-import Filter from "../ui/Filter"
-import Posts from "../features/posts/Posts"
-import Spinner from "../ui/Spinner"
-import { usePosts } from "../features/posts/usePosts"
-import SpinnerMini from "../ui/SpinnerMini"
-import { PAGE_SIZE } from "../utils/constants"
-import ErrorMessage from "../ui/ErrorMessage"
+import styled from 'styled-components'
+import Filter from '../ui/Filter'
+import Posts from '../features/posts/Posts'
+import Spinner from '../ui/Spinner'
+import { usePosts } from '../features/posts/usePosts'
+import SpinnerMini from '../ui/SpinnerMini'
+import { PAGE_SIZE } from '../utils/constants'
+import ErrorMessage from '../ui/ErrorMessage'
 
 const Button = styled.button`
   color: var(--color-grey-500);
@@ -56,7 +56,7 @@ function PostsLayout() {
     isError,
     hasNextPage,
     fetchNextPage,
-    isFetchingNextPage
+    isFetchingNextPage,
   } = usePosts()
   return (
     <>
@@ -66,10 +66,10 @@ function PostsLayout() {
       ) : isLoading ? (
         <div
           style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            marginTop: "5rem"
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginTop: '5rem',
           }}
         >
           <Spinner />

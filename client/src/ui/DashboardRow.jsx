@@ -155,7 +155,7 @@ const DashboardRow = forwardRef(function DashboardRow(
           </OptionsList>
         </OptionsMenu>
       )}
-      <Img src={`${postsImagesUrl}/${post.coverImg}`} alt="" />
+      <Img loading="lazy" src={`${postsImagesUrl}/${post.coverImg}`} alt="" />
       <Title>{post.title}</Title>
       <Category>{post.category}</Category>
       <Dates>

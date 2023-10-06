@@ -26,11 +26,10 @@ function DashboardTable() {
   })
 
   console.log(isLoading, count, posts)
-
   if (isLoading)
     return (
       <SpinnerWrapper>
-        <Spinner size="5rem" />
+        <Spinner size="4rem" />
       </SpinnerWrapper>
     )
 

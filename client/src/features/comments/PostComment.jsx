@@ -34,7 +34,11 @@ const PostComment = forwardRef(function PostComment(
 
   return (
     <PostLayout ref={ref}>
-      <PostLayout.UserImg alt="" src={`${usersImagesUrl}/${user.photo}`} />
+      <PostLayout.UserImg
+        loading="lazy"
+        alt=""
+        src={`${usersImagesUrl}/${user.photo}`}
+      />
       <PostLayout.Content>
         <StyledRow>
           <PostLayout.UserName>{user.fullName}</PostLayout.UserName>

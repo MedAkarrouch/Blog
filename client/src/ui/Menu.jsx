@@ -1,5 +1,5 @@
-import styled, { css } from "styled-components"
-import { Link } from "react-router-dom"
+import styled, { css } from 'styled-components'
+import { Link } from 'react-router-dom'
 const StyledMenu = styled.menu`
   display: flex;
   align-items: center;
@@ -13,13 +13,13 @@ const Button = styled(Link)`
   font-weight: 500;
   border-radius: 10px;
   ${(props) =>
-    props.for === "login" &&
+    props.for === 'login' &&
     css`
       color: var(--color-orange-400);
       border: 2px solid currentColor;
     `}
   ${(props) =>
-    props.for === "signup" &&
+    props.for === 'signup' &&
     css`
       background-color: var(--color-orange-400);
       color: #fff;
@@ -29,6 +29,9 @@ const Button = styled(Link)`
 function Menu() {
   return (
     <StyledMenu>
+      <Link to="/account">account</Link>
+      <Link to="/dashboard">dashboard</Link>
+      <Link to="/new">new</Link>
       <Button for="login" to="/login">
         Log In
       </Button>
