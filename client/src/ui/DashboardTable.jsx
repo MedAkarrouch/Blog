@@ -34,7 +34,7 @@ function DashboardTable() {
     )
 
   return (
-    <Table columns="7rem 2fr 1fr 0.7fr 0.7fr 0.1fr">
+    <Table columns="7rem 2fr 1fr 0.7fr 0.7fr 3rem ">
       <Table.Header>
         <div></div>
         <div>title</div>

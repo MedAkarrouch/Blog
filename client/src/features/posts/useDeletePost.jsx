@@ -5,10 +5,10 @@ import { toast } from 'react-hot-toast'
 export function useDeletePost() {
   const queryClient = useQueryClient()
   const { isLoading: isDeleting, mutate: deletePost } = useMutation({
-    mutationFn: () => deletePostApi(),
+    mutationFn: deletePostApi,
     onSuccess: () => {
       toast.success('Post successfully deleted')
-      queryClient.invalidateQueries(['user-posts'])
+      queryClient.invalidateQueries()
     },
     onError: () => toast.error('Something went wrong'),
   })

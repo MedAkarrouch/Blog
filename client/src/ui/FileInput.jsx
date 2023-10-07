@@ -1,6 +1,6 @@
-import styled from "styled-components"
+import styled from 'styled-components'
 
-const FileInput = styled.input.attrs({ type: "file" })`
+const FileInput = styled.input.attrs({ type: 'file' })`
   font-size: 1.4rem;
   &::file-selector-button {
     border-radius: 5px;
@@ -8,13 +8,13 @@ const FileInput = styled.input.attrs({ type: "file" })`
     font-weight: 500;
     border: none;
     padding: 0.9rem 1.2rem;
-    background-color: var(--color-orange-500);
+    background-color: var(--color-orange-400);
     color: #fff;
     cursor: pointer;
     margin-right: 1.2rem;
     transition: background-color 0.2s;
     &:hover {
-      background-color: var(--color-orange-600);
+      background-color: var(--color-orange-500);
     }
   }
 `

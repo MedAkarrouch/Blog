@@ -7,6 +7,14 @@ const StyleTable = styled.div`
   font-size: 1.4rem;
   box-shadow: var(--shadow-sm);
   /* overflow: hidden; */
+  & div[role='rowheader'] {
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
+  }
+  & footer {
+    border-bottom-left-radius: 7px;
+    border-bottom-right-radius: 7px;
+  }
 `
 const CommonRow = styled.div`
   display: grid;
@@ -42,9 +50,9 @@ const StyledTableFooter = styled.footer`
   /* display: flex; */
   /* justify-content: center; */
   padding: 1.2rem;
-  /* &:not(:has(*)) {
+  &:not(:has(*)) {
     display: none;
-  } */
+  }
 `
 
 const Empty = styled.p`

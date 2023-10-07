@@ -2,7 +2,7 @@ export const serverUrl = 'http://localhost:8000'
 export const postsImagesUrl = `${serverUrl}/img/posts`
 export const usersImagesUrl = `${serverUrl}/img/users`
 //
-export const MAX_POSTS_ON_DASHBOARD = 2
+export const MAX_POSTS_ON_DASHBOARD = 9
 //
 export const COMMENTS_PER_PAGE = 10
 //

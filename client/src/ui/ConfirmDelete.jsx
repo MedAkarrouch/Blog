@@ -7,8 +7,8 @@ const StyledConfirmDelete = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
-
   & p {
+    /* hyphens: none; */
     color: var(--color-grey-500);
     margin-bottom: 1.2rem;
   }

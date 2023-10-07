@@ -1,8 +1,8 @@
-import styled, { css } from "styled-components"
-import Heading from "../ui/Heading"
-import UpdateUserDataForm from "../features/account/UpdateUserDataForm"
-import UpdateUserPassword from "../features/account/UpdateUserPassword"
-import DeleteAccount from "../features/account/DeleteAccount"
+import styled, { css } from 'styled-components'
+import Heading from '../ui/Heading'
+import UpdateUserDataForm from '../features/account/UpdateUserDataForm'
+import UpdateUserPassword from '../features/account/UpdateUserPassword'
+import DeleteAccount from '../features/account/DeleteAccount'
 
 const StyledAccount = styled.div`
   background-color: var(--color-grey-50);
@@ -19,12 +19,12 @@ const StyledContent = styled.div`
 `
 const StyledHeading = styled(Heading)`
   ${(props) =>
-    props.as === "h2" &&
+    props.as === 'h2' &&
     css`
-      font-size: 3.5rem;
+      font-size: 4rem;
     `}
   ${(props) =>
-    props.as === "h3" &&
+    props.as === 'h3' &&
     css`
       font-size: 2.5rem;
       font-weight: 600;
@@ -34,7 +34,7 @@ function Account() {
   return (
     <StyledAccount>
       <StyledContent>
-        <StyledHeading as="h2">Update your account</StyledHeading>
+        <StyledHeading as="h2">Account</StyledHeading>
 
         <UpdateUserDataForm>
           <StyledHeading as="h3">Update user data</StyledHeading>
@@ -43,8 +43,9 @@ function Account() {
         <UpdateUserPassword>
           <StyledHeading as="h3">Update password</StyledHeading>
         </UpdateUserPassword>
-
-        <DeleteAccount />
+        <DeleteAccount>
+          <StyledHeading as="h3">Delete account</StyledHeading>
+        </DeleteAccount>
       </StyledContent>
     </StyledAccount>
   )

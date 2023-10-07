@@ -1,7 +1,8 @@
 import { HiChevronLeft, HiChevronRight } from 'react-icons/hi2'
 import { useSearchParams } from 'react-router-dom'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { MAX_POSTS_ON_DASHBOARD } from '../utils/constants'
+import { useEffect, useRef } from 'react'
 const StyledPagination = styled.div`
   display: flex;
   justify-content: space-between;
@@ -18,16 +19,16 @@ const Button = styled.button`
   color: inherit;
   border: none;
   border-radius: 5px;
-  &:hover,
-  &:active,
-  &:focus {
+  &:hover:not(:disabled) {
     background-color: var(--color-orange-400);
     color: #fff;
   }
-  /* &:hover:not(:disabled) {
-    background-color: var(--color-orange-400);
-    color: #fff;
-  } */
+  ${(props) =>
+    props.hovered &&
+    css`
+      background-color: var(--color-orange-400);
+      color: #fff;
+    `}
   & span {
     font-weight: 500;
   }
@@ -57,7 +58,8 @@ function Pagination({ count }) {
   const to =
     currentPage === totalPages ? count : currentPage * MAX_POSTS_ON_DASHBOARD
 
-  if (count <= MAX_POSTS_ON_DASHBOARD) return null
+  // currentPage > totalPages
+  if (count <= MAX_POSTS_ON_DASHBOARD || currentPage < 0) return null
 
   const next = () => {
     searchParams.set('page', currentPage + 1)
@@ -70,17 +72,27 @@ function Pagination({ count }) {
 
   return (
     <StyledPagination>
-      <P>
-        Showing <span>{from}</span> to <span>{to}</span> of{' '}
-        <span>{count} </span>
-        results
-      </P>
+      {from > count || to > count ? (
+        <P>
+          Page <span>{currentPage}</span> has <span>0</span> results
+        </P>
+      ) : (
+        <P>
+          Showing <span>{from}</span> to <span>{to}</span> of{' '}
+          <span>{count} </span>
+          results
+        </P>
+      )}
       <Buttons>
-        <Button disabled={from === 1} onClick={previous}>
+        <Button
+          hovered={from > count || to > count ? 'true' : ''}
+          disabled={from === 1}
+          onClick={previous}
+        >
           <HiChevronLeft />
           <span>Previous</span>
         </Button>
-        <Button disabled={to === count} onClick={next}>
+        <Button disabled={to >= count} onClick={next}>
           <span>Next</span>
           <HiChevronRight />
         </Button>

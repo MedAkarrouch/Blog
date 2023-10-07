@@ -1,4 +1,4 @@
-import styled from "styled-components"
+import styled from 'styled-components'
 // import { HiMiniXCircle } from "react-icons/hi2"
 
 const StyledFormRow = styled.div`
@@ -9,6 +9,9 @@ const StyledFormRow = styled.div`
   padding: 1.2rem 0;
   &:not(:last-child) {
     border-bottom: 1px solid var(--color-grey-100);
+  }
+  &:has(input[type='checkbox']) {
+    grid-template-columns: 1fr;
   }
   &:has(button) {
     display: flex;
