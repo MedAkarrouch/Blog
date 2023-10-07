@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react"
-import { useDropzone } from "react-dropzone"
-import styled, { css } from "styled-components"
+import React, { useEffect, useState } from 'react'
+import { useDropzone } from 'react-dropzone'
+import styled, { css } from 'styled-components'
 
-const Button = styled.button.attrs({ type: "button" })`
+const Button = styled.button.attrs({ type: 'button' })`
   background-color: #fff;
   border: 3px solid var(--color-grey-100);
   padding: 0.75rem 1.5rem;
@@ -11,7 +11,7 @@ const Button = styled.button.attrs({ type: "button" })`
   font-size: 1.5rem;
   border-radius: 5px;
   ${(props) =>
-    props.variation !== "danger" &&
+    props.variation !== 'danger' &&
     css`
       &:hover {
         background-color: var(--color-grey-100);
@@ -19,7 +19,7 @@ const Button = styled.button.attrs({ type: "button" })`
     `}
 
   ${(props) =>
-    props.variation === "danger" &&
+    props.variation === 'danger' &&
     css`
       color: var(--color-red-500);
       border: none;
@@ -44,17 +44,17 @@ function FileInput({ file, setFile }) {
 
   const { getRootProps, getInputProps } = useDropzone({
     accept: {
-      "image/*": []
+      'image/*': [],
     },
     maxFiles: 1, // Limit to one file
     onDrop: (acceptedFiles) => {
       // setCoverImg(acceptedFiles[0])
       setFile(
         Object.assign(acceptedFiles[0], {
-          preview: URL.createObjectURL(acceptedFiles[0])
-        })
+          preview: URL.createObjectURL(acceptedFiles[0]),
+        }),
       )
-    }
+    },
   })
 
   useEffect(() => {
@@ -66,10 +66,10 @@ function FileInput({ file, setFile }) {
 
   return (
     <div>
-      <div style={{ display: "flex", gap: "2rem" }}>
-        <div {...getRootProps({ className: "dropzone" })}>
+      <div style={{ display: 'flex', gap: '2rem' }}>
+        <div {...getRootProps({ className: 'dropzone' })}>
           <input {...getInputProps()} />
-          <Button>{!file ? "Add a cover image" : "Change"}</Button>
+          <Button>{!file ? 'Add a cover image' : 'Change'}</Button>
         </div>
         {file && (
           <Button variation="danger" onClick={() => setFile(null)}>
@@ -80,7 +80,7 @@ function FileInput({ file, setFile }) {
       {file && (
         <Aside>
           <Image
-            src={file.preview}
+            src={file.preview || file}
             alt=""
             onLoad={() => {
               URL.revokeObjectURL(file.preview)

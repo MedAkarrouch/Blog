@@ -1,14 +1,14 @@
-import styled from "styled-components"
-import { postsImagesUrl, usersImagesUrl } from "../../utils/constants"
-import Heading from "../../ui/Heading"
-import { DateTime } from "luxon"
+import styled from 'styled-components'
+import { postsImagesUrl, usersImagesUrl } from '../../utils/constants'
+import Heading from '../../ui/Heading'
+import { DateTime } from 'luxon'
 
 const StyledContent = styled.div`
   margin-top: 5rem;
   font-size: 2rem;
-  font-size: 1.8rem;
+  /* font-size: 1.8rem; */
   /* color:; */
-  color: var(--color-grey-500);
+  color: var(--color-grey-600);
   & p {
     line-height: 1.9;
     &::first-letter {
@@ -35,13 +35,13 @@ const StyledContent = styled.div`
   h4,
   h5,
   h6 {
-    color: var(--color-grey-700);
+    color: var(--color-grey-800);
     &::first-letter {
       text-transform: capitalize;
     }
   }
   strong {
-    color: var(--color-grey-600);
+    color: var(--color-grey-700);
     &::first-letter {
       text-transform: capitalize;
     }

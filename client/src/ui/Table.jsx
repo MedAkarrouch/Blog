@@ -62,6 +62,7 @@ const Empty = styled.p`
   margin: 2.4rem;
   color: var(--color-grey-500);
 `
+const StyledBody = styled.div``
 
 const TabelContext = createContext()
 function Table({ columns, children }) {
@@ -74,7 +75,7 @@ function Table({ columns, children }) {
 
 function Body({ data, render }) {
   if (!data?.length) return <Empty>No data to show at the moment</Empty>
-  return data?.map(render)
+  return <StyledBody>{data?.map(render)}</StyledBody>
 }
 function Header({ children }) {
   const { columns } = useContext(TabelContext)

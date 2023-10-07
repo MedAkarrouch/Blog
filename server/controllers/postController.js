@@ -125,7 +125,39 @@ exports.deletePost = async (req, res) => {
     })
   }
 }
-exports.updatePost = async (req, res) => {}
+exports.updatePost = async (req, res) => {
+  let updateObj = {}
+  const { post: postId } = req.query
+  const { category, title, summary, content } = req.body
+
+  if (category) updateObj.category = category
+  if (title) updateObj.title = title
+  if (summary) updateObj.summary = summary
+  if (content) {
+    updateObj.content = content
+    updateObj.readingTime = readingTime(content).text
+  }
+
+  try {
+    const post = await Post.findOne({
+      _id: postId,
+      author: req.currentUser._id,
+    })
+
+    if (!post) throw new Error('Post not found')
+    const updatedPost = await Post.findByIdAndUpdate(postId, updateObj, {
+      runValidators: true,
+      new: true,
+    })
+    renderRes({
+      res,
+      status: 200,
+      data: { post: updatedPost, message: 'Post successfully updated' },
+    })
+  } catch (err) {
+    renderRes({ res, status: 400, message: err.message, errors: err.errors })
+  }
+}
 
 exports.likePost = async (req, res) => {
   let post
