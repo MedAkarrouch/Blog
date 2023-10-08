@@ -2,6 +2,8 @@ import axios from 'axios'
 import { serverUrl } from '../utils/constants'
 import { config } from '../utils/constants'
 
+const server = `${serverUrl}/posts`
+
 export const getPost = async (postId) => {
   // const res = await axios.get(`${serverUrl}/posts/${postId}`, config)
   const res = await axios.get(
@@ -13,6 +15,16 @@ export const getPost = async (postId) => {
 
 export const addNewPost = async (data) =>
   await axios.post(`${serverUrl}/posts/addNewPost`, data, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+    withCredentials: true,
+  })
+
+// export const updatePost = async (post, data) =>
+// await axios.post(`${server}/updatePost?post=${post}`, data, config)
+export const updatePost = async (post, data) =>
+  await axios.post(`${server}/updatePost?post=${post}`, data, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },

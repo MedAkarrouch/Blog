@@ -1,12 +1,12 @@
-import styled from "styled-components"
+import styled from 'styled-components'
 
-import Editor from "../features/posts/Editor"
-import FileInput from "../features/posts/FileInput"
-import { useAutoTextareaResize } from "../hooks/useAutoTextareaResize"
-import CreatePostFooter from "../features/posts/CreatePostFooter"
-import { useState } from "react"
-import DropdownMenu from "../ui/DropdownMenu"
-import { useAddNewPost } from "../features/posts/useAddNewPost"
+import Editor from '../features/posts/Editor'
+import FileInput from '../features/posts/FileInput'
+import { useAutoTextareaResize } from '../hooks/useAutoTextareaResize'
+import CreatePostFooter from '../features/posts/CreatePostFooter'
+import { useState } from 'react'
+import DropdownMenu from '../ui/DropdownMenu'
+import { useAddNewPost } from '../features/posts/useAddNewPost'
 const StyledCreatePost = styled.form`
   background-color: var(--color-grey-50);
   height: calc(100vh - 7rem);
@@ -52,10 +52,13 @@ const StyledTitle = styled.textarea`
     outline: none;
     outline-offset: none;
   }
+  font-weight: 500;
+  font-size: 2.5rem;
 `
 const StyledSummary = styled(StyledTitle)`
-  font-weight: 500;
   font-size: 2rem;
+  margin-top: 0;
+  margin-bottom: 1.25rem;
 `
 const Wrapper = styled.div`
   padding: 0 2rem;
@@ -65,35 +68,36 @@ const Wrapper = styled.div`
 `
 
 function CreatePost() {
-  const { isLoading, addNewPost } = useAddNewPost()
+  const { isAdding, addNewPost } = useAddNewPost()
   const titleRef = useAutoTextareaResize()
   const summaryRef = useAutoTextareaResize()
   const [coverImg, setCoverImg] = useState(null)
-  const [title, setTitle] = useState("")
-  const [summary, setSummary] = useState("")
-  const [content, setContent] = useState("")
+  const [title, setTitle] = useState('')
+  const [summary, setSummary] = useState('')
+  const [content, setContent] = useState('')
   const [showList, setShowList] = useState(false)
-  const [category, setCategory] = useState("")
+  const [category, setCategory] = useState('')
 
   const handleSubmit = (e) => {
     e.preventDefault()
     const data = new FormData()
-    data.append("coverImg", coverImg)
-    data.append("category", category)
-    data.append("title", title)
-    data.append("content", content)
-    data.append("summary", summary)
+    data.append('coverImg', coverImg)
+    data.append('category', category)
+    data.append('title', title)
+    data.append('content', content)
+    data.append('summary', summary)
 
     addNewPost(data)
   }
   const clear = () => {
     setShowList(false)
-    setCategory("")
+    setCategory('')
     setCoverImg(null)
-    setTitle("")
-    setSummary("")
-    setContent("")
+    setTitle('')
+    setSummary('')
+    setContent('')
   }
+
   return (
     <StyledCreatePost onSubmit={handleSubmit}>
       <SyledDiv>
@@ -125,7 +129,7 @@ function CreatePost() {
         </Wrapper>
         <Editor content={content} setContent={setContent} />
       </SyledDiv>
-      <CreatePostFooter isLoading={isLoading} clear={clear} />
+      <CreatePostFooter isLoading={isAdding} clear={clear} />
     </StyledCreatePost>
   )
 }

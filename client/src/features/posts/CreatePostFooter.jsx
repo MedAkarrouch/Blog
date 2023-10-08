@@ -1,5 +1,4 @@
-import styled, { css } from "styled-components"
-import SpinnerMini from "../../ui/SpinnerMini"
+import styled, { css } from 'styled-components'
 const Button = styled.button`
   display: block;
   border: none;
@@ -13,7 +12,7 @@ const Button = styled.button`
     background-color: var(--color-orange-600);
   }
   ${(props) =>
-    props.role === "clear" &&
+    props.role === 'clear' &&
     css`
       background-color: transparent;
       color: var(--color-grey-700);
@@ -31,14 +30,15 @@ const StyledFooter = styled.div`
   align-items: center;
 `
 
-function CreatePostFooter({ isLoading, clear }) {
+function CreatePostFooter({ isLoading, clear, onEditMode }) {
   return (
     <StyledFooter>
       <Button>
-        {isLoading ? <SpinnerMini publish={"true"} /> : "Publish"}
+        {/* {isLoading ? <SpinnerMini publish={'true'} /> : 'Publish'} */}
+        {isLoading ? 'Publishing...' : onEditMode ? 'Save changes' : 'Publish'}
       </Button>
       <Button type="button" role="clear" onClick={clear}>
-        Clear
+        {onEditMode ? 'Reset' : 'Clear'}
       </Button>
     </StyledFooter>
   )

@@ -1,8 +1,8 @@
-import styled from "styled-components"
-import Logo from "./Logo"
-import Menu from "./Menu"
-import LoggedInUserMenu from "./LoggedInUserMenu"
-import { useUser } from "../features/auth/useUser"
+import styled from 'styled-components'
+import Logo from './Logo'
+import Menu from './Menu'
+import LoggedInUserMenu from './LoggedInUserMenu'
+import { useUser } from '../features/auth/useUser'
 const StyledHeader = styled.header`
   position: fixed;
   top: 0;

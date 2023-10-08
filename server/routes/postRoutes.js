@@ -13,7 +13,12 @@ router.post(
 router.get('/getPost', postController.getPost)
 router.get('/addLike', authController.protect, postController.likePost)
 router.delete('/deletePost', authController.protect, postController.deletePost)
-router.patch('/updatePost', authController.protect, postController.updatePost)
+router.post(
+  '/updatePost',
+  authController.protect,
+  postController.upload,
+  postController.updatePost
+)
 router.get('/getUserPosts', authController.protect, postController.getUserPosts)
 
 module.exports = router

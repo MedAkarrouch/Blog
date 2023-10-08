@@ -29,7 +29,7 @@ const postSchema = new mongoose.Schema({
     required: [true, 'Content is required'],
     trim: true,
     minlength: [400, 'Content must have more than 400 characters'],
-    maxlength: [9999, 'Content must have less than 10000  characters'],
+    maxlength: [100000, 'Content must have less than 100000  characters'],
   },
   title: {
     type: String,

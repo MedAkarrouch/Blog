@@ -8,6 +8,8 @@ import { useState } from 'react'
 import DropdownMenu from '../ui/DropdownMenu'
 import { useAddNewPost } from '../features/posts/useAddNewPost'
 import { postsImagesUrl } from '../utils/constants'
+import { useUpdatePost } from '../features/posts/useUpdatePost'
+import { toast } from 'react-hot-toast'
 
 const StyledCreatePost = styled.form`
   background-color: var(--color-grey-50);
@@ -54,10 +56,14 @@ const StyledTitle = styled.textarea`
     outline: none;
     outline-offset: none;
   }
+  font-weight: 500;
+  font-size: 2.5rem;
 `
 const StyledSummary = styled(StyledTitle)`
-  font-weight: 500;
+  line-height: 1.5;
   font-size: 2rem;
+  margin-top: 0;
+  margin-bottom: 1.25rem;
 `
 const Wrapper = styled.div`
   padding: 0 2rem;
@@ -67,7 +73,9 @@ const Wrapper = styled.div`
 `
 
 function AddEditPost({ post }) {
-  const { isLoading, addNewPost } = useAddNewPost()
+  const { isAdding, addNewPost } = useAddNewPost()
+  const { isUpdating, updatePost } = useUpdatePost()
+  const isLoading = isAdding || isUpdating
   const titleRef = useAutoTextareaResize()
   const summaryRef = useAutoTextareaResize()
   const [coverImg, setCoverImg] = useState(`${postsImagesUrl}/${post.coverImg}`)
@@ -79,6 +87,8 @@ function AddEditPost({ post }) {
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    if (!coverImg) return toast.error('Cover image is required')
+    console.log(content)
     const data = new FormData()
     data.append('coverImg', coverImg)
     data.append('category', category)
@@ -86,15 +96,16 @@ function AddEditPost({ post }) {
     data.append('content', content)
     data.append('summary', summary)
 
-    addNewPost(data)
+    // addNewPost(data)
+    updatePost(data)
   }
   const clear = () => {
     setShowList(false)
-    setCategory('')
-    setCoverImg(null)
-    setTitle('')
-    setSummary('')
-    setContent('')
+    setCategory(post.category)
+    setCoverImg(`${postsImagesUrl}/${post.coverImg}`)
+    setTitle(post.title)
+    setSummary(post.summary)
+    setContent(post.content)
   }
 
   return (
@@ -128,7 +139,7 @@ function AddEditPost({ post }) {
         </Wrapper>
         <Editor content={content} setContent={setContent} />
       </SyledDiv>
-      <CreatePostFooter isLoading={isLoading} clear={clear} />
+      <CreatePostFooter onEditMode={true} isLoading={isLoading} clear={clear} />
     </StyledCreatePost>
   )
 }

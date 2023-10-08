@@ -126,29 +126,59 @@ exports.deletePost = async (req, res) => {
   }
 }
 exports.updatePost = async (req, res) => {
-  let updateObj = {}
+  let post
   const { post: postId } = req.query
   const { category, title, summary, content } = req.body
+  const coverImg = req.coverImg
+  // console.log(coverImg)
+  // console.log(req.file)
+  // console.log('** ', req.body)
 
-  if (category) updateObj.category = category
-  if (title) updateObj.title = title
-  if (summary) updateObj.summary = summary
-  if (content) {
-    updateObj.content = content
-    updateObj.readingTime = readingTime(content).text
+  const updateObj = {
+    title,
+    category,
+    summary,
+    content,
+    readingTime: readingTime(content).text,
   }
+  if (coverImg) updateObj.coverImg = coverImg
 
   try {
-    const post = await Post.findOne({
-      _id: postId,
-      author: req.currentUser._id,
-    })
+    try {
+      post = await Post.findOne({
+        _id: postId,
+        author: req.currentUser._id,
+      })
+      if (!post) throw Error()
+    } catch {
+      throw new Error('Post not found')
+    }
 
-    if (!post) throw new Error('Post not found')
-    const updatedPost = await Post.findByIdAndUpdate(postId, updateObj, {
-      runValidators: true,
-      new: true,
-    })
+    const updatedPost = await Post.findByIdAndUpdate(
+      postId,
+      {
+        title: post.title,
+        summay: post.summary,
+        content: post.content,
+        category: post.category,
+        readingTime: post.readingTime,
+        ...updateObj,
+      },
+      {
+        runValidators: true,
+        new: true,
+      }
+    )
+    // const updatedPost = await Post.findByIdAndUpdate(postId, updateObj, {
+    //   runValidators: true,
+    //   new: true,
+    // })
+    // upload image
+    if (coverImg) {
+      const path = 'public/img/posts'
+      await fs.writeFile(`${path}/${coverImg}`, req.file.buffer)
+    }
+    // return response
     renderRes({
       res,
       status: 200,

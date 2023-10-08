@@ -1,10 +1,10 @@
-import styled from "styled-components"
-import { useOutsideClick } from "../hooks/useOutsideClick"
-import { categories } from "../utils/constants"
+import styled from 'styled-components'
+import { useOutsideClick } from '../hooks/useOutsideClick'
+import { categories } from '../utils/constants'
 
 const StyledContainer = styled.div`
   position: relative;
-  max-width: 18rem;
+  max-width: 20rem;
 `
 const Input = styled.input`
   display: block;
@@ -78,10 +78,10 @@ function DropdownMenu({ showList, setShowList, category, setCategory }) {
   const ref = useOutsideClick(closeList)
 
   const filteredCategories =
-    category === ""
+    category === ''
       ? categories
       : categories.filter((el) =>
-          el.toLowerCase().startsWith(category.toLowerCase())
+          el.toLowerCase().startsWith(category.toLowerCase()),
         )
 
   return (
@@ -92,7 +92,7 @@ function DropdownMenu({ showList, setShowList, category, setCategory }) {
         value={category}
         onChange={(e) => setCategory(e.target.value)}
         onFocus={() => {
-          setCategory("")
+          setCategory('')
           openList()
         }}
       />

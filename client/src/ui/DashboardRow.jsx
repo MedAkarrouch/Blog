@@ -143,8 +143,10 @@ const DashboardRow = forwardRef(function DashboardRow(
               </OptionsLink>
             </OptionsItem>
             <OptionsItem>
-              <HiPencil />
-              <span>Edit</span>
+              <OptionsLink to={`/edit/${post._id}`}>
+                <HiPencil />
+                <span>Edit</span>
+              </OptionsLink>
             </OptionsItem>
             <Modal.Open window={post._id}>
               <OptionsItem>

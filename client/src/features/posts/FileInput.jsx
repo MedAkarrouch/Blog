@@ -6,10 +6,20 @@ const Button = styled.button.attrs({ type: 'button' })`
   background-color: #fff;
   border: 3px solid var(--color-grey-100);
   padding: 0.75rem 1.5rem;
+  padding: 0.75rem 1.25rem;
+  /* padding: 0.75rem 2.25rem; */
+  display: block;
+
   color: var(--color-grey-700);
   font-weight: 500;
   font-size: 1.5rem;
   border-radius: 5px;
+  ${(props) =>
+    props.mode &&
+    css`
+      width: 20rem;
+      text-align: left;
+    `}
   ${(props) =>
     props.variation !== 'danger' &&
     css`
@@ -69,7 +79,9 @@ function FileInput({ file, setFile }) {
       <div style={{ display: 'flex', gap: '2rem' }}>
         <div {...getRootProps({ className: 'dropzone' })}>
           <input {...getInputProps()} />
-          <Button>{!file ? 'Add a cover image' : 'Change'}</Button>
+          <Button mode={!file ? 'true' : ''}>
+            {!file ? 'Add a cover image' : 'Change'}
+          </Button>
         </div>
         {file && (
           <Button variation="danger" onClick={() => setFile(null)}>
