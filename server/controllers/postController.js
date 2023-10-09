@@ -2,10 +2,9 @@ const Post = require('../models/postModel')
 const Comment = require('../models/commentModel')
 const fs = require('fs').promises
 const multer = require('multer')
-const { FILE_MAX_SIZE } = require('../utils/constants')
+const { FILE_MAX_SIZE, COMMENTS_PER_PAGE } = require('../utils/constants')
 const readingTime = require('reading-time')
 const renderRes = require('../utils/renderRes')
-const { COMMENT_MAX_LENGTH } = require('../utils/constants')
 
 const multerStorage = multer.memoryStorage()
 const multerFilter = (req, file, cb) => {
@@ -85,10 +84,19 @@ exports.addNewPost = async (req, res) => {
 }
 
 exports.getPost = async (req, res) => {
+  let options = {}
   // const { postId } = req.params;
-  const { post: postId } = req.query
+  const { post: postId, commentsPage } = req.query
+  if (+commentsPage) {
+    options.skip = +commentsPage ? (+commentsPage - 1) * COMMENTS_PER_PAGE : 0
+    options.limit = COMMENTS_PER_PAGE
+  }
   try {
-    const post = await Post.findById(postId)
+    const post = await Post.findById(postId).populate({
+      path: 'comments',
+      options: { sort: { 'comments.createdAt': -1 }, ...options },
+      // options: { limit: COMMENTS_PER_PAGE },
+    })
     if (!post) throw new Error('No post could be found')
     renderRes({ res, status: 200, data: { post } })
   } catch (err) {

@@ -4,10 +4,10 @@ import { config } from '../utils/constants'
 
 const server = `${serverUrl}/posts`
 
-export const getPost = async (postId) => {
+export const getPost = async ({ postId, commentsPage }) => {
   // const res = await axios.get(`${serverUrl}/posts/${postId}`, config)
   const res = await axios.get(
-    `${serverUrl}/posts/getPost?post=${postId}`,
+    `${serverUrl}/posts/getPost?post=${postId}&commentsPage=${commentsPage}`,
     config,
   )
   return res.data?.data?.post

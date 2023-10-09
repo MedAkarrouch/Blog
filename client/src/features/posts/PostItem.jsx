@@ -191,7 +191,7 @@ function Post({ post }) {
                 </div>
                 <div>
                   <HiOutlineChatBubbleOvalLeft />
-                  <span>{post?.comments?.length || 0} Comments</span>
+                  <span>{post?.comments || 0} Comments</span>
                 </div>
               </Stats>
             </StyledHeader>

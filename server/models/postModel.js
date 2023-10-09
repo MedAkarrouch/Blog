@@ -81,17 +81,26 @@ const postSchema = new mongoose.Schema(
   },
   { toJSON: { virtuals: true }, toObject: { virtuals: true } }
 )
+postSchema.virtual('commentsCount', {
+  ref: 'Comment',
+  localField: '_id',
+  foreignField: 'post',
+  count: true,
+})
+
 postSchema.virtual('comments', {
   ref: 'Comment',
   localField: '_id',
   foreignField: 'post',
+  options: { sort: { createdAt: -1 } },
 })
 postSchema.pre(/^find/, function (next) {
   this.populate({
     path: 'author',
     select: 'fullName photo',
-  }).populate('comments')
+  }).populate('commentsCount')
   next()
 })
+
 const Post = mongoose.model('Post', postSchema)
 module.exports = Post

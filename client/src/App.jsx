@@ -37,6 +37,7 @@ import Account from './pages/Account'
 import Dashboard from './pages/Dashboard'
 import EditPost from './pages/EditPost'
 import AddPost from './pages/AddPost'
+import Test1 from './pages/Test1'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -87,7 +88,7 @@ function App() {
           </Route>
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/test" element={<Test />} />
+          <Route path="/test" element={<Test1 />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </BrowserRouter>

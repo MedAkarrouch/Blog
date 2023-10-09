@@ -14,7 +14,7 @@ import {
   HiTrash,
 } from 'react-icons/hi2'
 import { useLikePost } from '../features/posts/useLikePost'
-import { useRef, useState } from 'react'
+import { memo, useRef, useState } from 'react'
 import { usePostComments } from '../features/comments/usePostComments'
 import { useOutsideClick } from '../hooks/useOutsideClick'
 import { Link, useNavigate } from 'react-router-dom'
@@ -151,13 +151,13 @@ const SocialLink = styled(Link)`
 function Aside({ post, commentsSection }) {
   const { user } = useUser()
   const navigate = useNavigate()
-  const { totalComments, isLoading } = usePostComments()
+  // const { totalComments, isLoading } = usePostComments()
   const { isDeleting, deletePost } = useDeletePost()
   const [showList, setShowList] = useState('')
   const [linkCopied, setLinkcopied] = useState(false)
   const linkCopiedTimeout = useRef(null)
   const socialsListRef = useOutsideClick(() => setShowList(false), false)
-  const { likes } = post
+  const { likes, commentsCount } = post
   const { likePost } = useLikePost()
   const [hasUserAlreadyLikedPost, setHasUserAlreadyLikedPost] = useState(() =>
     likes?.likes?.some((like) => like.user === user?._id),
@@ -193,106 +193,103 @@ function Aside({ post, commentsSection }) {
   }
   return (
     <StyledAside ref={asideRef}>
-      {isLoading ? (
-        <Spinner size={'4rem'} />
-      ) : (
-        <List>
-          <Item>
-            <Icon
-              title={
-                hasUserAlreadyLikedPost ? 'Remove like' : 'Like this article'
-              }
-              active={hasUserAlreadyLikedPost ? 'true' : ''}
-              onClick={handleLikeClick}
-            >
-              <HiOutlineHeart />
-            </Icon>
-            <span>{totalLikes}</span>
-          </Item>
-          <Item>
-            <Icon onClick={handleCommentClick} title="Jump to comments">
-              <HiOutlineChatBubbleOvalLeft />
-            </Icon>
-            <span>{totalComments}</span>
-          </Item>
-          <Item>
-            <Icon title="Add to bookmark">
-              <HiOutlineBookmark />
-            </Icon>
-          </Item>
-          <Item>
-            <Icon
-              onClick={(e) => {
-                e.stopPropagation()
-                setShowList((list) =>
-                  list === 'socials-list' ? '' : 'socials-list',
-                )
-              }}
-              title="Share this article"
-            >
-              <HiOutlineShare />
-            </Icon>
-            {showList === 'socials-list' && (
-              <SocialsList ref={socialsListRef}>
-                <SocialsItem
-                  onClick={handleCopyLink}
-                  linkCopied={linkCopied ? 'true' : ''}
-                >
-                  <span>{linkCopied ? 'Copied !' : 'Copy link'}</span>
-                  {linkCopied ? (
-                    <HiOutlineCheckCircle />
-                  ) : (
-                    <HiOutlineSquare2Stack />
-                  )}
+      <List>
+        <Item>
+          <Icon
+            title={
+              hasUserAlreadyLikedPost ? 'Remove like' : 'Like this article'
+            }
+            active={hasUserAlreadyLikedPost ? 'true' : ''}
+            onClick={handleLikeClick}
+          >
+            <HiOutlineHeart />
+          </Icon>
+          <span>{totalLikes}</span>
+        </Item>
+        <Item>
+          <Icon onClick={handleCommentClick} title="Jump to comments">
+            <HiOutlineChatBubbleOvalLeft />
+          </Icon>
+          <span>{commentsCount}</span>
+        </Item>
+        <Item>
+          <Icon title="Add to bookmark">
+            <HiOutlineBookmark />
+          </Icon>
+        </Item>
+        <Item>
+          <Icon
+            onClick={(e) => {
+              e.stopPropagation()
+              setShowList((list) =>
+                list === 'socials-list' ? '' : 'socials-list',
+              )
+            }}
+            title="Share this article"
+          >
+            <HiOutlineShare />
+          </Icon>
+          {showList === 'socials-list' && (
+            <SocialsList ref={socialsListRef}>
+              <SocialsItem
+                onClick={handleCopyLink}
+                linkCopied={linkCopied ? 'true' : ''}
+              >
+                <span>{linkCopied ? 'Copied !' : 'Copy link'}</span>
+                {linkCopied ? (
+                  <HiOutlineCheckCircle />
+                ) : (
+                  <HiOutlineSquare2Stack />
+                )}
+              </SocialsItem>
+              {socialsLinks.map((social) => (
+                <SocialsItem>
+                  <SocialLink
+                    target="_blank"
+                    to={social.link.replace(
+                      'URL',
+                      encodeURIComponent(
+                        window.location.href,
+                        // 'https://www.youtube.com/watch?v=yWDHYKTaRmo',
+                      ),
+                    )}
+                  >
+                    Share to {social.social}
+                  </SocialLink>
                 </SocialsItem>
-                {socialsLinks.map((social) => (
+              ))}
+            </SocialsList>
+          )}
+        </Item>
+        {postBelongsToCurrentUser && (
+          <>
+            <Item>
+              <Icon
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setShowList((list) =>
+                    list === 'menu-list' ? '' : 'menu-list',
+                  )
+                }}
+                title="Manage post"
+              >
+                <HiOutlineEllipsisHorizontal />
+              </Icon>
+              {showList === 'menu-list' && (
+                <SocialsList ref={socialsListRef} menu="menu">
                   <SocialsItem>
-                    <SocialLink
-                      target="_blank"
-                      to={social.link.replace(
-                        'URL',
-                        encodeURIComponent(
-                          window.location.href,
-                          // 'https://www.youtube.com/watch?v=yWDHYKTaRmo',
-                        ),
-                      )}
-                    >
-                      Share to {social.social}
+                    <SocialLink to={`/edit/${post?._id}`}>
+                      <HiPencil />
+                      <span>Edit post</span>
                     </SocialLink>
                   </SocialsItem>
-                ))}
-              </SocialsList>
-            )}
-          </Item>
-          {postBelongsToCurrentUser && (
-            <>
-              <Item>
-                <Icon
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    setShowList((list) =>
-                      list === 'menu-list' ? '' : 'menu-list',
-                    )
-                  }}
-                  title="Manage post"
-                >
-                  <HiOutlineEllipsisHorizontal />
-                </Icon>
-                {showList === 'menu-list' && (
-                  <SocialsList ref={socialsListRef} menu="menu">
+                  <Modal.Open window="delete-post">
                     <SocialsItem>
-                      <SocialLink to={`/edit/${post._id}`}>
-                        <HiPencil />
-                        <span>Edit post</span>
-                      </SocialLink>
+                      <HiTrash />
+                      <span>Delete post</span>
                     </SocialsItem>
-                    <Modal.Open window="delete-post">
-                      <SocialsItem>
-                        <HiTrash />
-                        <span>Delete post</span>
-                      </SocialsItem>
-                    </Modal.Open>
-                    {/* <SocialsItem>
+                  </Modal.Open>
+                  {/* <SocialsItem>
                 <SocialLink
                   target="_blank"
                   to={social.link.replace(
@@ -306,28 +303,28 @@ function Aside({ post, commentsSection }) {
                   Share to {social.social}
                 </SocialLink>
               </SocialsItem> */}
-                  </SocialsList>
-                )}
-              </Item>
-              <Modal.Window window="delete-post">
-                <ConfirmDelete
-                  resourceName={'post'}
-                  disabled={isDeleting}
-                  onConfirm={() =>
-                    deletePost(post?._id, {
-                      onSuccess: () => {
-                        navigate('/', { replace: true })
-                      },
-                      onError: () => {
-                        closeWindow()
-                      },
-                    })
-                  }
-                />
-              </Modal.Window>
-            </>
-          )}
-          {/* <Item>
+                </SocialsList>
+              )}
+            </Item>
+            <Modal.Window window="delete-post">
+              <ConfirmDelete
+                resourceName={'post'}
+                disabled={isDeleting}
+                onConfirm={() =>
+                  deletePost(post?._id, {
+                    onSuccess: () => {
+                      navigate('/', { replace: true })
+                    },
+                    onError: () => {
+                      closeWindow()
+                    },
+                  })
+                }
+              />
+            </Modal.Window>
+          </>
+        )}
+        {/* <Item>
             <Icon onClick={handleShareClick} title="Share this article">
               <HiOutlineShare />
             </Icon>
@@ -363,10 +360,9 @@ function Aside({ post, commentsSection }) {
               </SocialsList>
             )}
           </Item> */}
-        </List>
-      )}
+      </List>
     </StyledAside>
   )
 }
 
-export default Aside
+export default memo(Aside)

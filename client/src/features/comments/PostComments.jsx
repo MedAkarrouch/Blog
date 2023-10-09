@@ -7,6 +7,7 @@ import { forwardRef } from 'react'
 import Modal from '../../ui/Modal'
 import Spinner from '../../ui/Spinner'
 import PostCommentsContent from './PostCommentsContent'
+import { usePost } from '../posts/usePost'
 
 const Container = styled.div`
   padding-top: 3rem;
@@ -29,14 +30,14 @@ const SpinnerWrapper = styled.div`
 const PostComments = forwardRef(function PostComments(_, ref) {
   const { user } = useUser()
   const {
+    isLoading,
+    post,
+    comments,
     isError,
     isFetchingNextPage,
-    isLoading,
-    comments,
-    totalComments,
     fetchNextPage,
     hasNextPage,
-  } = usePostComments()
+  } = usePost()
 
   // console.log({ comments, isLoading, totalComments, comments })
 
@@ -52,7 +53,7 @@ const PostComments = forwardRef(function PostComments(_, ref) {
         <>
           <StyledHeading as="h1">
             Comments
-            <NumComments> ({totalComments})</NumComments>
+            <NumComments> ({post.commentsCount})</NumComments>
           </StyledHeading>
           <AddComment user={user} />
           <Modal>
