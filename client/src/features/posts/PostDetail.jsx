@@ -2,6 +2,8 @@ import styled from 'styled-components'
 import { postsImagesUrl, usersImagesUrl } from '../../utils/constants'
 import Heading from '../../ui/Heading'
 import { DateTime } from 'luxon'
+import { differenceInSeconds } from 'date-fns'
+import { HiOutlineBookOpen } from 'react-icons/hi2'
 
 const StyledContent = styled.div`
   margin-top: 5rem;
@@ -136,21 +138,32 @@ const StyledHeader = styled.div`
   margin-bottom: 2rem;
 `
 const ReadingTime = styled(Category)`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   color: var(--color-grey-400);
   background-color: #fff;
   text-transform: none;
+  & svg {
+    font-size: 2rem;
+  }
 `
+const Stats = styled.div``
 
 function PostDetail({ post }) {
   const { category, content, title, coverImg, author, readingTime, createdAt } =
     post
+  console.log('Post detail')
 
   return (
     <Layout>
       <PostHeader>
         <StyledHeader>
           <Category>{category}</Category>
-          <ReadingTime>{readingTime}</ReadingTime>
+          <ReadingTime>
+            <HiOutlineBookOpen />
+            <span>{readingTime}</span>
+          </ReadingTime>
         </StyledHeader>
         <Title as="h1">{title}</Title>
       </PostHeader>
@@ -162,7 +175,12 @@ function PostDetail({ post }) {
         />
         <FlexBox>
           <UserName>{author.fullName}</UserName>
-          <PostDate>{DateTime.fromISO(createdAt).toRelative()}</PostDate>
+          {/* <PostDate>{DateTime.fromISO(createdAt).toRelative()}</PostDate> */}
+          <PostDate>
+            {differenceInSeconds(new Date(), new Date(createdAt)) <= 1
+              ? 'Now'
+              : DateTime.fromISO(createdAt).toRelative()}
+          </PostDate>
         </FlexBox>
       </StyledProfile>
       <PostImg alt="" src={`${postsImagesUrl}/${coverImg}`} />

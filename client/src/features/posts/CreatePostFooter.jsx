@@ -30,14 +30,13 @@ const StyledFooter = styled.div`
   align-items: center;
 `
 
-function CreatePostFooter({ isLoading, clear, onEditMode }) {
+function CreatePostFooter({ isLoading, clear, reset, onEditMode }) {
   return (
     <StyledFooter>
       <Button>
-        {/* {isLoading ? <SpinnerMini publish={'true'} /> : 'Publish'} */}
         {isLoading ? 'Publishing...' : onEditMode ? 'Save changes' : 'Publish'}
       </Button>
-      <Button type="button" role="clear" onClick={clear}>
+      <Button type="button" role="clear" onClick={onEditMode ? reset : clear}>
         {onEditMode ? 'Reset' : 'Clear'}
       </Button>
     </StyledFooter>

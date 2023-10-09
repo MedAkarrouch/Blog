@@ -4,8 +4,6 @@ import { DateTime } from 'luxon'
 import Table from './Table'
 import {
   HiMiniArrowRightCircle,
-  HiOutlineArrowLongRight,
-  HiOutlineArrowRightCircle,
   HiOutlineChatBubbleOvalLeft,
   HiOutlineEllipsisVertical,
   HiOutlineHeart,
@@ -37,7 +35,7 @@ const Flex = styled.div`
     `}
   & svg {
     stroke-width: 1.5;
-    font-size: 2rem;
+    font-size: 2rem;  
   }
 `
 const ToggleIcon = styled(HiOutlineEllipsisVertical)`

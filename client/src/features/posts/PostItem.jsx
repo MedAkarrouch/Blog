@@ -1,8 +1,13 @@
 import { styled } from 'styled-components'
 import Heading from '../../ui/Heading'
-import { serverUrl, postsImagesUrl } from '../../utils/constants'
+import { postsImagesUrl } from '../../utils/constants'
 import { Link } from 'react-router-dom'
 import { DateTime } from 'luxon'
+import {
+  HiOutlineBookOpen,
+  HiOutlineHeart,
+  HiOutlineChatBubbleOvalLeft,
+} from 'react-icons/hi2'
 
 const StyledPost = styled.li`
   border-radius: 20px;
@@ -95,21 +100,66 @@ const StyledLine = styled.div`
 const StyledHeader = styled.div`
   display: flex;
   align-items: center;
-  gap: 5rem;
+  flex-wrap: wrap;
+  /* gap: 5rem; */
+  column-gap: 5rem;
+  row-gap: 1rem;
+  margin-bottom: 1.25rem;
 `
 const Category = styled.span`
   color: var(--color-orange-500);
   background-color: var(--color-grey-100);
   border-radius: 5px;
   padding: 0.5rem 1.25rem;
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   font-weight: 500;
   text-transform: capitalize;
 `
 const ReadingTime = styled(Category)`
+  font-size: 1.2rem;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   color: var(--color-grey-400);
   background-color: #fff;
   text-transform: none;
+  & svg {
+    font-size: 1.5rem;
+  }
+`
+const Stats = styled.div`
+  background-color: #fff;
+  border-radius: 5px;
+  padding: 0.5rem 1.25rem;
+  display: flex;
+  /* gap: 1.5rem; */
+  /* gap: 0.25rem; */
+  align-items: center;
+  color: var(--color-grey-400);
+  & div {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+  & div:first-child {
+    border-right: 2px solid var(--color-grey-100);
+    padding-right: 1.5rem;
+  }
+  & div:last-child {
+    padding-left: 1.5rem;
+  }
+  /* & div:nth-child(2) {
+    width: 0.25rem;
+    background-color: var(--color-grey-100);
+  } */
+  & span {
+    font-size: 1.2rem;
+  }
+  & svg {
+    font-size: 1.75rem;
+    stroke-width: 1.5;
+  }
 `
 
 function Post({ post }) {
@@ -130,7 +180,20 @@ function Post({ post }) {
           <StyledContent>
             <StyledHeader>
               <Category>{category}</Category>
-              <ReadingTime>{readingTime}</ReadingTime>
+              <ReadingTime>
+                <HiOutlineBookOpen />
+                <span>{readingTime}</span>
+              </ReadingTime>
+              <Stats>
+                <div>
+                  <HiOutlineHeart />
+                  <span>{post?.likes?.totalLikes || 0} Likes</span>
+                </div>
+                <div>
+                  <HiOutlineChatBubbleOvalLeft />
+                  <span>{post?.comments?.length || 0} Comments</span>
+                </div>
+              </Stats>
             </StyledHeader>
             <Title as="h3">{title}</Title>
             <Description>{summary}</Description>
@@ -148,6 +211,16 @@ function Post({ post }) {
                   {DateTime.fromISO(createdAt).toRelative()}
                 </StyledProfileDate>
               </StyledProfileDiv>
+              {/* <div>
+                <Stats>
+                  <HiOutlineHeart />
+                  <span>23 Likes</span>
+                </Stats>
+                <Stats>
+                  <HiOutlineChatBubbleOvalLeft />
+                  <span>64 Comments</span>
+                </Stats>
+              </div> */}
             </StyledProfile>
           </StyledContent>
           <StyledCoverImg

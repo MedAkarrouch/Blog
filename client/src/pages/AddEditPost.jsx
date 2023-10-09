@@ -72,23 +72,24 @@ const Wrapper = styled.div`
   gap: 1.25rem;
 `
 
-function AddEditPost({ post }) {
+function AddEditPost({ post, onEditMode = false }) {
   const { isAdding, addNewPost } = useAddNewPost()
   const { isUpdating, updatePost } = useUpdatePost()
   const isLoading = isAdding || isUpdating
   const titleRef = useAutoTextareaResize()
   const summaryRef = useAutoTextareaResize()
-  const [coverImg, setCoverImg] = useState(`${postsImagesUrl}/${post.coverImg}`)
-  const [title, setTitle] = useState(post.title || '')
-  const [summary, setSummary] = useState(post.summary || '')
-  const [content, setContent] = useState(post.content || '')
+  const [coverImg, setCoverImg] = useState(
+    post?.coverImg ? `${postsImagesUrl}/${post.coverImg}` : null,
+  )
+  const [title, setTitle] = useState(post?.title || '')
+  const [summary, setSummary] = useState(post?.summary || '')
+  const [content, setContent] = useState(post?.content || '')
   const [showList, setShowList] = useState(false)
-  const [category, setCategory] = useState(post.category || '')
+  const [category, setCategory] = useState(post?.category || '')
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    if (!coverImg) return toast.error('Cover image is required')
-    console.log(content)
+    if (onEditMode && !coverImg) return toast.error('Cover image is required')
     const data = new FormData()
     data.append('coverImg', coverImg)
     data.append('category', category)
@@ -96,16 +97,24 @@ function AddEditPost({ post }) {
     data.append('content', content)
     data.append('summary', summary)
 
-    // addNewPost(data)
-    updatePost(data)
+    if (onEditMode) updatePost(data)
+    if (!onEditMode) addNewPost(data)
   }
-  const clear = () => {
+  const reset = () => {
     setShowList(false)
     setCategory(post.category)
     setCoverImg(`${postsImagesUrl}/${post.coverImg}`)
     setTitle(post.title)
     setSummary(post.summary)
     setContent(post.content)
+  }
+  const clear = () => {
+    setShowList(false)
+    setCategory('')
+    setCoverImg(null)
+    setTitle('')
+    setSummary('')
+    setContent('')
   }
 
   return (
@@ -139,7 +148,12 @@ function AddEditPost({ post }) {
         </Wrapper>
         <Editor content={content} setContent={setContent} />
       </SyledDiv>
-      <CreatePostFooter onEditMode={true} isLoading={isLoading} clear={clear} />
+      <CreatePostFooter
+        onEditMode={onEditMode}
+        isLoading={isLoading}
+        reset={reset}
+        clear={clear}
+      />
     </StyledCreatePost>
   )
 }

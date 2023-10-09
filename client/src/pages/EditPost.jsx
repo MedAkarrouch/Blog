@@ -6,7 +6,7 @@ function EditPost() {
   const { isLoading, post } = usePost()
   if (isLoading) return <Spinner />
   if (!post) return <div>Post is not found</div>
-  return <AddEditPost post={post} />
+  return <AddEditPost post={post} onEditMode={true} />
 }
 
 export default EditPost

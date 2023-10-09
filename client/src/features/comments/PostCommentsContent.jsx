@@ -8,12 +8,11 @@ import ConfirmDelete from '../../ui/ConfirmDelete'
 import EditComment from './EditComment'
 import { useDeleteComment } from './useDeleteComment'
 import { useUpdateComment } from './useUpdateComment'
-import { useUser } from '../auth/useUser'
 
 const OptionsMenu = styled.menu`
   position: absolute;
   background-color: #fff;
-  top: 3rem;
+  top: 3.5rem;
   right: 0;
   border-radius: 7px;
   box-shadow: var(--shadow-md);
@@ -49,7 +48,6 @@ function PostCommentsContent({
   fetchNextPage,
   isFetchingNextPage,
 }) {
-  // const { user } = useUser()
   const { isDeleting, deleteComment } = useDeleteComment()
   const { isUpdating, updateComment } = useUpdateComment()
   const [currentComment, setCurrentComment] = useState(null)

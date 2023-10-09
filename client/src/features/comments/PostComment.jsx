@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components'
 import { HiOutlineEllipsisHorizontal } from 'react-icons/hi2'
-import { addSeconds, isEqual, differenceInSeconds } from 'date-fns'
+import { differenceInSeconds } from 'date-fns'
 import PostLayout from '../posts/PostLayout'
 import { usersImagesUrl } from '../../utils/constants'
 import { DateTime } from 'luxon'
@@ -14,15 +14,22 @@ const StyledRow = styled(PostLayout.Row)`
   align-items: center;
   position: relative;
 `
-const StyledOptionsBtn = styled.span`
+const StyledOptionsBtn = styled.button`
+  background: transparent;
+  border: none;
   display: flex;
+  padding: 0.25rem;
+  border-radius: 5px;
   & svg {
-    width: 2.5rem;
     height: 2.5rem;
+    width: 2.5rem;
     stroke-width: 2;
     cursor: pointer;
     color: var(--color-grey-500);
     line-height: 0;
+    &:hover {
+      color: var(--color-grey-700);
+    }
   }
 `
 const PostComment = forwardRef(function PostComment(
