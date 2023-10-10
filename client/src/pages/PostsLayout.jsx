@@ -47,10 +47,17 @@ const EndOfList = styled.p`
   color: var(--color-grey-500);
   font-size: 1.5rem;
 `
+const SpinnerContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 5rem;
+`
 
 function PostsLayout() {
   const {
     posts,
+    postsCount,
     isLoading,
     isError,
     hasNextPage,
@@ -64,34 +71,25 @@ function PostsLayout() {
       {isError ? (
         <ErrorMessage />
       ) : isLoading ? (
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginTop: '5rem',
-          }}
-        >
+        <SpinnerContainer>
           <Spinner />
-        </div>
+        </SpinnerContainer>
       ) : posts.length ? (
         <>
-          <Posts posts={posts} />
+          <Posts
+            posts={posts}
+            fetchNextPage={fetchNextPage}
+            isFetchingNextPage={isFetchingNextPage}
+            hasNextPage={hasNextPage}
+          />
           {isFetchingNextPage ? (
             <StyledSpinner>
               <SpinnerMini />
               <span>Loading more...</span>
             </StyledSpinner>
-          ) : hasNextPage ? (
-            <Button
-              disabled={isFetchingNextPage || !hasNextPage}
-              onClick={() => fetchNextPage()}
-            >
-              Show more
-            </Button>
-          ) : (
+          ) : posts?.length === postsCount ? (
             <EndOfList>You’ve reached the end of the list</EndOfList>
-          )}
+          ) : null}
         </>
       ) : (
         <NoResults>
@@ -102,5 +100,59 @@ function PostsLayout() {
     </>
   )
 }
+// function PostsLayout() {
+//   const {
+//     posts,
+//     isLoading,
+//     isError,
+//     hasNextPage,
+//     fetchNextPage,
+//     isFetchingNextPage,
+//   } = usePosts()
+
+//   return (
+//     <>
+//       <Filter />
+//       {isError ? (
+//         <ErrorMessage />
+//       ) : isLoading ? (
+//         <div
+//           style={{
+//             display: 'flex',
+//             alignItems: 'center',
+//             justifyContent: 'center',
+//             marginTop: '5rem',
+//           }}
+//         >
+//           <Spinner />
+//         </div>
+//       ) : posts.length ? (
+//         <>
+//           <Posts posts={posts} />
+//           {isFetchingNextPage ? (
+//             <StyledSpinner>
+//               <SpinnerMini />
+//               <span>Loading more...</span>
+//             </StyledSpinner>
+//           ) : hasNextPage ? (
+//             <Button
+//               disabled={isFetchingNextPage || !hasNextPage}
+//               onClick={() => fetchNextPage()}
+//             >
+//               Show more
+//             </Button>
+//           ) : (
+//             <EndOfList>You’ve reached the end of the list</EndOfList>
+//           )}
+//         </>
+//       ) : (
+//         <NoResults>
+//           <h2>No results found</h2>
+//           <p>It seems we can’t find any results based on your search.</p>
+//         </NoResults>
+//       )}
+//     </>
+//   )
+// }
 
 export default PostsLayout

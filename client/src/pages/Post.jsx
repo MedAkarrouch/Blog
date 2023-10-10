@@ -4,7 +4,7 @@ import Spinner from '../ui/Spinner'
 import PostDetail from '../features/posts/PostDetail'
 import Aside from '../ui/Aside'
 import PostComments from '../features/comments/PostComments'
-import { useMemo, useRef } from 'react'
+import { useRef } from 'react'
 import Modal from '../ui/Modal'
 
 const StyledPost = styled.div`

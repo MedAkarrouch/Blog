@@ -8,6 +8,7 @@ import {
   HiOutlineHeart,
   HiOutlineChatBubbleOvalLeft,
 } from 'react-icons/hi2'
+import { forwardRef } from 'react'
 
 const StyledPost = styled.li`
   border-radius: 20px;
@@ -117,7 +118,7 @@ const Category = styled.span`
 `
 const ReadingTime = styled(Category)`
   font-size: 1.2rem;
-  font-weight: 400;
+  font-weight: 500;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -149,12 +150,9 @@ const Stats = styled.div`
   & div:last-child {
     padding-left: 1.5rem;
   }
-  /* & div:nth-child(2) {
-    width: 0.25rem;
-    background-color: var(--color-grey-100);
-  } */
   & span {
     font-size: 1.2rem;
+    font-weight: 500;
   }
   & svg {
     font-size: 1.75rem;
@@ -162,7 +160,7 @@ const Stats = styled.div`
   }
 `
 
-function Post({ post }) {
+const Post = forwardRef(function Post({ post }, ref) {
   const {
     category,
     summary,
@@ -175,7 +173,7 @@ function Post({ post }) {
   } = post
   return (
     <>
-      <StyledPost>
+      <StyledPost ref={ref}>
         <StyledLink to={`/post/${postId}`}>
           <StyledContent>
             <StyledHeader>
@@ -191,7 +189,7 @@ function Post({ post }) {
                 </div>
                 <div>
                   <HiOutlineChatBubbleOvalLeft />
-                  <span>{post?.comments || 0} Comments</span>
+                  <span>{post?.commentsCount || 0} Comments</span>
                 </div>
               </Stats>
             </StyledHeader>
@@ -211,16 +209,6 @@ function Post({ post }) {
                   {DateTime.fromISO(createdAt).toRelative()}
                 </StyledProfileDate>
               </StyledProfileDiv>
-              {/* <div>
-                <Stats>
-                  <HiOutlineHeart />
-                  <span>23 Likes</span>
-                </Stats>
-                <Stats>
-                  <HiOutlineChatBubbleOvalLeft />
-                  <span>64 Comments</span>
-                </Stats>
-              </div> */}
             </StyledProfile>
           </StyledContent>
           <StyledCoverImg
@@ -228,28 +216,11 @@ function Post({ post }) {
             src={`${postsImagesUrl}/${coverImg}`}
             alt=""
           />
-          {/* <StyledCoverImg
-            src="https://assets.website-files.com/62747a2d3bf3fca1c45b852a/63e0aa63d88ab8b68761c363_BFCM%20strategies.png"
-            alt=""
-          /> */}
         </StyledLink>
       </StyledPost>
       <StyledLine />
     </>
   )
-}
+})
 
 export default Post
-
-// <div>
-//   <StyledProfile>
-//     <StyledProfileImg
-//       src="https://res.cloudinary.com/practicaldev/image/fetch/s--Q9Kwp-uC--/c_fill,f_auto,fl_progressive,h_90,q_auto,w_90/https://dev-to-uploads.s3.amazonaws.com/uploads/user/profile_image/609838/bc3ac0a6-8c2e-4c51-8fdd-83bd3d6ec159.jpeg"
-//       alt="dd"
-//     />
-//     <div>
-//       <StyledOwnerName>Alex Scherkov</StyledOwnerName>
-//       <StyledDate>Aug 29</StyledDate>
-//     </div>
-//   </StyledProfile>
-// </div>

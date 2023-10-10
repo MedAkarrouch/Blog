@@ -24,30 +24,5 @@ function Home() {
     </StyledHome>
   )
 }
-// function Home({ children }) {
-//   return (
-//     <StyledHome>
-//       <StyledContent>
-//         <Searchbar />
-//         {children}
-//       </StyledContent>
-//     </StyledHome>
-//   )
-// }
-// function Home() {
-//   const { isLoading, posts } = usePosts()
-//   console.log(posts)
-//   if (isLoading)
-//     return (
-//       <Spinner.Wrapper subtract="7rem">
-//         <Spinner />
-//       </Spinner.Wrapper>
-//     )
-//   return (
-//     <StyledHome>
-//       <HomeContent posts={posts} />
-//     </StyledHome>
-//   )
-// }
 
 export default Home

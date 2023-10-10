@@ -169,9 +169,10 @@ function Aside({ post, commentsSection }) {
 
   const hasUserAlreadyLikedPost = useMemo(() => {
     return likes?.likes?.some((like) => like.user === user?._id)
-  }, [])
+  }, [likes?.totalLikes])
+
   const totalLikes = likes?.totalLikes || 0
-  //
+  //z`
   const asideRef = useRef(null)
   const { closeWindow } = useModalContext()
 

@@ -1,12 +1,12 @@
-import { useInfiniteQuery } from "@tanstack/react-query"
-import { getPosts } from "../../services/apiPosts"
-import { useSearchParams } from "react-router-dom"
-import { PAGE_SIZE } from "../../utils/constants"
+import { useInfiniteQuery } from '@tanstack/react-query'
+import { getPosts } from '../../services/apiPosts'
+import { useSearchParams } from 'react-router-dom'
+import { PAGE_SIZE } from '../../utils/constants'
 
 export function usePosts() {
   const [searchParams] = useSearchParams()
-  const search = searchParams.get("search") || ""
-  const category = searchParams.get("category") || "all"
+  const search = searchParams.get('search') || ''
+  const category = searchParams.get('category') || 'all'
   const {
     data,
     isLoading,
@@ -14,21 +14,21 @@ export function usePosts() {
     error,
     isFetchingNextPage,
     hasNextPage,
-    fetchNextPage
+    fetchNextPage,
   } = useInfiniteQuery({
-    queryKey: ["posts", search, category],
+    queryKey: ['posts', search, category],
     queryFn: ({ pageParam = 1 }) =>
       getPosts({
         search,
         category,
         page: pageParam,
-        pageSize: PAGE_SIZE
+        pageSize: PAGE_SIZE,
       }),
     getNextPageParam: (lastPage, allPages) => {
       const maxPages = Math.ceil(lastPage.count / PAGE_SIZE)
       return allPages.length < maxPages ? allPages.length + 1 : undefined
     },
-    retry: false
+    retry: false,
   })
 
   const posts = data?.pages?.reduce((acc, page) => {
@@ -37,12 +37,13 @@ export function usePosts() {
 
   return {
     posts,
+    postsCount: data?.pages?.at(0)?.count,
     isLoading,
     isError,
     error,
     fetchNextPage,
     isFetchingNextPage,
-    hasNextPage
+    hasNextPage,
   }
 }
 
