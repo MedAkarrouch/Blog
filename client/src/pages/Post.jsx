@@ -4,14 +4,14 @@ import Spinner from '../ui/Spinner'
 import PostDetail from '../features/posts/PostDetail'
 import Aside from '../ui/Aside'
 import PostComments from '../features/comments/PostComments'
-import { useRef } from 'react'
+import { useMemo, useRef } from 'react'
 import Modal from '../ui/Modal'
 
 const StyledPost = styled.div`
   max-width: 90rem;
   margin: 0 auto;
   padding: 2rem;
-  padding-bottom: 10rem;
+  padding-bottom: 5rem;
   display: flex;
   flex-direction: column;
   gap: 4rem;
@@ -35,6 +35,7 @@ function Post() {
       </Spinner.Wrapper>
     )
   if (isError || !post) return <div>No post found !</div>
+
   return (
     <Container>
       <Modal>

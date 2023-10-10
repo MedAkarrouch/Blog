@@ -10,8 +10,7 @@ export function useAddComment() {
     mutationFn: (comment) => addCommentApi({ comment, post }),
     onSuccess: ({ comment }) => {
       toast.success('Comment successfully added')
-      // queryClient.invalidateQueries(['post-comments', comment.post])
-      queryClient.invalidateQueries()
+      queryClient.invalidateQueries(['post', comment.post])
     },
     onError: () => toast.error('Something went wrong'),
   })

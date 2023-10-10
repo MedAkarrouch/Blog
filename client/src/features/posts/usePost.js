@@ -1,4 +1,4 @@
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
+import { useInfiniteQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
 import { getPost } from '../../services/apiPosts'
 import { COMMENTS_PER_PAGE } from '../../utils/constants'
@@ -26,24 +26,12 @@ export function usePost() {
       else return undefined
     },
   })
-  // console.log('Post = ', data?.pages?.at(0))
-  // console.log(data, hasNextPage)
+  //
   const post = data?.pages?.at(0)
   const comments = data?.pages?.reduce((acc, page) => {
     return [...acc, ...page.comments]
   }, [])
-  // console.log(comments?.length, comments)
-  // ***** OLD OLD OLD OLD OLD OLD OLD OLD *****
-  // const {
-  //   isLoading,
-  //   data: post,
-  //   isError,
-  //   error,
-  // } = useQuery({
-  //   queryKey: ['post', postId],
-  //   queryFn: (data) => getPost({ postId, ...data }),
-  //   retry: false,
-  // })
+  //
   return {
     isLoading,
     post,

@@ -1,6 +1,5 @@
 import styled, { css } from 'styled-components'
-import { useRef, useState } from 'react'
-import { useAutoTextareaResize } from '../../hooks/useAutoTextareaResize'
+import { memo, useRef, useState } from 'react'
 import Button from '../account/Button'
 import PostLayout from '../posts/PostLayout'
 import {
@@ -8,14 +7,11 @@ import {
   MAX_COMMENT_LENGTH,
   usersImagesUrl,
 } from '../../utils/constants'
-import SpinnerMini from '../../ui/SpinnerMini'
 import { toast } from 'react-hot-toast'
 import Modal from '../../ui/Modal'
 import LogInToContinue from '../../ui/LogInToContinue'
-// import { useDeleteComment } from './useDeleteComment'
-// import { useUpdateComment } from './useUpdateComment'
 import { useAddComment } from './useAddComment'
-// import { useUpdateComment } from './useUpdateComment'
+import { useUser } from '../auth/useUser'
 
 const TextInput = styled.textarea`
   width: 100%;
@@ -56,7 +52,6 @@ const ButtonsContainer = styled.div`
   align-items: center;
 `
 function AddComment({
-  user,
   onEditMode = false,
   commentObj = {},
   onConfirm,
@@ -64,6 +59,7 @@ function AddComment({
   inputOnFocus = false,
   inputHeight = '10rem',
 }) {
+  const { user } = useUser()
   const ref = useRef(null)
   const [comment, setComment] = useState(commentObj?.comment || '')
   const [inputIsFocused, setInputIsFocused] = useState(inputOnFocus)
@@ -130,13 +126,7 @@ function AddComment({
             disabled={isLoading || !comment}
             onClick={onSubmit}
           >
-            {isAddingComment ? (
-              <SpinnerMini size={'2rem'} publish={'true'} />
-            ) : onEditMode ? (
-              'Edit'
-            ) : (
-              'Submit'
-            )}
+            {isLoading ? 'Submitting...' : 'Submit'}
           </Button>
           <Button
             size="medium"
@@ -152,4 +142,4 @@ function AddComment({
   )
 }
 
-export default AddComment
+export default memo(AddComment)

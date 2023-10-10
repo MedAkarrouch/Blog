@@ -4,7 +4,6 @@ import Posts from '../features/posts/Posts'
 import Spinner from '../ui/Spinner'
 import { usePosts } from '../features/posts/usePosts'
 import SpinnerMini from '../ui/SpinnerMini'
-import { PAGE_SIZE } from '../utils/constants'
 import ErrorMessage from '../ui/ErrorMessage'
 
 const Button = styled.button`
@@ -58,6 +57,7 @@ function PostsLayout() {
     fetchNextPage,
     isFetchingNextPage,
   } = usePosts()
+
   return (
     <>
       <Filter />
@@ -89,9 +89,9 @@ function PostsLayout() {
             >
               Show more
             </Button>
-          ) : posts?.length > PAGE_SIZE ? (
+          ) : (
             <EndOfList>You’ve reached the end of the list</EndOfList>
-          ) : null}
+          )}
         </>
       ) : (
         <NoResults>

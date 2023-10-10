@@ -8,7 +8,8 @@ export function useDeleteComment() {
     mutationFn: deleteCommentApi,
     onSuccess: ({ comment }) => {
       toast.success('Comment successfully deleted')
-      queryClient.invalidateQueries(['post-comments', comment.post])
+      // queryClient.invalidateQueries(['post-comments', comment.post])
+      queryClient.invalidateQueries(['post', comment.post])
     },
     onError: () => toast.error('Something went wrong'),
   })

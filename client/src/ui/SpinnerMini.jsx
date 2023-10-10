@@ -1,5 +1,5 @@
-import { BiLoaderAlt } from "react-icons/bi"
-import styled, { css, keyframes } from "styled-components"
+import { BiLoaderAlt } from 'react-icons/bi'
+import styled, { css, keyframes } from 'styled-components'
 
 const rotate = keyframes`
   0% {
@@ -24,6 +24,11 @@ const SpinnerMini = styled(BiLoaderAlt)`
     css`
       width: ${props.size};
       height: ${props.size};
+    `}
+  ${(props) =>
+    props.color &&
+    css`
+      color: ${props.color};
     `}
 `
 

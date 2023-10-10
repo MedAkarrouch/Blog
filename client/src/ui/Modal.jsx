@@ -31,7 +31,7 @@ const StyledModal = styled.div`
   /* background-color: var(--color-grey-50); */
   background-color: #fff;
   border-radius: 5px;
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-st);
   padding: 3.2rem 4rem;
   transition: all 0.5s;
 `

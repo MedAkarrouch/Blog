@@ -14,15 +14,15 @@ import {
   HiTrash,
 } from 'react-icons/hi2'
 import { useLikePost } from '../features/posts/useLikePost'
-import { memo, useRef, useState } from 'react'
-import { usePostComments } from '../features/comments/usePostComments'
+import { useMemo, useRef, useState } from 'react'
 import { useOutsideClick } from '../hooks/useOutsideClick'
 import { Link, useNavigate } from 'react-router-dom'
 import { socialsLinks } from '../utils/constants'
-import Spinner from './Spinner'
 import Modal, { useModalContext } from './Modal'
 import ConfirmDelete from './ConfirmDelete'
 import { useDeletePost } from '../features/posts/useDeletePost'
+import LogInToContinue from './LogInToContinue'
+import SpinnerMini from './SpinnerMini'
 
 const StyledAside = styled.aside`
   position: fixed;
@@ -50,7 +50,6 @@ const Item = styled.li`
   }
   position: relative;
 `
-
 const Icon = styled.span`
   cursor: pointer;
   & svg {
@@ -73,6 +72,11 @@ const Icon = styled.span`
   position: relative;
   /* background-color: var(--color-grey-50); */
   &:hover::after {
+    ${(props) =>
+      props['hide-title'] &&
+      css`
+        display: none;
+      `}
     content: attr(title);
     position: absolute;
     background-color: var(--color-orange-400);
@@ -80,16 +84,19 @@ const Icon = styled.span`
     text-align: center;
     padding: 0.75rem 1rem;
     border-radius: 10px;
-    z-index: 100;
+    z-index: 103;
     font-size: 1.3rem;
     top: 0;
     right: -13rem;
+    /*  */
+    /* top: -6rem; */
+    /* right: -5rem; */
     width: 12rem;
     box-shadow: var(--shadow-sm);
   }
 `
-
 const SocialsList = styled.ul`
+  z-index: 101;
   border-radius: 5px;
   position: absolute;
   background-color: #fff;
@@ -135,7 +142,7 @@ const SocialsItem = styled.li`
     }
   }
   ${(props) =>
-    props.linkCopied &&
+    props.linkcopied &&
     css`
       color: var(--color-green-400);
       & svg {
@@ -149,34 +156,30 @@ const SocialLink = styled(Link)`
 `
 
 function Aside({ post, commentsSection }) {
-  const { user } = useUser()
+  const { user, isAuthenticated } = useUser()
   const navigate = useNavigate()
-  // const { totalComments, isLoading } = usePostComments()
   const { isDeleting, deletePost } = useDeletePost()
   const [showList, setShowList] = useState('')
   const [linkCopied, setLinkcopied] = useState(false)
   const linkCopiedTimeout = useRef(null)
   const socialsListRef = useOutsideClick(() => setShowList(false), false)
+  //
   const { likes, commentsCount } = post
-  const { likePost } = useLikePost()
-  const [hasUserAlreadyLikedPost, setHasUserAlreadyLikedPost] = useState(() =>
-    likes?.likes?.some((like) => like.user === user?._id),
-  )
-  const [totalLikes, setTotalLikes] = useState(likes?.totalLikes || 0)
+  const { likePost, isLoading } = useLikePost()
+
+  const hasUserAlreadyLikedPost = useMemo(() => {
+    return likes?.likes?.some((like) => like.user === user?._id)
+  }, [])
+  const totalLikes = likes?.totalLikes || 0
+  //
   const asideRef = useRef(null)
   const { closeWindow } = useModalContext()
 
   const postBelongsToCurrentUser = post?.author._id === user?._id
 
   const handleLikeClick = () => {
-    setTotalLikes((likes) => (hasUserAlreadyLikedPost ? likes - 1 : likes + 1))
-    setHasUserAlreadyLikedPost((like) => !like)
-    likePost(null, {
-      onError: () => {
-        setHasUserAlreadyLikedPost(hasUserAlreadyLikedPost)
-        setTotalLikes(totalLikes)
-      },
-    })
+    if (!isAuthenticated) return
+    likePost()
   }
   const handleCommentClick = () => {
     console.log(commentsSection.current.getBoundingClientRect())
@@ -191,32 +194,46 @@ function Aside({ post, commentsSection }) {
       linkCopiedTimeout.current = setTimeout(handler, 1000)
     } catch {}
   }
+
   return (
     <StyledAside ref={asideRef}>
       <List>
-        <Item>
-          <Icon
-            title={
-              hasUserAlreadyLikedPost ? 'Remove like' : 'Like this article'
-            }
-            active={hasUserAlreadyLikedPost ? 'true' : ''}
-            onClick={handleLikeClick}
-          >
-            <HiOutlineHeart />
-          </Icon>
-          <span>{totalLikes}</span>
-        </Item>
+        <Modal.Open window={'confirm-window'}>
+          <Item>
+            <Icon
+              title={
+                hasUserAlreadyLikedPost ? 'Remove like' : 'Like this article'
+              }
+              active={hasUserAlreadyLikedPost ? 'true' : ''}
+              onClick={handleLikeClick}
+            >
+              {isLoading ? (
+                <SpinnerMini color={'var(--color-orange-400)'} />
+              ) : (
+                <HiOutlineHeart />
+              )}
+            </Icon>
+            <span>{totalLikes}</span>
+          </Item>
+        </Modal.Open>
+        {!isAuthenticated && (
+          <Modal.Window window={'confirm-window'}>
+            <LogInToContinue />
+          </Modal.Window>
+        )}
         <Item>
           <Icon onClick={handleCommentClick} title="Jump to comments">
             <HiOutlineChatBubbleOvalLeft />
           </Icon>
           <span>{commentsCount}</span>
         </Item>
-        <Item>
-          <Icon title="Add to bookmark">
-            <HiOutlineBookmark />
-          </Icon>
-        </Item>
+        <Modal.Open window={'confirm-window'}>
+          <Item>
+            <Icon title="Add to bookmark">
+              <HiOutlineBookmark />
+            </Icon>
+          </Item>
+        </Modal.Open>
         <Item>
           <Icon
             onClick={(e) => {
@@ -225,6 +242,7 @@ function Aside({ post, commentsSection }) {
                 list === 'socials-list' ? '' : 'socials-list',
               )
             }}
+            hide-title={showList === 'socials-list' ? 'true' : ''}
             title="Share this article"
           >
             <HiOutlineShare />
@@ -233,7 +251,7 @@ function Aside({ post, commentsSection }) {
             <SocialsList ref={socialsListRef}>
               <SocialsItem
                 onClick={handleCopyLink}
-                linkCopied={linkCopied ? 'true' : ''}
+                linkcopied={linkCopied ? 'true' : ''}
               >
                 <span>{linkCopied ? 'Copied !' : 'Copy link'}</span>
                 {linkCopied ? (
@@ -243,7 +261,7 @@ function Aside({ post, commentsSection }) {
                 )}
               </SocialsItem>
               {socialsLinks.map((social) => (
-                <SocialsItem>
+                <SocialsItem key={social.social}>
                   <SocialLink
                     target="_blank"
                     to={social.link.replace(
@@ -271,6 +289,7 @@ function Aside({ post, commentsSection }) {
                     list === 'menu-list' ? '' : 'menu-list',
                   )
                 }}
+                hide-title={showList === 'menu-list' ? 'true' : ''}
                 title="Manage post"
               >
                 <HiOutlineEllipsisHorizontal />
@@ -365,4 +384,4 @@ function Aside({ post, commentsSection }) {
   )
 }
 
-export default memo(Aside)
+export default Aside

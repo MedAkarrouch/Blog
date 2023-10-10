@@ -8,6 +8,8 @@ import ConfirmDelete from '../../ui/ConfirmDelete'
 import EditComment from './EditComment'
 import { useDeleteComment } from './useDeleteComment'
 import { useUpdateComment } from './useUpdateComment'
+import { useUser } from '../auth/useUser'
+import SpinnerMini from '../../ui/SpinnerMini'
 
 const OptionsMenu = styled.menu`
   position: absolute;
@@ -40,14 +42,36 @@ const OptionsItem = styled.li`
     height: 1.5rem;
   }
 `
+const Preview = styled.p`
+  text-align: center;
+`
+const EndOfList = styled.p`
+  text-align: center;
+  color: var(--color-grey-500);
+  font-size: 1.5rem;
+`
+const StyledSpinner = styled.div`
+  justify-content: center;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  color: var(--color-orange-400);
+  padding: 1rem 2.5rem;
+  border: 2px solid transparent;
+  span {
+    font-size: 1.4rem;
+    font-weight: 500;
+  }
+`
 
 function PostCommentsContent({
-  user,
   comments,
   hasNextPage,
   fetchNextPage,
   isFetchingNextPage,
+  commentsCount,
 }) {
+  const { user } = useUser()
   const { isDeleting, deleteComment } = useDeleteComment()
   const { isUpdating, updateComment } = useUpdateComment()
   const [currentComment, setCurrentComment] = useState(null)
@@ -69,7 +93,7 @@ function PostCommentsContent({
     closeWindow()
   }
   useEffect(() => {
-    const options = { root: null, rootMargin: '0px', threshold: 1 }
+    const options = { root: null, rootMargin: '0px', threshold: 0 }
     const callBackFn = (entries) => {
       const [entry] = entries
       console.log(lastCommentRef.current)
@@ -80,7 +104,7 @@ function PostCommentsContent({
     if (lastCommentRef.current && hasNextPage)
       observer.observe(lastCommentRef.current)
     return () => observer.disconnect()
-  }, [isFetchingNextPage, hasNextPage, fetchNextPage])
+  }, [isFetchingNextPage, hasNextPage, fetchNextPage, commentsCount])
 
   return (
     <>
@@ -127,6 +151,16 @@ function PostCommentsContent({
           )}
         </PostComment>
       ))}
+      <Preview>
+        {isFetchingNextPage ? (
+          <StyledSpinner>
+            <SpinnerMini />
+            <span>Loading more...</span>
+          </StyledSpinner>
+        ) : comments?.length === commentsCount ? (
+          <EndOfList>You’ve reached the end of the comments</EndOfList>
+        ) : null}
+      </Preview>
       <Modal.Window
         onClose={closeWindow}
         window={`onDelete--${currentComment?._id}`}

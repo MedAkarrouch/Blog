@@ -35,7 +35,7 @@ const Flex = styled.div`
     `}
   & svg {
     stroke-width: 1.5;
-    font-size: 2rem;  
+    font-size: 2rem;
   }
 `
 const ToggleIcon = styled(HiOutlineEllipsisVertical)`
@@ -173,7 +173,7 @@ const DashboardRow = forwardRef(function DashboardRow(
         </Flex>
         <Flex gap=".5rem">
           <HiOutlineChatBubbleOvalLeft />
-          <span>{post.comments.totalComments}</span>
+          <span>{post.commentsCount}</span>
         </Flex>
       </Flex>
       <IconBtn

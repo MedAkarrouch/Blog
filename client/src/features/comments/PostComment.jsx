@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
 import { HiOutlineEllipsisHorizontal } from 'react-icons/hi2'
 import { differenceInSeconds } from 'date-fns'
 import PostLayout from '../posts/PostLayout'
@@ -36,7 +36,7 @@ const PostComment = forwardRef(function PostComment(
   { commentObj, children, showMenu, belongsToUser },
   ref,
 ) {
-  const { comment, createdAt, user, _id: commentId } = commentObj
+  const { comment, createdAt, user } = commentObj
   const { text: commentText, show, isHidden } = useTextExpander(comment)
 
   return (
