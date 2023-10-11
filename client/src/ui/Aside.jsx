@@ -96,12 +96,13 @@ const Icon = styled.span`
   }
 `
 const SocialsList = styled.ul`
+  overflow: hidden;
   z-index: 101;
   border-radius: 5px;
   position: absolute;
   background-color: #fff;
   right: -19rem;
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-st);
   display: flex;
   flex-direction: column;
   ${(props) =>

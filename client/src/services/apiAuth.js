@@ -28,7 +28,8 @@ export async function login({ email, password }) {
   )
   return res.data.data.user
 }
-export async function logout() {}
+export const logout = async () =>
+  await axios.get(`${serverUrl}/auth/logout`, config)
 
 export const updateMe = async (data) =>
   await axios.patch(`${serverUrl}/users/updateMe`, data, {

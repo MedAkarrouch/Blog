@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import DashboardTable from '../ui/DashboardTable'
 import Modal from '../ui/Modal'
+import Stats from '../ui/Stats'
 
 const Container = styled.div`
   max-width: 95rem;
@@ -10,6 +11,7 @@ const Container = styled.div`
 function Dashboard() {
   return (
     <Container>
+      <Stats />
       <Modal>
         <DashboardTable />
       </Modal>

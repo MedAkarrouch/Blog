@@ -26,12 +26,10 @@ const Button = styled(Link)`
       border: 2px solid transparent;
     `}
 `
+
 function Menu() {
   return (
     <StyledMenu>
-      <Link to="/account">account</Link>
-      <Link to="/dashboard">dashboard</Link>
-      <Link to="/new">new</Link>
       <Button for="login" to="/login">
         Log In
       </Button>
