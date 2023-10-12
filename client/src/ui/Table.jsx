@@ -37,6 +37,7 @@ const StyledTableHeader = styled(CommonRow).attrs({ role: 'rowheader' })`
 const StyledTableRow = styled(CommonRow).attrs({ role: 'row' })`
   /* grid-template-columns: 7rem 2.1fr 1fr 0.7fr 0.7fr 0.1fr; */
   color: var(--color-grey-500);
+  background-color: #fff;
   &:not(:last-child) {
     border-bottom: 1px solid var(--color-grey-100);
   }

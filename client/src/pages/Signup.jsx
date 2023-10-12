@@ -1,9 +1,9 @@
-import styled from "styled-components"
+import styled from 'styled-components'
 
-import Logo from "../ui/Logo"
-import { useIsLoggedIn } from "../features/auth/useIsLoggedIn"
-import SignupForm from "../features/auth/SignupForm"
-import Spinner from "../ui/Spinner"
+import Logo from '../ui/Logo'
+import { useIsLoggedIn } from '../features/auth/useIsLoggedIn'
+import SignupForm from '../features/auth/SignupForm'
+import Spinner from '../ui/Spinner'
 
 const SignupLayout = styled.main`
   display: grid;
@@ -28,7 +28,7 @@ function Signup() {
     return (
       <SignupLayout>
         <Wrapper>
-          <Logo />
+          <Logo includeLink={false} />
         </Wrapper>
         <SignupForm />
       </SignupLayout>

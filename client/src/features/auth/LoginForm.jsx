@@ -1,11 +1,11 @@
-import styled from "styled-components"
-import { Link } from "react-router-dom"
-import FormRow from "../../ui/FormRow"
-import Form from "../../ui/Form"
-import Input from "../../ui/Input"
-import { useLogin } from "./useLogin"
-import { useState } from "react"
-import SpinnerMini from "../../ui/SpinnerMini"
+import styled from 'styled-components'
+import { Link } from 'react-router-dom'
+import FormRow from '../../ui/FormRow'
+import Form from '../../ui/Form'
+import Input from '../../ui/Input'
+import { useLogin } from './useLogin'
+import { useState } from 'react'
+import SpinnerMini from '../../ui/SpinnerMini'
 
 const StyledDiv = styled.div`
   display: flex;
@@ -39,19 +39,20 @@ const StyldeFooterDiv = styled.div`
 
 function LoginForm() {
   const { login, isLoading } = useLogin()
-  const [email, setEmail] = useState("akro@email.io")
-  const [password, setPassword] = useState("12345678")
+  const [email, setEmail] = useState('akro@email.io')
+  const [password, setPassword] = useState('12345678')
   const allowLogIn = email.length >= 5 && password.length >= 5
+
   const onSubmit = (e) => {
     e.preventDefault()
     login(
       { email, password },
       {
         onSettled: () => {
-          setEmail("")
-          setPassword("")
-        }
-      }
+          setEmail('')
+          setPassword('')
+        },
+      },
     )
   }
   return (
@@ -76,7 +77,7 @@ function LoginForm() {
         />
       </FormRow>
       <Form.Button disabled={isLoading}>
-        {!isLoading ? "Log in" : <SpinnerMini />}
+        {!isLoading ? 'Log in' : <SpinnerMini />}
       </Form.Button>
       <StyledDiv>
         <StyledLink to="/forgotPassword">Forgot Password?</StyledLink>

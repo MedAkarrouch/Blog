@@ -29,7 +29,7 @@ const StyledButtonsContainer = styled.div`
 function LogInToContinue() {
   return (
     <Container>
-      <Logo />
+      <Logo includeLink={false} />
       <Text>
         {/* Unlock the full potential of our blog by logging in! Once you're logged
         in, you can enjoy features like posting comments, saving your favorite

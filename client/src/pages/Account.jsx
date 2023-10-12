@@ -6,9 +6,9 @@ import DeleteAccount from '../features/account/DeleteAccount'
 
 const StyledAccount = styled.div`
   background-color: var(--color-grey-50);
-  height: calc(100vh - 7rem);
-  overflow-y: auto;
-  padding: 4rem 2rem;
+  padding: 4rem 0;
+  /* height: calc(100vh - 7rem); */
+  /* overflow-y: auto; */
 `
 const StyledContent = styled.div`
   max-width: 90rem;

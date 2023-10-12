@@ -7,13 +7,15 @@ const StyledHeader = styled.header`
   position: fixed;
   top: 0;
   left: 0;
+  right: 0;
   width: 100%;
   z-index: 1000;
   padding: 1rem 4rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: rgba(255, 255, 255, 0.97);
+  /* background-color: rgba(255, 255, 255, 0.97); */
+  background-color: #fff;
   border-bottom: 1px solid #eee;
   height: 7rem;
 `

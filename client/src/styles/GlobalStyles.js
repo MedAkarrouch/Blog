@@ -72,6 +72,18 @@ const GlobalStyles = createGlobalStyle`
     --color-blue-800: rgb(30 64 175);
     --color-blue-900:  rgb(30 58 138);
     --color-blue-950:  rgb(23 37 84);
+    /* Amber */
+    --color-amber-50 :  rgb(255 251 235);
+    --color-amber-100 : rgb(254 243 199);
+    --color-amber-200 :  rgb(253 230 138);
+    --color-amber-300 : rgb(252 211 77);
+    --color-amber-400 :  rgb(251 191 36);
+    --color-amber-500 : rgb(245 158 11);
+    --color-amber-600 : rgb(217 119 6);
+    --color-amber-700 : rgb(180 83 9);
+    --color-amber-800 : rgb(146 64 14);
+    --color-amber-900 : rgb(120 53 15);
+    --color-amber-950 : rgb(69 26 3);
   }
 .ql-toolbar {
   background-color: var(--color-grey-100);

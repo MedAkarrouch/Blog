@@ -1,11 +1,8 @@
-import styled from "styled-components"
-import LoginForm from "../features/auth/LoginForm"
-import Logo from "../ui/Logo"
-import { useUser } from "../features/auth/useUser"
-import Spinner from "../ui/Spinner"
-import { useEffect } from "react"
-import { useNavigate } from "react-router-dom"
-import { useIsLoggedIn } from "../features/auth/useIsLoggedIn"
+import styled from 'styled-components'
+import LoginForm from '../features/auth/LoginForm'
+import Logo from '../ui/Logo'
+import Spinner from '../ui/Spinner'
+import { useIsLoggedIn } from '../features/auth/useIsLoggedIn'
 
 const LoginLayout = styled.main`
   display: grid;
@@ -22,6 +19,7 @@ const Wrapper = styled.div`
 
 function Login() {
   const { isLoading, isLoggedIn } = useIsLoggedIn()
+
   if (isLoading)
     return (
       <Spinner.Wrapper>
@@ -32,7 +30,7 @@ function Login() {
     return (
       <LoginLayout>
         <Wrapper>
-          <Logo />
+          <Logo includeLink={false} />
         </Wrapper>
         <LoginForm />
       </LoginLayout>

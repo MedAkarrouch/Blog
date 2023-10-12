@@ -3,7 +3,7 @@ import Searchbar from '../ui/Searchbar'
 import PostsLayout from './PostsLayout'
 
 const StyledHome = styled.div`
-  padding: 0 2rem;
+  /* padding: 0 2rem; */
   margin-top: 10rem;
 `
 const StyledContent = styled.div`

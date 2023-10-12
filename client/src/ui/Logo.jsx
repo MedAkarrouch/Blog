@@ -7,9 +7,12 @@ const StyledLogo = styled.div`
   text-transform: uppercase;
   font-weight: 900;
 `
-function Logo() {
-  // return <StyledLogo to="/">Loor</StyledLogo>
-  return <StyledLogo>Loor</StyledLogo>
+function Logo({ includeLink = true }) {
+  return (
+    <StyledLogo>
+      {includeLink ? <Link to="/posts">Loor</Link> : 'Loor'}
+    </StyledLogo>
+  )
 }
 
 export default Logo
