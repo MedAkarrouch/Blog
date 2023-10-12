@@ -55,6 +55,7 @@ const Icon = styled.span`
 function Stats() {
   return (
     <StyledStats>
+      {/* { make them stats responsive } */}
       {/* Total Posts     1540 Posts */}
       {/* Total Comments  12400 Comments */}
       {/* Total Likes     69766 Likes */}
