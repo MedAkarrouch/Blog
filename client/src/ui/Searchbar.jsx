@@ -1,81 +1,80 @@
-import styled from "styled-components"
-import { HiOutlineMagnifyingGlass, HiMiniXCircle } from "react-icons/hi2"
-import { useSearchParams } from "react-router-dom"
-import { useState } from "react"
-
-// import { categories as categoriesArr, searchForArr } from "../utils/constants"
-
-import SelectResults from "../features/posts/SelectResults"
-// const categories = ["All", ...categoriesArr]
+import styled, { css } from 'styled-components'
+import { HiOutlineMagnifyingGlass, HiMiniXCircle } from 'react-icons/hi2'
+import { useSearchParams } from 'react-router-dom'
+import { useState } from 'react'
 
 const StyledSearchbar = styled.form`
+  /* box-shadow: var(--shadow-sm); */
+  justify-self: center;
   display: grid;
-  /* grid-template-columns: minmax(40rem, 4fr) min-content minmax(10rem, 1fr); */
-  grid-template-columns: minmax(40rem, 4fr) min-content 8rem;
-  /* grid-template-columns: minmax(40rem, 3fr) min-content minmax(20rem, 1.2fr); */
-  column-gap: 3rem;
-  max-width: 90rem;
-  margin: 0 auto;
-  padding: 1rem 2.5rem;
-  box-shadow: var(--shadow);
-  border-radius: 10px;
-  position: relative;
-  /* box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px; */
+  grid-template-columns: 1fr 6rem;
+  border: 1px solid var(--color-grey-300);
+  border-radius: 50px;
+  overflow: hidden;
+  width: 45rem;
+  transition: width 0.2s ease-in;
+  ${(props) =>
+    props['is-focused'] &&
+    css`
+      width: 45rem;
+    `}
 `
 
 const Input = styled.input`
   color: var(--color-grey-600);
   padding: 0.8rem 1.2rem;
+  padding: 1rem 2rem;
   border: none;
   display: block;
-  width: 50rem;
   width: 100%;
+  font-size: 1.5rem;
+  border-top-left-radius: 50px;
+  border-bottom-left-radius: 50px;
+  &::placeholder {
+    color: var(--color-grey-400);
+  }
   &:focus {
-    outline: none;
+    outline: 2px solid var(--color-orange-400);
   }
 `
-const InputBox = styled.div`
+
+const SearchIcon = styled.span.attrs({ title: 'Search' })`
+  background-color: var(--color-grey-50);
   display: flex;
   align-items: center;
-  gap: 1rem;
+  justify-content: center;
+  cursor: pointer;
+  align-self: stretch;
+  &:hover {
+    background-color: var(--color-grey-100);
+  }
   & svg {
+    stroke-width: 2.5;
     font-size: 2rem;
     color: var(--color-grey-400);
   }
-  & > svg:first-child {
-    stroke-width: 2.5;
-  }
-  & svg:last-child {
-    cursor: pointer;
-  }
-`
-const Line = styled.div`
-  display: block;
-  background-color: #eee;
-  width: 2px;
-  /* align-self: stretch; */
-  height: 100%;
 `
 
 function Searchbar() {
   const [searchParams, setSearchParams] = useSearchParams()
-  const [search, setSearch] = useState(() => searchParams.get("search") || "")
+  const [search, setSearch] = useState(() => searchParams.get('search') || '')
+  const [isFocused, setIsFocused] = useState(false)
 
   const setParams = (val) => {
-    searchParams.set("search", val)
+    searchParams.set('search', val)
     setSearchParams(searchParams)
   }
   const onClear = () => {
-    setSearch("")
-    if (searchParams.has("search")) {
-      searchParams.delete("search")
+    setSearch('')
+    if (searchParams.has('search')) {
+      searchParams.delete('search')
       setSearchParams(searchParams)
     }
   }
   const onSubmit = (e) => {
     e.preventDefault()
     if (!search) {
-      searchParams.delete("search")
+      searchParams.delete('search')
       setSearchParams(searchParams)
       return
     }
@@ -83,19 +82,18 @@ function Searchbar() {
   }
 
   return (
-    <StyledSearchbar onSubmit={onSubmit}>
-      <InputBox>
+    <StyledSearchbar is-focused={isFocused ? 'true' : ''} onSubmit={onSubmit}>
+      <Input
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
+        placeholder="Search"
+        autoComplete="off"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
+      <SearchIcon>
         <HiOutlineMagnifyingGlass />
-        <Input
-          placeholder="Search..."
-          autoComplete="off"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-        <HiMiniXCircle type="submit" onClick={onClear} />
-      </InputBox>
-      <Line>&nbsp;</Line>
-      <SelectResults />
+      </SearchIcon>
     </StyledSearchbar>
   )
 }

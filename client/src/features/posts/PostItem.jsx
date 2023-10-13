@@ -21,6 +21,11 @@ const StyledPost = styled.li`
   /* background-color: var( --color-grey-50); */
   background-color: var(--color-grey-50);
   box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  a {
+    &:focus {
+      outline: none;
+    }
+  }
 `
 const StyledLink = styled(Link)`
   display: grid;

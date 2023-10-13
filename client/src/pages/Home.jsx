@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import Searchbar from '../ui/Searchbar'
 import PostsLayout from './PostsLayout'
 
 const StyledHome = styled.div`
@@ -18,7 +17,6 @@ function Home() {
   return (
     <StyledHome>
       <StyledContent>
-        <Searchbar />
         <PostsLayout />
       </StyledContent>
     </StyledHome>

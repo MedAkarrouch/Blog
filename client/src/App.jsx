@@ -88,7 +88,7 @@ function App() {
           </Route>
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/test" element={<Test1 />} />
+          <Route path="/test" element={<Test />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </BrowserRouter>
