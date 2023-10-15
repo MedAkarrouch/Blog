@@ -1,9 +1,9 @@
-import { useEffect, useRef } from "react"
+import { useEffect, useRef } from 'react'
 
 const options = {
   root: null,
-  rootMargin: "0px",
-  threshold: 1.0
+  rootMargin: '0px',
+  threshold: 1.0,
 }
 
 export function useObserver(handler) {

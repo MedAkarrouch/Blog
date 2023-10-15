@@ -1,62 +1,137 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { categoriesArr } from '../utils/constants'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { HiMiniChevronLeft, HiMiniChevronRight } from 'react-icons/hi2'
+import { useSearchParams } from 'react-router-dom'
+
 const StyledSlider = styled.div`
+  /* background-color: var(--color-orange-50); */
   display: grid;
   grid-template-columns: 4rem 1fr 4rem;
   align-items: center;
-  max-width: 70rem;
-  margin: 0 auto;
+  max-width: 90rem;
+  margin: 10rem auto;
   gap: 0 2rem;
 `
 const Items = styled.div`
-  background-color: var(--color-grey-500);
+  /* background-color: var(--color-grey-500); */
   display: grid;
-  grid-template-columns: repeat(${categoriesArr.length}, 10rem);
+  grid-template-columns: 4fr 8fr 7fr 15fr 16fr 16fr 11fr 8fr 10fr 6fr;
+  align-items: center;
   column-gap: 2rem;
-  /* justify-items: cente; */
-  position: absolute;
-  top: 50%;
-  transform: translate(${(props) => props['translate-x']}rem, -50%);
-  width: 100%;
+  transform: translateX(${(props) => props['translate-x']}rem);
+  width: 130rem;
   transition: transform 0.3s ease;
 `
 const Item = styled.div`
-  /* display: flex; */
-  /* text-align: center; */
-  /* align-items: center; */
-  /* justify-content: center; */
-  background-color: bisque;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  padding: 0.25rem 0rem;
+  ${(props) =>
+    props.active &&
+    css`
+      border-color: var(--color-orange-400);
+    `}
+  font-size: 1.5rem;
+  font-weight: 500;
+  ${(props) =>
+    !props.active &&
+    css`
+      transition: color 0.3s ease;
+      &:hover {
+        color: var(--color-grey-950);
+      }
+    `}
 `
 const ItemsContainer = styled.div`
-  overflow: hidden;
-  min-height: 10rem;
+  overflow-x: scroll;
   position: relative;
+  cursor: grab;
+  &::-webkit-scrollbar {
+    /* display: none; */
+  }
 `
-function Slider() {
+const Icon = styled.span`
+  /* background-color: green; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  height: 4rem;
+  &:hover {
+    background-color: var(--color-grey-100);
+  }
+  & svg {
+    color: var(--color-grey-500);
+    cursor: pointer;
+    z-index: 100;
+    font-size: 2.75rem;
+    stroke-width: 0.5;
+    background: transparent;
+  }
+`
+function Slider({ filedName }) {
+  const [searchParams, setSearchParams] = useSearchParams()
+  const currentFieldVal = searchParams.get(filedName) || 'all'
   const [translateX, setTranslateX] = useState('0')
-  const next = () => {
-    setTranslateX((val) => val - 30)
+  const itemRef = useRef(null)
+  const containerRef = useRef(null)
+
+  const onClick = (item) => {
+    searchParams.set(filedName, item)
+    setSearchParams(searchParams)
   }
-  const prev = () => {
-    setTranslateX((val) => val + 30)
+  const next = (value = null) => {
+    setTranslateX((val) => value || val - 20)
   }
-  // const arr = [1, 2, 3]
-  const arr = [
-    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-  ]
+  const prev = (value = null) => {
+    setTranslateX((val) => value || val + 20)
+  }
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries
+        // console.log(entry.isIntersecting)
+        // setTranslateX((leftPosition - 130) / 2)
+      },
+      {
+        root: null,
+        rootMargin: '0px',
+        threshold: 1.0,
+      },
+    )
+    if (itemRef.current) observer.observe(itemRef.current)
+    return () => observer.disconnect()
+  }, [currentFieldVal])
 
   return (
     <StyledSlider>
-      <button onClick={prev}>Prev</button>
+      <Icon>
+        <HiMiniChevronLeft onClick={() => prev()} />
+      </Icon>
+      {/* <button onClick={prev}>Prev</button> */}
       <ItemsContainer>
-        <Items translatex={translateX}>
-          {categoriesArr.map((item) => (
-            <Item key={item.value}>{item.label}</Item>
+        <Items ref={containerRef} translate-x={translateX}>
+          {categoriesArr.map((item, index) => (
+            <Item
+              key={item.value}
+              onClick={() => onClick(item.value)}
+              active={currentFieldVal === item.value ? 'true' : null}
+              ref={currentFieldVal === item.value ? itemRef : null}
+            >
+              {item.label}
+            </Item>
           ))}
         </Items>
       </ItemsContainer>
-      <button onClick={next}>Next</button>
+      <Icon>
+        <HiMiniChevronRight onClick={() => next()} />
+      </Icon>
+      {/* <button onClick={next}>Next</button> */}
     </StyledSlider>
   )
 }

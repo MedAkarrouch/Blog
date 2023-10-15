@@ -6,6 +6,11 @@ import { useEffect, useRef, useState } from 'react'
 import { getPostComments } from '../services/apiComments'
 import Filter from '../ui/Filter'
 import Slider from '../ui/Slider'
+import ScrollMenu from '../ui/ScrollMenu'
+// import Slider from '../ui/Slider'
+
+// Import css files
+// Import css files
 
 const StyledContent = styled.div`
   max-width: 90rem;
@@ -17,15 +22,17 @@ const StyledContent = styled.div`
   padding: 10rem 0;
 `
 const Container = styled.div`
-  /* max-width: 70rem; */
-  margin: 20rem auto;
-  background-color: var(--color-grey-50);
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* background-color: var(--color-orange-50); */
 `
 
 function Test() {
   return (
     <Container>
-      <Slider />
+      <ScrollMenu filedName={'category'} />
     </Container>
   )
 }

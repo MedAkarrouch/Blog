@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components'
 import { HiMiniChevronRight, HiMiniChevronLeft } from 'react-icons/hi2'
 import { categoriesArr } from '../utils/constants'
-import { useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 
 const StyledFilter = styled.div`
@@ -78,20 +78,50 @@ const XX = styled.div`
 
 function Filter() {
   const [searchParams, setSearchParams] = useSearchParams()
+  const listRef = useRef()
+  const scrollPercentage = useRef(0)
   const currentCategory = searchParams.get('category') || 'all'
+  // const [windowWidth, setWindowWidth] = useState(window.window)
 
-  const next = () => {}
-  const prev = () => {}
+  const next = () => {
+    const list = listRef.current
+    const scroll = list.scrollWidth - list.clientWidth
+    console.log(scroll, scrollPercentage.current)
+    if (scrollPercentage.current < 0) scrollPercentage.current = 0
+    if (scroll <= scrollPercentage.current) return
+    scrollPercentage.current = Number(
+      (scrollPercentage.current + scroll * 0.2).toFixed(1),
+    )
+    list.style.transform = `translate(-${scrollPercentage.current}px,-50%)`
+    console.log(scroll, scrollPercentage.current)
+  }
+  const prev = () => {
+    const list = listRef.current
+    const scroll = list.scrollWidth - list.clientWidth
+    if (scrollPercentage.current === 0) return
+    scrollPercentage.current = Number(
+      (scrollPercentage.current - scroll * 0.2).toFixed(1),
+    )
+    // scrollPercentage.current -= scroll * 0.2
+    list.style.transform = `translate(-${scrollPercentage.current}px,-50%)`
+    console.log(scroll, scrollPercentage.current)
+  }
   const onClick = (category) => {
     searchParams.set('category', category)
     setSearchParams(searchParams)
   }
+  // console.log(window.innerWidth)
+  // const handleReseize = () => setWindowWidth(window.width)
+  // useEffect(() => {
+  //   document.addEventListener('resize', handleReseize)
+  //   return () => document.removeEventListener('resize', handleReseize)
+  // }, [windowWidth])
 
   return (
     <StyledFilter>
       <HiMiniChevronLeft onClick={prev} />
       <XX>
-        <List>
+        <List ref={listRef}>
           {categoriesArr.map((category) => (
             <Item
               active={category.value === currentCategory}
@@ -107,58 +137,5 @@ function Filter() {
     </StyledFilter>
   )
 }
-// function Filter() {
-//   const [searchParams, setSearchParams] = useSearchParams()
-//   const listRef = useRef()
-//   const scrollPercentage = useRef(0)
-//   const currentCategory = searchParams.get('category') || 'all'
-//   const next = () => {
-//     const list = listRef.current
-//     const scroll = list.scrollWidth - list.clientWidth
-//     console.log(scroll, scrollPercentage.current)
-//     if (scrollPercentage.current < 0) scrollPercentage.current = 0
-//     if (scroll <= scrollPercentage.current) return
-//     scrollPercentage.current = Number(
-//       (scrollPercentage.current + scroll * 0.2).toFixed(1),
-//     )
-//     list.style.transform = `translate(-${scrollPercentage.current}px,-50%)`
-//     console.log(scroll, scrollPercentage.current)
-//   }
-//   const prev = () => {
-//     const list = listRef.current
-//     const scroll = list.scrollWidth - list.clientWidth
-//     if (scrollPercentage.current === 0) return
-//     scrollPercentage.current = Number(
-//       (scrollPercentage.current - scroll * 0.2).toFixed(1),
-//     )
-//     // scrollPercentage.current -= scroll * 0.2
-//     list.style.transform = `translate(-${scrollPercentage.current}px,-50%)`
-//     console.log(scroll, scrollPercentage.current)
-//   }
-//   const onClick = (category) => {
-//     searchParams.set('category', category)
-//     setSearchParams(searchParams)
-//   }
-
-//   return (
-//     <StyledFilter>
-//       <HiMiniChevronLeft onClick={prev} />
-//       <XX>
-//         <List ref={listRef}>
-//           {categoriesArr.map((category) => (
-//             <Item
-//               active={category.value === currentCategory}
-//               key={category.label}
-//               onClick={() => onClick(category.value)}
-//             >
-//               {category.label}
-//             </Item>
-//           ))}
-//         </List>
-//       </XX>
-//       <HiMiniChevronRight onClick={next} />
-//     </StyledFilter>
-//   )
-// }
 
 export default Filter
