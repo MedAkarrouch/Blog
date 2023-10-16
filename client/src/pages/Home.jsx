@@ -5,14 +5,12 @@ import Main from '../ui/Main'
 const StyledContent = styled.div`
   max-width: 120rem;
   margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 3rem;
   padding-bottom: 4rem;
 `
+
 function Home() {
   return (
-    <Main>
+    <Main page="home">
       <StyledContent>
         <PostsLayout />
       </StyledContent>

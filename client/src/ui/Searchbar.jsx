@@ -1,7 +1,8 @@
 import styled, { css } from 'styled-components'
-import { HiOutlineMagnifyingGlass, HiMiniXCircle } from 'react-icons/hi2'
+import { HiOutlineMagnifyingGlass, HiArrowSmallLeft } from 'react-icons/hi2'
 import { useSearchParams } from 'react-router-dom'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
+import { useWindowListener } from '../hooks/useWindowListener'
 
 const StyledSearchbar = styled.form`
   /* box-shadow: var(--shadow-sm); */
@@ -13,11 +14,29 @@ const StyledSearchbar = styled.form`
   overflow: hidden;
   width: 45rem;
   transition: width 0.2s ease-in;
+  transform-origin: center;
   ${(props) =>
-    props['is-focused'] &&
+    props.mobile &&
     css`
-      width: 45rem;
+      border: none;
+      border-radius: 50px;
+      grid-template-columns: 1fr;
+      width: unset;
+      justify-self: end;
     `}
+  ${(props) =>
+    props['show-searchbar-only'] &&
+    css`
+      display: grid;
+      grid-template-columns: 1fr 6rem;
+      width: 100%;
+    `}
+`
+const Container = styled.div`
+  display: grid;
+  align-items: center;
+  gap: 2rem;
+  grid-template-columns: 4rem 1fr;
 `
 
 const Input = styled.input`
@@ -56,12 +75,43 @@ const SearchBtn = styled.button.attrs({ title: 'Search' })`
     font-size: 2rem;
     color: var(--color-grey-400);
   }
+  ${(props) =>
+    props.mobile &&
+    css`
+      justify-self: end;
+      width: 4rem;
+      height: 4rem;
+      background-color: transparent;
+    `}
+  ${(props) =>
+    props['show-searchbar-only'] &&
+    css`
+      background-color: transparent;
+      & svg {
+        color: var(--color-grey-500);
+        stroke-width: 0.5;
+        font-size: 3rem;
+      }
+      border-radius: 50%;
+    `}
 `
 
-function Searchbar() {
+function Searchbar({ showSearchbarOnly, setShowSearchbarOnly }) {
   const [searchParams, setSearchParams] = useSearchParams()
   const [search, setSearch] = useState(() => searchParams.get('search') || '')
-  const [isFocused, setIsFocused] = useState(false)
+  const inputRef = useRef(null)
+
+  const [isOnMobileScreen, setIsOnMobileScreen] = useState(
+    window.innerWidth <= 600,
+  )
+  const checkIsOnMobile = () => {
+    if (window.innerWidth <= 600) setIsOnMobileScreen(true)
+    else {
+      setIsOnMobileScreen(false)
+      setShowSearchbarOnly(false)
+    }
+  }
+  useWindowListener(checkIsOnMobile)
 
   const setParams = (val) => {
     searchParams.set('search', val)
@@ -76,6 +126,8 @@ function Searchbar() {
   }
   const onSubmit = (e) => {
     e.preventDefault()
+    inputRef.current?.blur()
+    // if (showSearchbarOnly) setShowSearchbarOnly(false)
     if (!search) {
       searchParams.delete('search')
       setSearchParams(searchParams)
@@ -84,21 +136,55 @@ function Searchbar() {
     setParams(search)
   }
 
-  return (
-    <StyledSearchbar is-focused={isFocused ? 'true' : ''} onSubmit={onSubmit}>
-      <Input
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
-        placeholder="Search"
-        autoComplete="off"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
-      <SearchBtn>
-        <HiOutlineMagnifyingGlass />
-      </SearchBtn>
-    </StyledSearchbar>
-  )
+  if (showSearchbarOnly)
+    return (
+      <Container>
+        <SearchBtn
+          show-searchbar-only={'true'}
+          onClick={() => setShowSearchbarOnly(false)}
+        >
+          <HiArrowSmallLeft />
+        </SearchBtn>
+        <StyledSearchbar onSubmit={onSubmit} show-searchbar-only={'true'}>
+          <Input
+            ref={inputRef}
+            placeholder="Search"
+            autoComplete="off"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          <SearchBtn>
+            <HiOutlineMagnifyingGlass />
+          </SearchBtn>
+        </StyledSearchbar>
+      </Container>
+    )
+  else
+    return (
+      <StyledSearchbar
+        mobile={isOnMobileScreen ? 'mobile' : ''}
+        onSubmit={onSubmit}
+      >
+        {isOnMobileScreen ? (
+          <SearchBtn mobile="true" onClick={() => setShowSearchbarOnly(true)}>
+            <HiOutlineMagnifyingGlass />
+          </SearchBtn>
+        ) : (
+          <>
+            <Input
+              ref={inputRef}
+              placeholder="Search"
+              autoComplete="off"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            <SearchBtn>
+              <HiOutlineMagnifyingGlass />
+            </SearchBtn>
+          </>
+        )}
+      </StyledSearchbar>
+    )
 }
 
 export default Searchbar
