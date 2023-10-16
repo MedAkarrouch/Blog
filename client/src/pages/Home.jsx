@@ -1,25 +1,22 @@
 import styled from 'styled-components'
-import PostsLayout from './PostsLayout'
+import PostsLayout from '../ui/PostsLayout'
+import Main from '../ui/Main'
 
-const StyledHome = styled.div`
-  /* padding: 0 2rem; */
-  margin-top: 10rem;
-`
 const StyledContent = styled.div`
   max-width: 120rem;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   gap: 3rem;
-  padding-bottom: 10rem;
+  padding-bottom: 4rem;
 `
 function Home() {
   return (
-    <StyledHome>
+    <Main>
       <StyledContent>
         <PostsLayout />
       </StyledContent>
-    </StyledHome>
+    </Main>
   )
 }
 

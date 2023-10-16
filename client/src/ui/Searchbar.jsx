@@ -38,14 +38,17 @@ const Input = styled.input`
   }
 `
 
-const SearchIcon = styled.span.attrs({ title: 'Search' })`
+const SearchBtn = styled.button.attrs({ title: 'Search' })`
+  border: none;
   background-color: var(--color-grey-50);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   align-self: stretch;
-  &:hover {
+  &:hover,
+  &:focus {
+    outline: none;
     background-color: var(--color-grey-100);
   }
   & svg {
@@ -91,9 +94,9 @@ function Searchbar() {
         value={search}
         onChange={(e) => setSearch(e.target.value)}
       />
-      <SearchIcon>
+      <SearchBtn>
         <HiOutlineMagnifyingGlass />
-      </SearchIcon>
+      </SearchBtn>
     </StyledSearchbar>
   )
 }

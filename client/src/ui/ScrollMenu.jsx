@@ -3,15 +3,12 @@ import { categoriesArr } from '../utils/constants'
 import { useEffect, useRef, useState } from 'react'
 import { HiMiniChevronLeft, HiMiniChevronRight } from 'react-icons/hi2'
 import { useSearchParams } from 'react-router-dom'
+import { useWindowListener } from '../hooks/useWindowListener'
 
 const StyledSlider = styled.div`
-  /* background-color: var(--color-orange-50); */
-  box-shadow: var(--shadow-sm);
-  border: 1px solid var(--color-grey-100);
-  padding: 3.5rem 5rem;
+  padding: 1rem 5rem;
+  padding: 0 4rem;
   border-radius: 13px;
-  max-width: 90rem;
-  margin: 0 auto;
   position: relative;
   overflow: hidden;
   & span:first-child {
@@ -24,11 +21,12 @@ const StyledSlider = styled.div`
 const Item = styled.div`
   cursor: pointer;
   white-space: nowrap;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   border-radius: 30px;
   font-weight: 500;
   background-color: var(--color-grey-50);
   padding: 1.3rem 2rem;
+  padding: 1rem 1.7rem;
   ${(props) =>
     props.active &&
     css`
@@ -67,6 +65,10 @@ const Icon = styled.span`
     /* background: transparent;  */
   }
 `
+const Container = styled.div`
+  overflow: hidden;
+`
+
 function ScrollMenu({ filedName }) {
   const [searchParams, setSearchParams] = useSearchParams()
   const currentFieldVal = searchParams.get(filedName) || 'all'
@@ -75,20 +77,28 @@ function ScrollMenu({ filedName }) {
   const [scrollLeft, setScrollLeft] = useState(0)
   const [showLeftArrow, setShowLeftArrow] = useState(true)
   const [showRightArrow, setShowRightArrow] = useState(true)
+  console.log('Window = ', window.innerWidth)
+  const [scrollBy, setScrollBy] = useState(window.innerWidth < 500 ? 150 : 340)
 
   const onClick = (item) => {
     searchParams.set(filedName, item)
     setSearchParams(searchParams)
   }
   const next = () => {
-    containerRef.current.scrollLeft += '340'
-    setScrollLeft((prev) => prev + 340)
+    containerRef.current.scrollLeft += scrollBy
+    setScrollLeft((prev) => prev + scrollBy)
   }
   const prev = () => {
-    containerRef.current.scrollLeft -= '340'
-    setScrollLeft((prev) => prev - 340)
+    containerRef.current.scrollLeft -= scrollBy
+    setScrollLeft((prev) => prev - scrollBy)
   }
-
+  // change the scrollBy based on the window's size
+  const handleScrollBy = () => {
+    if (window.innerWidth < 500) setScrollBy(150)
+    else setScrollBy(340)
+  }
+  useWindowListener(handleScrollBy)
+  // scroll to the selected element from the url
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -110,7 +120,7 @@ function ScrollMenu({ filedName }) {
     if (itemRef.current) observer.observe(itemRef.current)
     return () => observer.disconnect()
   }, [])
-
+  // when to show left arrow
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -128,7 +138,7 @@ function ScrollMenu({ filedName }) {
     if (containerRef.current) observer.observe(containerRef.current.firstChild)
     return () => observer.disconnect()
   }, [scrollLeft])
-
+  // when to show right arrow
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -148,30 +158,32 @@ function ScrollMenu({ filedName }) {
   }, [scrollLeft])
 
   return (
-    <StyledSlider>
-      {showLeftArrow && (
-        <Icon title="Previous">
-          <HiMiniChevronLeft onClick={() => prev()} />
-        </Icon>
-      )}
-      <ItemsContainer ref={containerRef}>
-        {categoriesArr.map((item, index) => (
-          <Item
-            key={item.value}
-            onClick={() => onClick(item.value)}
-            active={currentFieldVal === item.value ? 'true' : null}
-            ref={currentFieldVal === item.value ? itemRef : null}
-          >
-            {item.label}
-          </Item>
-        ))}
-      </ItemsContainer>
-      {showRightArrow && (
-        <Icon title="Next">
-          <HiMiniChevronRight onClick={() => next()} />
-        </Icon>
-      )}
-    </StyledSlider>
+    <Container>
+      <StyledSlider>
+        {showLeftArrow && (
+          <Icon title="Previous">
+            <HiMiniChevronLeft onClick={() => prev()} />
+          </Icon>
+        )}
+        <ItemsContainer ref={containerRef}>
+          {categoriesArr.map((item) => (
+            <Item
+              key={item.value}
+              onClick={() => onClick(item.value)}
+              active={currentFieldVal === item.value ? 'true' : null}
+              ref={currentFieldVal === item.value ? itemRef : null}
+            >
+              {item.label}
+            </Item>
+          ))}
+        </ItemsContainer>
+        {showRightArrow && (
+          <Icon title="Next">
+            <HiMiniChevronRight onClick={() => next()} />
+          </Icon>
+        )}
+      </StyledSlider>
+    </Container>
   )
 }
 
