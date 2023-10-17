@@ -157,8 +157,6 @@ function PostCommentsContent({
             <SpinnerMini />
             <span>Loading more...</span>
           </StyledSpinner>
-        ) : comments?.length === commentsCount ? (
-          <EndOfList>You’ve reached the end of the comments</EndOfList>
         ) : null}
       </Preview>
       <Modal.Window

@@ -15,24 +15,32 @@ const StyledHeader = styled.header`
   width: 100%;
   z-index: 1000;
   /*  */
-  display: grid;
+  /* display: grid;
   grid-template-columns: min-content 1fr max-content;
   align-items: center;
+  column-gap: 3rem; */
   padding: 0 2rem;
-  column-gap: 3rem;
   /*  */
   /* background-color: rgba(255, 255, 255, 0.97); */
   background-color: #fff;
   border-bottom: 1px solid #eee;
   height: 7rem;
+  @media screen and (max-width: 43.75em) {
+    /* padding: 0 2rem; */
+  }
+`
+const Content = styled.div`
+  max-width: 125rem;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: min-content 1fr max-content;
+  align-items: center;
+  column-gap: 3rem;
   ${(props) =>
     props['show-searchbar-only'] &&
     css`
       grid-template-columns: 1fr;
     `}
-  @media screen and (max-width: 43.75em) {
-    /* padding: 0 2rem; */
-  }
 `
 
 function Header() {
@@ -42,28 +50,32 @@ function Header() {
 
   if (showSearchbarOnly)
     return (
-      <StyledHeader show-searchbar-only={'true'}>
-        <Searchbar
-          showSearchbarOnly={showSearchbarOnly}
-          setShowSearchbarOnly={setShowSearchbarOnly}
-        />
+      <StyledHeader>
+        <Content show-searchbar-only={'true'}>
+          <Searchbar
+            showSearchbarOnly={showSearchbarOnly}
+            setShowSearchbarOnly={setShowSearchbarOnly}
+          />
+        </Content>
       </StyledHeader>
     )
   else
     return (
       <StyledHeader>
-        <Logo />
-        <Searchbar
-          showSearchbarOnly={showSearchbarOnly}
-          setShowSearchbarOnly={setShowSearchbarOnly}
-        />
-        {isLoading ? (
-          <SpinnerMini color="var(--color-orange-400)" />
-        ) : isAuthenticated ? (
-          <LoggedInUserMenu user={user} />
-        ) : (
-          <Menu />
-        )}
+        <Content>
+          <Logo />
+          <Searchbar
+            showSearchbarOnly={showSearchbarOnly}
+            setShowSearchbarOnly={setShowSearchbarOnly}
+          />
+          {isLoading ? (
+            <SpinnerMini color="var(--color-orange-400)" />
+          ) : isAuthenticated ? (
+            <LoggedInUserMenu user={user} />
+          ) : (
+            <Menu />
+          )}
+        </Content>
       </StyledHeader>
     )
 }

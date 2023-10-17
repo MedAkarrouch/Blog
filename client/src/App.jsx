@@ -74,18 +74,18 @@ function App() {
       />
       <BrowserRouter>
         <Routes>
-          <Route element={<AppLayout />}>
-            <Route index element={<Navigate replace to="/posts" />} />
-            <Route path="/posts" element={<Home />} />
-            <Route path="/post/:postId" element={<Post />} />
-            <Route element={<ProtectedRoute />}>
-              <Route path="/account" element={<Account />} />
-              <Route path="/dashboard" element={<Dashboard />} />
-              {/* <Route path="/new" element={<CreatePost />} /> */}
-              <Route path="/new" element={<AddPost />} />
-              <Route path="/edit/:postId" element={<EditPost />} />
-            </Route>
+          {/* <Route element={<AppLayout />}> */}
+          <Route index element={<Navigate replace to="/posts" />} />
+          <Route path="/posts" element={<Home />} />
+          <Route path="/post/:postId" element={<Post />} />
+          <Route element={<ProtectedRoute />}>
+            <Route path="/account" element={<Account />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            {/* <Route path="/new" element={<CreatePost />} /> */}
+            <Route path="/new" element={<AddPost />} />
+            <Route path="/edit/:postId" element={<EditPost />} />
           </Route>
+          {/* </Route> */}
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/test" element={<Test />} />

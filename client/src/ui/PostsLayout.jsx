@@ -42,15 +42,15 @@ const PostsHeader = styled.div`
   display: grid;
   grid-template-columns: min-content 1fr;
   align-items: center;
-  gap: 3rem 6rem;
+  gap: 1rem 6rem;
+  padding-bottom: 2rem;
   @media screen and (max-width: 43.75em) {
     grid-template-columns: 1fr;
-    padding-bottom: 2rem;
+    /* padding-bottom: 2rem; */
   }
 `
 const SortByContainer = styled.div`
-  padding-bottom: 2rem;
-  border-bottom: 1px solid var(--color-grey-100);
+  /* border-bottom: 1px solid var(--color-grey-100); */
 `
 
 function PostsLayout() {

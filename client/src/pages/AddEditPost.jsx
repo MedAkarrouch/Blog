@@ -12,10 +12,8 @@ import { useUpdatePost } from '../features/posts/useUpdatePost'
 import { toast } from 'react-hot-toast'
 
 const StyledCreatePost = styled.form`
-  background-color: var(--color-grey-50);
   height: calc(100vh - 7rem);
   overflow: hidden;
-  padding: 0 2rem;
 `
 const SyledDiv = styled.div`
   height: 85%;

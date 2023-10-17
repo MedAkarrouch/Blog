@@ -73,11 +73,13 @@ const StyledProfileDate = styled.span`
 `
 const Title = styled(Heading)`
   text-transform: capitalize;
+  font-size: 2rem;
   &::first-letter {
   }
 `
 const Description = styled.p`
   color: var(--color-grey-600);
+  font-size: 1.5rem;
   &::first-letter {
     text-transform: capitalize;
   }
@@ -106,10 +108,11 @@ const StyledLine = styled.div`
 const StyledHeader = styled.div`
   display: flex;
   align-items: center;
+  /* justify-content: space-between; */
   flex-wrap: wrap;
-  /* gap: 5rem; */
-  column-gap: 5rem;
-  row-gap: 1rem;
+  gap: 1rem 2rem;
+  /* column-gap: 1rem; */
+  /* row-gap: 1rem; */
   margin-bottom: 1.25rem;
 `
 const Category = styled.span`

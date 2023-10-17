@@ -6,16 +6,17 @@ import { useSearchParams } from 'react-router-dom'
 import { useWindowListener } from '../hooks/useWindowListener'
 
 const StyledSlider = styled.div`
-  padding: 1rem 5rem;
-  padding: 0 4rem;
-  border-radius: 13px;
+  padding: 0;
+  /* border-radius: 13px; */
   position: relative;
-  overflow: hidden;
+  /* overflow: hidden; */
   & span:first-child {
-    left: 0rem;
+    left: -1rem;
+    background: linear-gradient(to left, transparent 0%, #fff 20%);
   }
   & span:last-child {
-    right: 0;
+    right: -1rem;
+    background: linear-gradient(to right, transparent 0%, #fff 20%);
   }
 `
 const Item = styled.div`
@@ -23,10 +24,11 @@ const Item = styled.div`
   white-space: nowrap;
   font-size: 1.4rem;
   border-radius: 30px;
+  border-radius: 10px;
   font-weight: 500;
   background-color: var(--color-grey-50);
   padding: 1.3rem 2rem;
-  padding: 1rem 1.7rem;
+  padding: 0.8rem 1.6rem;
   ${(props) =>
     props.active &&
     css`
@@ -36,11 +38,11 @@ const Item = styled.div`
 `
 const ItemsContainer = styled.div`
   display: flex;
-  gap: 2rem;
+  gap: 1rem;
   overflow-x: scroll;
   scroll-behavior: smooth;
   position: relative;
-  /* border-radius: 50px; */
+  padding: 1rem;
   &::-webkit-scrollbar {
     display: none;
   }
@@ -53,16 +55,21 @@ const Icon = styled.span`
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
-  width: 5rem;
-  height: 5rem;
+  width: 3rem;
+  height: 100%;
+  &:hover,
+  &:focus {
+    & svg {
+      color: var(--color-grey-900);
+    }
+  }
   & svg {
     color: var(--color-grey-500);
     cursor: pointer;
     z-index: 100;
+    line-height: 0;
     font-size: 2.75rem;
     stroke-width: 0.5;
-    /* background: transparent;  */
   }
 `
 const Container = styled.div`
@@ -77,7 +84,6 @@ function ScrollMenu({ filedName }) {
   const [scrollLeft, setScrollLeft] = useState(0)
   const [showLeftArrow, setShowLeftArrow] = useState(true)
   const [showRightArrow, setShowRightArrow] = useState(true)
-  console.log('Window = ', window.innerWidth)
   const [scrollBy, setScrollBy] = useState(window.innerWidth < 500 ? 150 : 340)
 
   const onClick = (item) => {
@@ -143,7 +149,7 @@ function ScrollMenu({ filedName }) {
     const observer = new IntersectionObserver(
       (entries) => {
         const [entry] = entries
-        console.log(entry.isIntersecting)
+        console.log(entry.isIntersecting, 'last-child')
         if (entry.isIntersecting) setShowRightArrow(false)
         else setShowRightArrow(true)
       },
@@ -159,10 +165,13 @@ function ScrollMenu({ filedName }) {
 
   return (
     <Container>
-      <StyledSlider>
+      <StyledSlider
+        show-left-blur={showLeftArrow}
+        show-right-blur={showRightArrow}
+      >
         {showLeftArrow && (
           <Icon title="Previous">
-            <HiMiniChevronLeft onClick={() => prev()} />
+            <HiMiniChevronLeft onClick={prev} />
           </Icon>
         )}
         <ItemsContainer ref={containerRef}>
@@ -179,7 +188,7 @@ function ScrollMenu({ filedName }) {
         </ItemsContainer>
         {showRightArrow && (
           <Icon title="Next">
-            <HiMiniChevronRight onClick={() => next()} />
+            <HiMiniChevronRight onClick={next} />
           </Icon>
         )}
       </StyledSlider>
