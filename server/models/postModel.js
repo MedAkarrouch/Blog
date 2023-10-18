@@ -63,24 +63,23 @@ const postSchema = new mongoose.Schema(
       type: String,
       required: [true, 'Reading time is required'],
     },
-    likes: {
-      totalLikes: {
-        type: Number,
-        default: 0,
-      },
-      likes: [
-        {
-          user: {
-            type: mongoose.Schema.ObjectId,
-            ref: 'User',
-          },
-          likedAt: { type: Date, default: Date.now },
+    likes: [
+      {
+        user: {
+          type: mongoose.Schema.ObjectId,
+          ref: 'User',
         },
-      ],
-    },
+        likedAt: { type: Date, default: Date.now },
+      },
+    ],
   },
   { toJSON: { virtuals: true }, toObject: { virtuals: true } }
 )
+
+postSchema.virtual('likesCount').get(function () {
+  return this.likes.length
+})
+
 postSchema.virtual('commentsCount', {
   ref: 'Comment',
   localField: '_id',

@@ -169,11 +169,11 @@ const DashboardRow = forwardRef(function DashboardRow(
       <Flex>
         <Flex gap=".5rem">
           <HiOutlineHeart />
-          <span>{post.likes.totalLikes}</span>
+          <span>{post.likesCount || 0}</span>
         </Flex>
         <Flex gap=".5rem">
           <HiOutlineChatBubbleOvalLeft />
-          <span>{post.commentsCount}</span>
+          <span>{post.commentsCount || 0}</span>
         </Flex>
       </Flex>
       <IconBtn

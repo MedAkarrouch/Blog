@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import PostsLayout from '../ui/PostsLayout'
 import Main from '../ui/Main'
 import Header from '../ui/Header'
+import Footer from '../ui/Footer'
 
 const StyledContent = styled.div`
   max-width: 125rem;
@@ -18,6 +19,7 @@ function Home() {
           <PostsLayout />
         </StyledContent>
       </Main>
+      <Footer />
     </>
   )
 }

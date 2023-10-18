@@ -5,6 +5,8 @@ const Main = styled.main`
   ${(props) =>
     props.page === 'home' &&
     css`
+      min-height: calc(100vh - 18rem);
+      /* height: ; */
       margin-top: 10rem;
     `}
 `

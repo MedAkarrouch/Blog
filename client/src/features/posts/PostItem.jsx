@@ -173,6 +173,8 @@ const Post = forwardRef(function Post({ post }, ref) {
     category,
     summary,
     title,
+    commentsCount,
+    likesCount,
     coverImg,
     author,
     createdAt,
@@ -193,11 +195,11 @@ const Post = forwardRef(function Post({ post }, ref) {
               <Stats>
                 <div>
                   <HiOutlineHeart />
-                  <span>{post?.likes?.totalLikes || 0} Likes</span>
+                  <span>{likesCount || 0} Likes</span>
                 </div>
                 <div>
                   <HiOutlineChatBubbleOvalLeft />
-                  <span>{post?.commentsCount || 0} Comments</span>
+                  <span>{commentsCount || 0} Comments</span>
                 </div>
               </Stats>
             </StyledHeader>

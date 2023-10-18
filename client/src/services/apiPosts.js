@@ -31,9 +31,9 @@ export const updatePost = async (post, data) =>
     withCredentials: true,
   })
 
-export async function getPosts({ search, category, page, pageSize }) {
+export async function getPosts({ search, category, page, pageSize, sortBy }) {
   const res = await axios.get(
-    `${serverUrl}/posts?search=${search}&category=${category}&page=${page}&pageSize=${pageSize}`,
+    `${serverUrl}/posts?search=${search}&category=${category}&page=${page}&pageSize=${pageSize}&sortBy=${sortBy}`,
     config,
   )
   return res.data?.data

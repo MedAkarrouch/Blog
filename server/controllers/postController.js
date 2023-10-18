@@ -16,6 +16,7 @@ const upload = multer({
   fileFilter: multerFilter,
   storage: multerStorage,
 })
+
 exports.upload = (req, res, next) => {
   upload.single('coverImg')(req, res, async (err) => {
     // if there is an error comming from the multerFilter
@@ -36,26 +37,73 @@ exports.upload = (req, res, next) => {
 }
 
 exports.getPosts = async (req, res) => {
-  const { category, search, page, pageSize } = req.query
+  let PAGE_SIZE, skip, limit, posts
+  const { category, search, page, pageSize, sortBy } = req.query
   console.log('page= ', page)
+  console.log('sortBy= ', sortBy)
   const filterObj = {}
   if (category && category !== 'all') filterObj.category = category
   if (search) filterObj.title = { $regex: new RegExp(search, 'i') }
-  let query = Post.find(filterObj).sort({ createdAt: -1 })
+  let query = Post.find(filterObj)
+  if (sortBy !== 'popular') query = query.sort({ createdAt: -1 })
+
   if (page) {
-    const PAGE_SIZE = +pageSize ? +pageSize : 10
-    const skip = +page ? (+page - 1) * PAGE_SIZE : 0
-    const limit = PAGE_SIZE
-    query = query.skip(skip).limit(limit)
+    PAGE_SIZE = +pageSize ? +pageSize : 10
+    skip = +page ? (+page - 1) * PAGE_SIZE : 0
+    limit = PAGE_SIZE
+    // query = query.skip(skip).limit(limit)
   }
+
   try {
-    const posts = await query
+    if (sortBy !== 'popular') posts = await query.skip(skip).limit(limit)
+    else {
+      posts = await query
+      posts = posts
+        .sort((a, b) => b.likesCount - a.likesCount)
+        .sort((a, b) => {
+          if (a.likesCount === b.likesCount)
+            return b.commentsCount - a.commentsCount
+          else return b.likesCount - a.likesCount
+        })
+        .slice(skip, skip + limit)
+    }
+
     const count = await Post.countDocuments(filterObj)
     renderRes({ res, status: 200, data: { count, posts } })
   } catch (err) {
+    console.log(err)
     renderRes({ res, status: 500, message: err.message })
   }
 }
+
+// exports.getPosts = async (req, res) => {
+//   const { category, search, page, pageSize, sortBy } = req.query
+//   console.log('page= ', page)
+//   console.log('sortBy= ', sortBy)
+//   const filterObj = {}
+//   if (category && category !== 'all') filterObj.category = category
+//   if (search) filterObj.title = { $regex: new RegExp(search, 'i') }
+//   let query = Post.find(filterObj).sort({ createdAt: -1 })
+
+//   // if (sortBy === 'popular') query = query.sort({ commentsCount: -1 })
+//   // else query = query.sort({ createdAt: -1 })
+
+//   if (page) {
+//     const PAGE_SIZE = +pageSize ? +pageSize : 10
+//     const skip = +page ? (+page - 1) * PAGE_SIZE : 0
+//     const limit = PAGE_SIZE
+
+//     query = query.skip(skip).limit(limit)
+//   }
+//   try {
+//     const posts = await query
+//     const count = await Post.countDocuments(filterObj)
+//     renderRes({ res, status: 200, data: { count, posts: results } })
+//   } catch (err) {
+//     console.log(err)
+//     renderRes({ res, status: 500, message: err.message })
+//   }
+// }
 
 exports.addNewPost = async (req, res) => {
   const { title, content, category, summary } = req.body
@@ -103,6 +151,7 @@ exports.getPost = async (req, res) => {
     renderRes({ res, status: 400, message: err.message })
   }
 }
+
 exports.deletePost = async (req, res) => {
   let postDoc
   const { post: postId } = req.query
@@ -133,6 +182,7 @@ exports.deletePost = async (req, res) => {
     })
   }
 }
+
 exports.updatePost = async (req, res) => {
   let post
   const { post: postId } = req.query
@@ -200,31 +250,29 @@ exports.updatePost = async (req, res) => {
 exports.likePost = async (req, res) => {
   let post
   const { post: postId } = req.query
+  // console.log('Post = ', postId)
   try {
     // 1- check if post exists
     try {
       post = await Post.findById(postId || '')
+      if (!post) throw Erro()
     } catch {
       throw new Error('Post not found')
     }
     // if so, add or delete like
-    const hasAlreadyLikedPost = post.likes.likes.some(
+    const hasAlreadyLikedPost = post.likes.some(
       (like) => like.user.toHexString() === req.currentUser._id.toHexString()
     )
+
     const likes = hasAlreadyLikedPost
-      ? {
-          totalLikes: post.likes.totalLikes - 1,
-          likes: post.likes.likes.filter(
-            (like) =>
-              like.user.toHexString() !== req.currentUser._id.toHexString()
-          ),
-        }
-      : {
-          totalLikes: post.likes.totalLikes + 1,
-          likes: [...post.likes.likes, { user: req.currentUser._id }],
-        }
+      ? post.likes.filter(
+          (like) =>
+            like.user.toHexString() !== req.currentUser._id.toHexString()
+        )
+      : [...post.likes, { user: req.currentUser._id }]
+
     post = await Post.findByIdAndUpdate(
-      post._id,
+      postId,
       {
         likes,
       },
@@ -236,6 +284,7 @@ exports.likePost = async (req, res) => {
     renderRes({ res, status: 400, message: err.message, errors: err.errors })
   }
 }
+
 exports.getUserPosts = async (req, res) => {
   const { page, pageSize } = req.query
   let query = Post.find({ author: req.currentUser._id })

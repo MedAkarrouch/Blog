@@ -7,6 +7,9 @@ export function usePosts() {
   const [searchParams] = useSearchParams()
   const search = searchParams.get('search') || ''
   const category = searchParams.get('category') || 'all'
+  let sortBy = searchParams.get('sortBy')
+  sortBy = ['latest', 'popular'].includes(sortBy) ? sortBy : 'latest'
+
   const {
     data,
     isLoading,
@@ -16,11 +19,12 @@ export function usePosts() {
     hasNextPage,
     fetchNextPage,
   } = useInfiniteQuery({
-    queryKey: ['posts', search, category],
+    queryKey: ['posts', search, category, sortBy],
     queryFn: ({ pageParam = 1 }) =>
       getPosts({
         search,
         category,
+        sortBy,
         page: pageParam,
         pageSize: PAGE_SIZE,
       }),

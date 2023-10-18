@@ -23,6 +23,7 @@ import ConfirmDelete from './ConfirmDelete'
 import { useDeletePost } from '../features/posts/useDeletePost'
 import LogInToContinue from './LogInToContinue'
 import SpinnerMini from './SpinnerMini'
+import { toast } from 'react-hot-toast'
 
 const StyledAside = styled.aside`
   position: fixed;
@@ -165,14 +166,14 @@ function Aside({ post, commentsSection }) {
   const linkCopiedTimeout = useRef(null)
   const socialsListRef = useOutsideClick(() => setShowList(false), false)
   //
-  const { likes, commentsCount } = post
+  const { likes, commentsCount, likesCount } = post
   const { likePost, isLoading } = useLikePost()
 
   const hasUserAlreadyLikedPost = useMemo(() => {
-    return likes?.likes?.some((like) => like.user === user?._id)
-  }, [likes?.totalLikes])
+    return likes?.some((like) => like.user === user?._id)
+  }, [likesCount])
 
-  const totalLikes = likes?.totalLikes || 0
+  const totalLikes = likesCount || 0
   //z`
   const asideRef = useRef(null)
   const { closeWindow } = useModalContext()
@@ -194,7 +195,9 @@ function Aside({ post, commentsSection }) {
       setLinkcopied(true)
       const handler = () => setLinkcopied(false)
       linkCopiedTimeout.current = setTimeout(handler, 1000)
-    } catch {}
+    } catch {
+      toast.error('Something went wrong')
+    }
   }
 
   return (
