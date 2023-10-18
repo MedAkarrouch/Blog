@@ -26,20 +26,32 @@ import SpinnerMini from './SpinnerMini'
 import { toast } from 'react-hot-toast'
 
 const StyledAside = styled.aside`
-  position: fixed;
-  top: 0;
-  left: 0;
+  /* position: fixed; */
+  /* top: 0; */
+  /* left: 0; */
+  padding: 5vh 0 0 4rem;
+  /* New */
+  position: relative;
+  /* padding: 12rem 0 0 0; */
+  /* New */
   /* background-color: var(--color-grey-50); */
-  padding: 12rem 0 0 5rem;
   z-index: 10;
   /* padding: 9rem 0 0 2rem; */
   /* margin: 9rem 0 0 5rem; */
   /* height: 100%; */
+  /* 1000px */
+  @media screen and (max-width: 62.5em) {
+    padding: 5vh 0 0 2rem;
+  }
+  @media screen and (max-width: 28.125em) {
+    padding: 5vh 0 0 0;
+  }
 `
 const List = styled.ul`
   display: flex;
   flex-direction: column;
   gap: 3rem;
+  position: fixed;
 `
 const Item = styled.li`
   display: flex;

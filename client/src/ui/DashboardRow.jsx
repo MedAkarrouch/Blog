@@ -50,7 +50,7 @@ const Title = styled.div`
   }
 `
 const Category = styled.p`
-  /* text-transform: capitalize; */
+  text-transform: capitalize;
 `
 const Dates = styled.div`
   display: flex;

@@ -6,10 +6,10 @@ import {
 import styled, { css } from 'styled-components'
 
 const StyledStats = styled.div`
-  gap: 1rem 2rem;
+  gap: 1rem 1rem;
   margin-bottom: 3rem;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(24rem, 1fr));
 `
 const Stat = styled.div`
   display: grid;
@@ -19,6 +19,7 @@ const Stat = styled.div`
   border: 1px solid var(--color-grey-100);
   border-radius: 5px;
   padding: 1.6rem;
+  /* padding: 1.6rem 3.2rem; */
   background-color: #fff;
 `
 const Box = styled.div`
@@ -32,7 +33,7 @@ const Box = styled.div`
     color: var(--color-grey-500);
   }
   & span:last-child {
-    font-size: 2.4rem;
+    font-size: 2.2rem;
     font-weight: 500;
   }
 `
@@ -40,28 +41,21 @@ const Icon = styled.span`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 6.4rem;
-  height: 6.4rem;
+  width: 6rem;
+  height: 6rem;
   border-radius: 50%;
   background-color: var(--color-${(props) => props.color}-50);
   & svg {
     stroke-width: 1.5;
     color: var(--color-${(props) => props.color}-600);
-    width: 3.2rem;
-    height: 3.2rem;
+    width: 3rem;
+    height: 3rem;
   }
 `
 
 function Stats() {
   return (
     <StyledStats>
-      {/* { make them stats responsive } */}
-      {/* Total Posts     1540 Posts */}
-      {/* Total Comments  12400 Comments */}
-      {/* Total Likes     69766 Likes */}
-      {/* Average Like per post  */}
-      {/* Average comment per post */}
-
       <Stat>
         <Icon color="blue">
           <HiOutlineRectangleStack />

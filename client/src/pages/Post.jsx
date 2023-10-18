@@ -6,11 +6,14 @@ import Aside from '../ui/Aside'
 import PostComments from '../features/comments/PostComments'
 import { useRef } from 'react'
 import Modal from '../ui/Modal'
+import Main from '../ui/Main'
+import Header from '../ui/Header'
+import Footer from '../ui/Footer'
 
 const StyledPost = styled.div`
   max-width: 90rem;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 2rem 0;
   padding-bottom: 5rem;
   display: flex;
   flex-direction: column;
@@ -22,6 +25,17 @@ const Container = styled.div`
   /* padding-left: 8rem; */
   display: grid;
   grid-template-columns: 10rem 1fr;
+  max-width: 125rem;
+  margin: 0 auto;
+  @media screen and (max-width: 37.5em) {
+    /* 600 */
+    grid-template-columns: 8rem 1fr;
+  }
+  @media screen and (max-width: 28.125em) {
+    /* 450 */
+    grid-template-columns: 5rem 1fr;
+  }
+  /* 37.5em */
 `
 
 function Post() {
@@ -37,15 +51,21 @@ function Post() {
   if (isError || !post) return <div>No post found !</div>
 
   return (
-    <Container>
-      <Modal>
-        <Aside post={post} commentsSection={commentsSection} />
-      </Modal>
-      <StyledPost>
-        <PostDetail post={post} />
-        <PostComments ref={commentsSection} />
-      </StyledPost>
-    </Container>
+    <>
+      <Header />
+      <Main>
+        <Container>
+          <Modal>
+            <Aside post={post} commentsSection={commentsSection} />
+          </Modal>
+          <StyledPost>
+            <PostDetail post={post} />
+            <PostComments ref={commentsSection} />
+          </StyledPost>
+        </Container>
+      </Main>
+      <Footer />
+    </>
   )
 }
 

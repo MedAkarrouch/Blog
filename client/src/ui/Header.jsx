@@ -14,14 +14,7 @@ const StyledHeader = styled.header`
   right: 0;
   width: 100%;
   z-index: 1000;
-  /*  */
-  /* display: grid;
-  grid-template-columns: min-content 1fr max-content;
-  align-items: center;
-  column-gap: 3rem; */
   padding: 0 2rem;
-  /*  */
-  /* background-color: rgba(255, 255, 255, 0.97); */
   background-color: #fff;
   border-bottom: 1px solid #eee;
   height: 7rem;
@@ -31,11 +24,20 @@ const StyledHeader = styled.header`
 `
 const Content = styled.div`
   max-width: 125rem;
+  height: 100%;
   margin: 0 auto;
   display: grid;
   grid-template-columns: min-content 1fr max-content;
+  /* min-content 1fr max-content; */
   align-items: center;
   column-gap: 3rem;
+  /* Hide search in components */
+  ${(props) =>
+    props['hide-searchbar'] &&
+    css`
+      grid-template-columns: min-content max-content;
+      justify-content: space-between;
+    `}
   ${(props) =>
     props['show-searchbar-only'] &&
     css`
@@ -43,7 +45,7 @@ const Content = styled.div`
     `}
 `
 
-function Header() {
+function Header({ hideSearchbar = true }) {
   const { isLoading, user, isAuthenticated } = useUser()
 
   const [showSearchbarOnly, setShowSearchbarOnly] = useState(false)
@@ -62,12 +64,14 @@ function Header() {
   else
     return (
       <StyledHeader>
-        <Content>
+        <Content hide-searchbar={hideSearchbar ? 'true' : ''}>
           <Logo />
-          <Searchbar
-            showSearchbarOnly={showSearchbarOnly}
-            setShowSearchbarOnly={setShowSearchbarOnly}
-          />
+          {!hideSearchbar && (
+            <Searchbar
+              showSearchbarOnly={showSearchbarOnly}
+              setShowSearchbarOnly={setShowSearchbarOnly}
+            />
+          )}
           {isLoading ? (
             <SpinnerMini color="var(--color-orange-400)" />
           ) : isAuthenticated ? (

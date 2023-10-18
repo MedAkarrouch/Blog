@@ -7,7 +7,7 @@ import { HiOutlineBookOpen } from 'react-icons/hi2'
 
 const StyledContent = styled.div`
   margin-top: 5rem;
-  font-size: 2rem;
+  font-size: 1.8rem;
   /* font-size: 1.8rem; */
   /* color:; */
   color: var(--color-grey-600);
@@ -102,7 +102,7 @@ const Title = styled(Heading)`
   text-transform: capitalize;
   font-weight: 700;
   text-align: center;
-  font-size: 5rem;
+  font-size: 3rem;
   text-transform: capitalize;
 `
 const UserName = styled.span`

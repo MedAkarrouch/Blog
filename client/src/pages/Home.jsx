@@ -13,7 +13,7 @@ const StyledContent = styled.div`
 function Home() {
   return (
     <>
-      <Header />
+      <Header hideSearchbar={false} />
       <Main page="home">
         <StyledContent>
           <PostsLayout />
