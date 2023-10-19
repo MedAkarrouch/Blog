@@ -320,3 +320,39 @@ exports.getUserPosts = async (req, res) => {
     renderRes({ res, status: 400, message: err.message, errors: err.errors })
   }
 }
+exports.getStats = async (req, res) => {
+  try {
+    const posts = await Post.find({ author: req.currentUser._id })
+    const totalPosts = posts.length
+    const totalLikes = posts.reduce((acc, post) => acc + post.likesCount, 0)
+    const totalComments = posts.reduce(
+      (acc, post) => acc + post.commentsCount,
+      0
+    )
+    const averageLikesPerPost = Math.ceil(totalLikes / totalPosts)
+    const averageCommentsPerPost = Math.ceil(totalComments / totalPosts)
+
+    res.status(200).json({
+      status: 'success',
+      data: {
+        stats: {
+          totalPosts,
+          totalLikes,
+          totalComments,
+          averageLikesPerPost,
+          averageCommentsPerPost,
+        },
+      },
+    })
+  } catch (err) {
+    res.status(400).json({
+      status: 'error',
+      error: err.message,
+    })
+  }
+  // Total comments
+  // Total posts
+  //Total likes
+  // Avg likes per post
+  // Avg comments per post
+}

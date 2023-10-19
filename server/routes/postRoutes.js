@@ -10,6 +10,7 @@ router.post(
   postController.upload,
   postController.addNewPost
 )
+router.get('/stats', authController.protect, postController.getStats)
 router.get('/getPost', postController.getPost)
 router.get('/addLike', authController.protect, postController.likePost)
 router.delete('/deletePost', authController.protect, postController.deletePost)

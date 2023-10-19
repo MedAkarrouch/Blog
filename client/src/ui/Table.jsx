@@ -21,7 +21,7 @@ const CommonRow = styled.div`
   padding: 1.5rem 1.2rem;
   grid-template-columns: ${(props) => props.columns};
   /* grid-template-columns: 7rem 2fr 1fr 0.7fr 0.7fr 0.1fr; */
-  column-gap: 3rem;
+  column-gap: ${(props) => props.gap};
   align-items: center;
   position: relative;
 `
@@ -55,20 +55,21 @@ const StyledTableFooter = styled.footer`
     display: none;
   }
 `
-
 const Empty = styled.p`
   font-size: 1.6rem;
   font-weight: 500;
   text-align: center;
   margin: 2.4rem;
+  /* background-color: #fff; */
+  /* padding: 3rem 0; */
   color: var(--color-grey-500);
 `
 const StyledBody = styled.div``
 
 const TabelContext = createContext()
-function Table({ columns, children }) {
+function Table({ columns, gap, children }) {
   return (
-    <TabelContext.Provider value={{ columns }}>
+    <TabelContext.Provider value={{ columns, gap }}>
       <StyleTable role="table">{children}</StyleTable>
     </TabelContext.Provider>
   )
@@ -79,12 +80,20 @@ function Body({ data, render }) {
   return <StyledBody>{data?.map(render)}</StyledBody>
 }
 function Header({ children }) {
-  const { columns } = useContext(TabelContext)
-  return <StyledTableHeader columns={columns}>{children}</StyledTableHeader>
+  const { columns, gap } = useContext(TabelContext)
+  return (
+    <StyledTableHeader gap={gap} columns={columns}>
+      {children}
+    </StyledTableHeader>
+  )
 }
 function Row({ children }) {
-  const { columns } = useContext(TabelContext)
-  return <StyledTableRow columns={columns}>{children}</StyledTableRow>
+  const { columns, gap } = useContext(TabelContext)
+  return (
+    <StyledTableRow gap={gap} columns={columns}>
+      {children}
+    </StyledTableRow>
+  )
 }
 function Footer({ children }) {
   return <StyledTableFooter>{children}</StyledTableFooter>

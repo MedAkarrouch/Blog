@@ -3,7 +3,9 @@ import {
   HiOutlineHeart,
   HiOutlineRectangleStack,
 } from 'react-icons/hi2'
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
+import { useStats } from '../features/posts/useStats'
+import SpinnerMini from './SpinnerMini'
 
 const StyledStats = styled.div`
   gap: 1rem 1rem;
@@ -54,6 +56,17 @@ const Icon = styled.span`
 `
 
 function Stats() {
+  const { isLoading, stats = {}, isError } = useStats()
+  const {
+    averageCommentsPerPost,
+    averageLikesPerPost,
+    totalComments,
+    totalLikes,
+    totalPosts,
+  } = stats
+
+  console.log('Stats = ', stats)
+  if (isError) return null
   return (
     <StyledStats>
       <Stat>
@@ -62,7 +75,13 @@ function Stats() {
         </Icon>
         <Box>
           <span>Posts</span>
-          <span>1540</span>
+          <span>
+            {isLoading ? (
+              <SpinnerMini color="var(--color-blue-600)" />
+            ) : (
+              totalPosts
+            )}
+          </span>
         </Box>
       </Stat>
       <Stat>
@@ -71,7 +90,13 @@ function Stats() {
         </Icon>
         <Box>
           <span>Comments</span>
-          <span>1540</span>
+          <span>
+            {isLoading ? (
+              <SpinnerMini color="var(--color-green-600)" />
+            ) : (
+              totalComments
+            )}
+          </span>
         </Box>
       </Stat>
       <Stat>
@@ -80,7 +105,13 @@ function Stats() {
         </Icon>
         <Box>
           <span>Likes</span>
-          <span>1540</span>
+          <span>
+            {isLoading ? (
+              <SpinnerMini color="var(--color-amber-600)" />
+            ) : (
+              totalLikes
+            )}
+          </span>
         </Box>
       </Stat>
       <Stat>
@@ -89,7 +120,13 @@ function Stats() {
         </Icon>
         <Box>
           <span>Average comments per post</span>
-          <span>31</span>
+          <span>
+            {isLoading ? (
+              <SpinnerMini color="var(--color-green-600)" />
+            ) : (
+              averageLikesPerPost
+            )}
+          </span>
         </Box>
       </Stat>
       <Stat>
@@ -98,7 +135,13 @@ function Stats() {
         </Icon>
         <Box>
           <span>Average likes per post</span>
-          <span>54</span>
+          <span>
+            {isLoading ? (
+              <SpinnerMini color="var(--color-amber-600)" />
+            ) : (
+              averageCommentsPerPost
+            )}
+          </span>
         </Box>
       </Stat>
     </StyledStats>

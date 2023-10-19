@@ -9,6 +9,7 @@ import Pagination from './Pagination'
 import { useUserPosts } from '../features/posts/useUserPosts'
 import Spinner from './Spinner'
 import styled from 'styled-components'
+import { useWindowListener } from '../hooks/useWindowListener'
 
 const SpinnerWrapper = styled.div`
   display: flex;
@@ -24,6 +25,21 @@ function DashboardTable() {
   const menuRef = useOutsideClick(() => {
     if (!currentOpenedWindow) setSelectedId(null)
   })
+  const [screen, setScreen] = useState(
+    window.innerWidth > 600
+      ? 'desktop'
+      : window.innerWidth <= 450
+      ? 'mobile'
+      : 'tablet',
+  )
+  const reseizeHandler = () => {
+    if (window.innerWidth > 600) setScreen('desktop')
+    else if (window.innerWidth <= 450) setScreen('mobile')
+    else setScreen('tablet')
+  }
+  useWindowListener(reseizeHandler)
+  let columns = '7rem 2fr 0.7fr 0.7fr 0.7fr 3rem ',
+    gap = '3rem'
 
   console.log(isLoading, count, posts)
   if (isLoading)
@@ -33,13 +49,21 @@ function DashboardTable() {
       </SpinnerWrapper>
     )
 
+  if (screen === 'tablet') {
+    columns = '7rem 2fr 0.6fr 0.5fr 3rem '
+    gap = '1rem'
+  } else if (screen === 'mobile') {
+    columns = '7rem 2fr 0.6fr 3rem '
+    gap = '1rem'
+  }
   return (
-    <Table columns="7rem 2fr 1fr 0.7fr 0.7fr 3rem ">
+    // <Table columns="7rem 2fr 0.7fr 0.7fr 3rem ">
+    <Table gap={gap} columns={columns}>
       <Table.Header>
         <div></div>
-        <div>title</div>
-        <div>category</div>
-        <div>date</div>
+        <div>{screen === 'desktop' ? 'Title' : 'Post'}</div>
+        {screen === 'desktop' && <div>category</div>}
+        {screen !== 'mobile' && <div>date</div>}
         <div>stats</div>
         <div></div>
       </Table.Header>
@@ -57,6 +81,7 @@ function DashboardTable() {
             }
             closeMenu={() => setSelectedId(null)}
             post={post}
+            screen={screen}
           />
         )}
       />

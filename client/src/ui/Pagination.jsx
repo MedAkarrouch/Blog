@@ -44,6 +44,7 @@ const Buttons = styled.div`
   gap: 2rem;
 `
 const P = styled.p`
+  hyphens: none;
   & span {
     font-weight: 600;
   }

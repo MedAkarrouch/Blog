@@ -26,8 +26,9 @@ const Img = styled.img`
 `
 const Flex = styled.div`
   display: flex;
-  gap: 2rem;
+  gap: 0.75rem 1.5rem;
   align-items: center;
+  flex-wrap: wrap;
   ${(props) =>
     props.gap &&
     css`
@@ -36,6 +37,10 @@ const Flex = styled.div`
   & svg {
     stroke-width: 1.5;
     font-size: 2rem;
+  }
+  & span {
+    font-size: 1.2rem;
+    font-weight: 500;
   }
 `
 const ToggleIcon = styled(HiOutlineEllipsisVertical)`
@@ -51,6 +56,15 @@ const Title = styled.div`
 `
 const Category = styled.p`
   text-transform: capitalize;
+  font-size: 1.3rem;
+  ${(props) =>
+    props['on-mobile'] &&
+    css`
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: var(--color-orange-500);
+      margin-bottom: 0.25rem;
+    `}
 `
 const Dates = styled.div`
   display: flex;
@@ -63,6 +77,20 @@ const Dates = styled.div`
   & p:last-child {
     font-size: 1.2rem;
   }
+  ${(props) =>
+    props['on-mobile'] &&
+    css`
+      flex-direction: row;
+      margin-top: 0.25rem;
+      align-items: center;
+      & p:first-child,
+      p:last-child {
+        /* font-weight: 400; */
+        font-size: 1rem;
+        font-weight: 500;
+        color: var(--color-grey-600);
+      }
+    `}
 `
 
 const OptionsMenu = styled.menu`
@@ -120,13 +148,8 @@ const IconBtn = styled.button`
   }
 `
 
-const Icon = styled.span`
-  stroke-width: 1.5;
-  font-size: 2rem;
-`
-
 const DashboardRow = forwardRef(function DashboardRow(
-  { post, isMenuOpen, openMenu, closeMenu },
+  { post, isMenuOpen, openMenu, closeMenu, screen },
   ref,
 ) {
   return (
@@ -156,24 +179,60 @@ const DashboardRow = forwardRef(function DashboardRow(
         </OptionsMenu>
       )}
       <Img loading="lazy" src={`${postsImagesUrl}/${post.coverImg}`} alt="" />
-      <Title>{post.title}</Title>
-      <Category>{post.category}</Category>
-      <Dates>
-        <p>
-          {differenceInSeconds(new Date(), new Date(post.createdAt)) <= 1
-            ? 'Now'
-            : DateTime.fromISO(post.createdAt).toRelative()}
-        </p>
-        <p>{format(new Date(post.createdAt), 'MMM dd yyyy')}</p>
-      </Dates>
+      {screen === 'desktop' ? (
+        <>
+          <Title>{post.title}</Title>
+          <Category>{post.category}</Category>
+          <Dates>
+            <p>
+              {differenceInSeconds(new Date(), new Date(post.createdAt)) <= 1
+                ? 'Now'
+                : DateTime.fromISO(post.createdAt).toRelative()}
+            </p>
+            <p>{format(new Date(post.createdAt), 'MMM dd yyyy')}</p>
+          </Dates>
+        </>
+      ) : screen === 'tablet' ? (
+        <>
+          <div>
+            <Category on-mobile={'true'}>#{post.category}</Category>
+            <Title>{post.title}</Title>
+          </div>
+          <Dates>
+            <p>
+              {differenceInSeconds(new Date(), new Date(post.createdAt)) <= 1
+                ? 'Now'
+                : DateTime.fromISO(post.createdAt).toRelative()}
+            </p>
+            <p>{format(new Date(post.createdAt), 'MMM dd yyyy')}</p>
+          </Dates>
+        </>
+      ) : (
+        <div>
+          <Category on-mobile={'true'}>#{post.category}</Category>
+          <Title>{post.title}</Title>
+          <Dates on-mobile={'true'}>
+            <p>{format(new Date(post.createdAt), 'MMM dd yyyy')}</p>
+            <p>
+              (
+              {differenceInSeconds(new Date(), new Date(post.createdAt)) <= 1
+                ? 'Now'
+                : DateTime.fromISO(post.createdAt).toRelative()}
+              )
+            </p>
+          </Dates>
+        </div>
+      )}
       <Flex>
         <Flex gap=".5rem">
           <HiOutlineHeart />
           <span>{post.likesCount || 0}</span>
+          {/* <span>74610</span> */}
         </Flex>
         <Flex gap=".5rem">
           <HiOutlineChatBubbleOvalLeft />
           <span>{post.commentsCount || 0}</span>
+          {/* <span>68901</span> */}
         </Flex>
       </Flex>
       <IconBtn
