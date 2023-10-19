@@ -92,10 +92,18 @@ const GlobalStyles = createGlobalStyle`
   padding-top: 2rem !important;
   padding-bottom: 2rem !important;
   display:flex;
+  gap:1rem;
+  flex-wrap: wrap;
   justify-content: center;
+}
+.ql-toolbar.ql-snow .ql-formats{
+  margin-right: 0;
 }
 .ql-toolbar button {
   transform: scale(1.15);
+  @media screen and (max-width:37.5em) {
+    transform:scale(.8);
+  }
 }
 .ql-header{
   font-size: 1.7rem !important;

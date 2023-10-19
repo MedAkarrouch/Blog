@@ -1,6 +1,6 @@
 import { styled } from 'styled-components'
 import Heading from '../../ui/Heading'
-import { postsImagesUrl } from '../../utils/constants'
+import { postsImagesUrl, usersImagesUrl } from '../../utils/constants'
 import { Link } from 'react-router-dom'
 import { DateTime } from 'luxon'
 import {
@@ -206,12 +206,9 @@ const Post = forwardRef(function Post({ post }, ref) {
             <Title as="h3">{title}</Title>
             <Description>{summary}</Description>
             <StyledProfile>
-              {/* <StyledProfileImg
-                src={`${serverUrl}/img/users/${author.photo}`}
-              /> */}
               <StyledProfileImg
                 loading="lazy"
-                src="https://res.cloudinary.com/practicaldev/image/fetch/s--Q9Kwp-uC--/c_fill,f_auto,fl_progressive,h_90,q_auto,w_90/https://dev-to-uploads.s3.amazonaws.com/uploads/user/profile_image/609838/bc3ac0a6-8c2e-4c51-8fdd-83bd3d6ec159.jpeg"
+                src={`${usersImagesUrl}/${author.photo}`}
               />
               <StyledProfileDiv>
                 <StyledProfileName>{author.fullName}</StyledProfileName>

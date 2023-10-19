@@ -13,7 +13,7 @@ function ProtectedRoute() {
   if (isLoading)
     return (
       // <Spinner.Wrapper subtract={'7rem'}>
-      <Spinner.Wrapper subtract={'7rem'}>
+      <Spinner.Wrapper>
         <Spinner />
       </Spinner.Wrapper>
     )

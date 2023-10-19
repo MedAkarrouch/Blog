@@ -33,6 +33,10 @@ const StyledModal = styled.div`
   border-radius: 5px;
   box-shadow: var(--shadow-st);
   padding: 3.2rem 4rem;
+  @media screen and (max-width: 31.25em) {
+    /* <=500px */
+    padding: 2rem;
+  }
   transition: all 0.5s;
 `
 const Button = styled.button`

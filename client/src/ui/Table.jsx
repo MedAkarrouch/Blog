@@ -33,6 +33,7 @@ const StyledTableHeader = styled(CommonRow).attrs({ role: 'rowheader' })`
   color: var(--color-grey-600);
   padding-top: 1.2rem;
   padding-bottom: 1.2rem;
+  border-bottom: 1px solid var(--color-grey-100);
 `
 const StyledTableRow = styled(CommonRow).attrs({ role: 'row' })`
   /* grid-template-columns: 7rem 2.1fr 1fr 0.7fr 0.7fr 0.1fr; */
@@ -60,8 +61,6 @@ const Empty = styled.p`
   font-weight: 500;
   text-align: center;
   margin: 2.4rem;
-  /* background-color: #fff; */
-  /* padding: 3rem 0; */
   color: var(--color-grey-500);
 `
 const StyledBody = styled.div``
@@ -76,7 +75,12 @@ function Table({ columns, gap, children }) {
 }
 
 function Body({ data, render }) {
-  if (!data?.length) return <Empty>No data to show at the moment</Empty>
+  if (!data?.length)
+    return (
+      <StyledTableRow columns="1fr">
+        <Empty>No data to show at the moment</Empty>
+      </StyledTableRow>
+    )
   return <StyledBody>{data?.map(render)}</StyledBody>
 }
 function Header({ children }) {

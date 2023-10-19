@@ -12,11 +12,14 @@ const Container = styled.div`
 `
 const StyledHeading = styled(Heading)`
   margin-bottom: 3rem;
-  font-size: 3.5rem;
+  font-size: 2.75rem;
   font-weight: 700;
 `
 const NumComments = styled.span`
-  font-size: 3rem;
+  font-size: 2.25rem;
+  & span {
+    padding: 0 0.15rem;
+  }
 `
 
 const PostComments = forwardRef(function PostComments(_, ref) {
@@ -30,7 +33,10 @@ const PostComments = forwardRef(function PostComments(_, ref) {
     <Container ref={ref}>
       <StyledHeading as="h1">
         Comments
-        <NumComments> ({post.commentsCount})</NumComments>
+        <NumComments>
+          {' '}
+          (<span>{post.commentsCount}</span>)
+        </NumComments>
       </StyledHeading>
       <AddComment />
       <Modal>

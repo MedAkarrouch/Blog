@@ -1,5 +1,6 @@
 const Post = require('../models/postModel')
 const Comment = require('../models/commentModel')
+const Like = require('../models/LikeModel')
 const fs = require('fs').promises
 const multer = require('multer')
 const { FILE_MAX_SIZE, COMMENTS_PER_PAGE } = require('../utils/constants')
@@ -255,7 +256,7 @@ exports.likePost = async (req, res) => {
     // 1- check if post exists
     try {
       post = await Post.findById(postId || '')
-      if (!post) throw Erro()
+      if (!post) throw Error()
     } catch {
       throw new Error('Post not found')
     }
@@ -284,6 +285,22 @@ exports.likePost = async (req, res) => {
     renderRes({ res, status: 400, message: err.message, errors: err.errors })
   }
 }
+
+// exports.likePost = async (req, res) => {
+//   try {
+//     const { post } = req.query
+//     const like = await Like.create({
+//       user: req.currentUser._id,
+//       post,
+//     })
+//     res.status(200).json()
+//   } catch (err) {
+//     res.status(400).json({
+//       status: 'error',
+//       error: err.message,
+//     })
+//   }
+// }
 
 exports.getUserPosts = async (req, res) => {
   const { page, pageSize } = req.query
@@ -329,8 +346,10 @@ exports.getStats = async (req, res) => {
       (acc, post) => acc + post.commentsCount,
       0
     )
-    const averageLikesPerPost = Math.ceil(totalLikes / totalPosts)
-    const averageCommentsPerPost = Math.ceil(totalComments / totalPosts)
+    const averageLikesPerPost =
+      totalPosts > 0 ? Math.ceil(totalLikes / totalPosts) : 0
+    const averageCommentsPerPost =
+      totalPosts > 0 ? Math.ceil(totalComments / totalPosts) : 0
 
     res.status(200).json({
       status: 'success',

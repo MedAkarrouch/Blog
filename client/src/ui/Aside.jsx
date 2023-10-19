@@ -26,24 +26,14 @@ import SpinnerMini from './SpinnerMini'
 import { toast } from 'react-hot-toast'
 
 const StyledAside = styled.aside`
-  /* position: fixed; */
-  /* top: 0; */
-  /* left: 0; */
   padding: 5vh 0 0 4rem;
-  /* New */
   position: relative;
-  /* padding: 12rem 0 0 0; */
-  /* New */
-  /* background-color: var(--color-grey-50); */
   z-index: 10;
-  /* padding: 9rem 0 0 2rem; */
-  /* margin: 9rem 0 0 5rem; */
-  /* height: 100%; */
-  /* 1000px */
   @media screen and (max-width: 62.5em) {
     padding: 5vh 0 0 2rem;
   }
-  @media screen and (max-width: 28.125em) {
+  @media screen and (max-width: 37.5em) {
+    /* <=600px */
     padding: 5vh 0 0 0;
   }
 `
@@ -52,6 +42,11 @@ const List = styled.ul`
   flex-direction: column;
   gap: 3rem;
   position: fixed;
+  align-items: center;
+  @media screen and (max-width: 37.5em) {
+    /* <=600px */
+    gap: 2rem;
+  }
 `
 const Item = styled.li`
   display: flex;
@@ -60,6 +55,10 @@ const Item = styled.li`
   color: var(--color-grey-500);
   & span:not(:first-child) {
     font-size: 1.4rem;
+    @media screen and (max-width: 28.15em) {
+      /* <=450px */
+      font-size: 1.2rem;
+    }
   }
   position: relative;
 `
@@ -69,6 +68,10 @@ const Icon = styled.span`
     stroke-width: 1.5;
     width: 2.75rem;
     height: 2.75rem;
+    @media screen and (max-width: 37.5em) {
+      width: 2.25rem;
+      height: 2.25rem;
+    }
   }
   ${(props) =>
     props.active &&

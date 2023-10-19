@@ -148,7 +148,6 @@ const ReadingTime = styled(Category)`
     font-size: 2rem;
   }
 `
-const Stats = styled.div``
 
 function PostDetail({ post }) {
   const { category, content, title, coverImg, author, readingTime, createdAt } =
@@ -168,11 +167,7 @@ function PostDetail({ post }) {
         <Title as="h1">{title}</Title>
       </PostHeader>
       <StyledProfile>
-        {/* <UserImg alt="" src={`${usersImagesUrl}/${author.photo}`} /> */}
-        <UserImg
-          alt=""
-          src="https://res.cloudinary.com/practicaldev/image/fetch/s--Q9Kwp-uC--/c_fill,f_auto,fl_progressive,h_90,q_auto,w_90/https://dev-to-uploads.s3.amazonaws.com/uploads/user/profile_image/609838/bc3ac0a6-8c2e-4c51-8fdd-83bd3d6ec159.jpeg"
-        />
+        <UserImg alt="" src={`${usersImagesUrl}/${author.photo}`} />
         <FlexBox>
           <UserName>{author.fullName}</UserName>
           {/* <PostDate>{DateTime.fromISO(createdAt).toRelative()}</PostDate> */}
@@ -184,10 +179,6 @@ function PostDetail({ post }) {
         </FlexBox>
       </StyledProfile>
       <PostImg alt="" src={`${postsImagesUrl}/${coverImg}`} />
-      {/* <PostImg
-        alt=""
-        src="https://assets.website-files.com/62747a2d3bf3fca1c45b852a/63e0aa63d88ab8b68761c363_BFCM%20strategies.png"
-      /> */}
       <StyledContent dangerouslySetInnerHTML={{ __html: content }} />
     </Layout>
   )

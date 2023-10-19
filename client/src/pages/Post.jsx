@@ -33,7 +33,7 @@ const Container = styled.div`
   }
   @media screen and (max-width: 28.125em) {
     /* 450 */
-    grid-template-columns: 5rem 1fr;
+    grid-template-columns: 5.5rem 1fr;
   }
   /* 37.5em */
 `

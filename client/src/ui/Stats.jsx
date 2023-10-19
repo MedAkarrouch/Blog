@@ -74,7 +74,7 @@ function Stats() {
           <HiOutlineRectangleStack />
         </Icon>
         <Box>
-          <span>Posts</span>
+          <span>Total Posts</span>
           <span>
             {isLoading ? (
               <SpinnerMini color="var(--color-blue-600)" />
@@ -89,7 +89,7 @@ function Stats() {
           <HiOutlineChatBubbleOvalLeft />
         </Icon>
         <Box>
-          <span>Comments</span>
+          <span>Total Comments</span>
           <span>
             {isLoading ? (
               <SpinnerMini color="var(--color-green-600)" />
@@ -104,7 +104,7 @@ function Stats() {
           <HiOutlineHeart />
         </Icon>
         <Box>
-          <span>Likes</span>
+          <span>Total Likes</span>
           <span>
             {isLoading ? (
               <SpinnerMini color="var(--color-amber-600)" />
