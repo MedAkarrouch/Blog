@@ -4,6 +4,7 @@ const authController = require('../controllers/authController')
 const postController = require('../controllers/postController')
 
 router.get('/', postController.getPosts)
+
 router.post(
   '/addNewPost',
   authController.protect,
@@ -12,7 +13,6 @@ router.post(
 )
 router.get('/stats', authController.protect, postController.getStats)
 router.get('/getPost', postController.getPost)
-router.get('/addLike', authController.protect, postController.likePost)
 router.delete('/deletePost', authController.protect, postController.deletePost)
 router.post(
   '/updatePost',

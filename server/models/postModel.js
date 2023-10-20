@@ -63,21 +63,15 @@ const postSchema = new mongoose.Schema(
       type: String,
       required: [true, 'Reading time is required'],
     },
-    likes: [
-      {
-        user: {
-          type: mongoose.Schema.ObjectId,
-          ref: 'User',
-        },
-        likedAt: { type: Date, default: Date.now },
-      },
-    ],
   },
   { toJSON: { virtuals: true }, toObject: { virtuals: true } }
 )
 
-postSchema.virtual('likesCount').get(function () {
-  return this.likes.length
+postSchema.virtual('likesCount', {
+  ref: 'Like',
+  localField: '_id',
+  foreignField: 'post',
+  count: true,
 })
 
 postSchema.virtual('commentsCount', {
@@ -93,11 +87,20 @@ postSchema.virtual('comments', {
   foreignField: 'post',
   options: { sort: { createdAt: -1 } },
 })
+
+postSchema.virtual('likes', {
+  ref: 'Like',
+  localField: '_id',
+  foreignField: 'post',
+})
+
 postSchema.pre(/^find/, function (next) {
   this.populate({
     path: 'author',
     select: 'fullName photo',
-  }).populate('commentsCount')
+  })
+    .populate('commentsCount')
+    .populate('likesCount')
   next()
 })
 

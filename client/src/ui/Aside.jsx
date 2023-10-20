@@ -1,10 +1,8 @@
 import styled, { css } from 'styled-components'
 import { useUser } from '../features/auth/useUser'
 import {
-  HiOutlineHandThumbUp,
   HiOutlineChatBubbleOvalLeft,
   HiOutlineBookmark,
-  HiOutlineBookmarkSlash,
   HiOutlineShare,
   HiOutlineHeart,
   HiOutlineSquare2Stack,
@@ -13,7 +11,6 @@ import {
   HiPencil,
   HiTrash,
 } from 'react-icons/hi2'
-import { useLikePost } from '../features/posts/useLikePost'
 import { useMemo, useRef, useState } from 'react'
 import { useOutsideClick } from '../hooks/useOutsideClick'
 import { Link, useNavigate } from 'react-router-dom'
@@ -24,6 +21,8 @@ import { useDeletePost } from '../features/posts/useDeletePost'
 import LogInToContinue from './LogInToContinue'
 import SpinnerMini from './SpinnerMini'
 import { toast } from 'react-hot-toast'
+import { useAddLike } from '../features/likes/useAddLike'
+import { useRemoveLike } from '../features/likes/useRemoveLike'
 
 const StyledAside = styled.aside`
   padding: 5vh 0 0 4rem;
@@ -182,13 +181,14 @@ function Aside({ post, commentsSection }) {
   const socialsListRef = useOutsideClick(() => setShowList(false), false)
   //
   const { likes, commentsCount, likesCount } = post
-  const { likePost, isLoading } = useLikePost()
+  const { addLike, isAddingLike } = useAddLike()
+  const { removeLike, isRemovingLike } = useRemoveLike()
+  const isLoading = isAddingLike || isRemovingLike
 
   const hasUserAlreadyLikedPost = useMemo(() => {
     return likes?.some((like) => like.user === user?._id)
-  }, [likesCount])
+  }, [likesCount, isAuthenticated])
 
-  const totalLikes = likesCount || 0
   //z`
   const asideRef = useRef(null)
   const { closeWindow } = useModalContext()
@@ -197,10 +197,12 @@ function Aside({ post, commentsSection }) {
 
   const handleLikeClick = () => {
     if (!isAuthenticated) return
-    likePost()
+    if (hasUserAlreadyLikedPost) removeLike()
+    else if (!hasUserAlreadyLikedPost) addLike()
   }
+
   const handleCommentClick = () => {
-    console.log(commentsSection.current.getBoundingClientRect())
+    // console.log(commentsSection.current.getBoundingClientRect())
     window.scrollBy(0, commentsSection.current.getBoundingClientRect().top - 80)
   }
   const handleCopyLink = async () => {
@@ -233,7 +235,7 @@ function Aside({ post, commentsSection }) {
                 <HiOutlineHeart />
               )}
             </Icon>
-            <span>{totalLikes}</span>
+            <span>{likesCount}</span>
           </Item>
         </Modal.Open>
         {!isAuthenticated && (
@@ -403,5 +405,236 @@ function Aside({ post, commentsSection }) {
     </StyledAside>
   )
 }
+// function Aside({ post, commentsSection }) {
+//   const { user, isAuthenticated } = useUser()
+//   const navigate = useNavigate()
+//   const { isDeleting, deletePost } = useDeletePost()
+//   const [showList, setShowList] = useState('')
+//   const [linkCopied, setLinkcopied] = useState(false)
+//   const linkCopiedTimeout = useRef(null)
+//   const socialsListRef = useOutsideClick(() => setShowList(false), false)
+//   //
+//   const { likes, commentsCount, likesCount } = post
+//   const { likePost, isLoading } = useLikePost()
+
+//   const hasUserAlreadyLikedPost = useMemo(() => {
+//     return likes?.some((like) => like.user === user?._id)
+//   }, [likesCount])
+
+//   const totalLikes = likesCount || 0
+//   //z`
+//   const asideRef = useRef(null)
+//   const { closeWindow } = useModalContext()
+
+//   const postBelongsToCurrentUser = post?.author._id === user?._id
+
+//   const handleLikeClick = () => {
+//     if (!isAuthenticated) return
+//     likePost()
+//   }
+//   const handleCommentClick = () => {
+//     console.log(commentsSection.current.getBoundingClientRect())
+//     window.scrollBy(0, commentsSection.current.getBoundingClientRect().top - 80)
+//   }
+//   const handleCopyLink = async () => {
+//     if (linkCopiedTimeout.current) clearTimeout(linkCopiedTimeout.current)
+//     try {
+//       await navigator.clipboard.writeText(window.location.href)
+//       setLinkcopied(true)
+//       const handler = () => setLinkcopied(false)
+//       linkCopiedTimeout.current = setTimeout(handler, 1000)
+//     } catch {
+//       toast.error('Something went wrong')
+//     }
+//   }
+
+//   return (
+//     <StyledAside ref={asideRef}>
+//       <List>
+//         <Modal.Open window={'confirm-window'}>
+//           <Item>
+//             <Icon
+//               title={
+//                 hasUserAlreadyLikedPost ? 'Remove like' : 'Like this article'
+//               }
+//               active={hasUserAlreadyLikedPost ? 'true' : ''}
+//               onClick={handleLikeClick}
+//             >
+//               {isLoading ? (
+//                 <SpinnerMini color={'var(--color-orange-400)'} />
+//               ) : (
+//                 <HiOutlineHeart />
+//               )}
+//             </Icon>
+//             <span>{totalLikes}</span>
+//           </Item>
+//         </Modal.Open>
+//         {!isAuthenticated && (
+//           <Modal.Window window={'confirm-window'}>
+//             <LogInToContinue />
+//           </Modal.Window>
+//         )}
+//         <Item>
+//           <Icon onClick={handleCommentClick} title="Jump to comments">
+//             <HiOutlineChatBubbleOvalLeft />
+//           </Icon>
+//           <span>{commentsCount}</span>
+//         </Item>
+//         <Modal.Open window={'confirm-window'}>
+//           <Item>
+//             <Icon title="Add to bookmark">
+//               <HiOutlineBookmark />
+//             </Icon>
+//           </Item>
+//         </Modal.Open>
+//         <Item>
+//           <Icon
+//             onClick={(e) => {
+//               e.stopPropagation()
+//               setShowList((list) =>
+//                 list === 'socials-list' ? '' : 'socials-list',
+//               )
+//             }}
+//             hide-title={showList === 'socials-list' ? 'true' : ''}
+//             title="Share this article"
+//           >
+//             <HiOutlineShare />
+//           </Icon>
+//           {showList === 'socials-list' && (
+//             <SocialsList ref={socialsListRef}>
+//               <SocialsItem
+//                 onClick={handleCopyLink}
+//                 linkcopied={linkCopied ? 'true' : ''}
+//               >
+//                 <span>{linkCopied ? 'Copied !' : 'Copy link'}</span>
+//                 {linkCopied ? (
+//                   <HiOutlineCheckCircle />
+//                 ) : (
+//                   <HiOutlineSquare2Stack />
+//                 )}
+//               </SocialsItem>
+//               {socialsLinks.map((social) => (
+//                 <SocialsItem key={social.social}>
+//                   <SocialLink
+//                     target="_blank"
+//                     to={social.link.replace(
+//                       'URL',
+//                       encodeURIComponent(
+//                         window.location.href,
+//                         // 'https://www.youtube.com/watch?v=yWDHYKTaRmo',
+//                       ),
+//                     )}
+//                   >
+//                     Share to {social.social}
+//                   </SocialLink>
+//                 </SocialsItem>
+//               ))}
+//             </SocialsList>
+//           )}
+//         </Item>
+//         {postBelongsToCurrentUser && (
+//           <>
+//             <Item>
+//               <Icon
+//                 onClick={(e) => {
+//                   e.stopPropagation()
+//                   setShowList((list) =>
+//                     list === 'menu-list' ? '' : 'menu-list',
+//                   )
+//                 }}
+//                 hide-title={showList === 'menu-list' ? 'true' : ''}
+//                 title="Manage post"
+//               >
+//                 <HiOutlineEllipsisHorizontal />
+//               </Icon>
+//               {showList === 'menu-list' && (
+//                 <SocialsList ref={socialsListRef} menu="menu">
+//                   <SocialsItem>
+//                     <SocialLink to={`/edit/${post?._id}`}>
+//                       <HiPencil />
+//                       <span>Edit post</span>
+//                     </SocialLink>
+//                   </SocialsItem>
+//                   <Modal.Open window="delete-post">
+//                     <SocialsItem>
+//                       <HiTrash />
+//                       <span>Delete post</span>
+//                     </SocialsItem>
+//                   </Modal.Open>
+//                   {/* <SocialsItem>
+//                 <SocialLink
+//                   target="_blank"
+//                   to={social.link.replace(
+//                     'URL',
+//                     encodeURIComponent(
+//                       window.location.href,
+//                       // 'https://www.youtube.com/watch?v=yWDHYKTaRmo',
+//                     ),
+//                   )}
+//                 >
+//                   Share to {social.social}
+//                 </SocialLink>
+//               </SocialsItem> */}
+//                 </SocialsList>
+//               )}
+//             </Item>
+//             <Modal.Window window="delete-post">
+//               <ConfirmDelete
+//                 resourceName={'post'}
+//                 disabled={isDeleting}
+//                 onConfirm={() =>
+//                   deletePost(post?._id, {
+//                     onSuccess: () => {
+//                       navigate('/', { replace: true })
+//                     },
+//                     onError: () => {
+//                       closeWindow()
+//                     },
+//                   })
+//                 }
+//               />
+//             </Modal.Window>
+//           </>
+//         )}
+//         {/* <Item>
+//             <Icon onClick={handleShareClick} title="Share this article">
+//               <HiOutlineShare />
+//             </Icon>
+//             {showList && (
+//               <SocialsList ref={socialsListRef}>
+//                 <SocialsItem
+//                   onClick={handleCopyLink}
+//                   linkCopied={linkCopied ? 'true' : ''}
+//                 >
+//                   <span>{linkCopied ? 'Copied !' : 'Copy link'}</span>
+//                   {linkCopied ? (
+//                     <HiOutlineCheckCircle />
+//                   ) : (
+//                     <HiOutlineSquare2Stack />
+//                   )}
+//                 </SocialsItem>
+//                 {socialsLinks.map((social) => (
+//                   <SocialsItem>
+//                     <SocialLink
+//                       target="_blank"
+//                       to={social.link.replace(
+//                         'URL',
+//                         encodeURIComponent(
+//                           window.location.href,
+//                           // 'https://www.youtube.com/watch?v=yWDHYKTaRmo',
+//                         ),
+//                       )}
+//                     >
+//                       Share to {social.social}
+//                     </SocialLink>
+//                   </SocialsItem>
+//                 ))}
+//               </SocialsList>
+//             )}
+//           </Item> */}
+//       </List>
+//     </StyledAside>
+//   )
+// }
 
 export default Aside

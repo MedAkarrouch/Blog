@@ -1,6 +1,5 @@
 import axios from 'axios'
-import { serverUrl } from '../utils/constants'
-import { config } from '../utils/constants'
+import { serverUrl, config } from '../utils/constants'
 
 const server = `${serverUrl}/posts`
 

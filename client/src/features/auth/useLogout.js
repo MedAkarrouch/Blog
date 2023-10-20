@@ -8,6 +8,7 @@ export function useLogout() {
     mutationFn: logoutApi,
     onSuccess: () => {
       queryClient.invalidateQueries()
+      toast.success('Successfully logged out')
     },
     onError: () => toast.error('Something went wrong'),
   })

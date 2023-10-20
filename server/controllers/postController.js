@@ -1,6 +1,5 @@
 const Post = require('../models/postModel')
 const Comment = require('../models/commentModel')
-const Like = require('../models/LikeModel')
 const fs = require('fs').promises
 const multer = require('multer')
 const { FILE_MAX_SIZE, COMMENTS_PER_PAGE } = require('../utils/constants')
@@ -141,11 +140,13 @@ exports.getPost = async (req, res) => {
     options.limit = COMMENTS_PER_PAGE
   }
   try {
-    const post = await Post.findById(postId).populate({
-      path: 'comments',
-      options: { sort: { 'comments.createdAt': -1 }, ...options },
-      // options: { limit: COMMENTS_PER_PAGE },
-    })
+    const post = await Post.findById(postId)
+      .populate({
+        path: 'comments',
+        options: { sort: { 'comments.createdAt': -1 }, ...options },
+        // options: { limit: COMMENTS_PER_PAGE },
+      })
+      .populate({ path: 'likes', select: 'user -_id -post' })
     if (!post) throw new Error('No post could be found')
     renderRes({ res, status: 200, data: { post } })
   } catch (err) {
@@ -248,57 +249,41 @@ exports.updatePost = async (req, res) => {
   }
 }
 
-exports.likePost = async (req, res) => {
-  let post
-  const { post: postId } = req.query
-  // console.log('Post = ', postId)
-  try {
-    // 1- check if post exists
-    try {
-      post = await Post.findById(postId || '')
-      if (!post) throw Error()
-    } catch {
-      throw new Error('Post not found')
-    }
-    // if so, add or delete like
-    const hasAlreadyLikedPost = post.likes.some(
-      (like) => like.user.toHexString() === req.currentUser._id.toHexString()
-    )
-
-    const likes = hasAlreadyLikedPost
-      ? post.likes.filter(
-          (like) =>
-            like.user.toHexString() !== req.currentUser._id.toHexString()
-        )
-      : [...post.likes, { user: req.currentUser._id }]
-
-    post = await Post.findByIdAndUpdate(
-      postId,
-      {
-        likes,
-      },
-      { new: true }
-    )
-    //
-    renderRes({ res, status: 200, data: { post } })
-  } catch (err) {
-    renderRes({ res, status: 400, message: err.message, errors: err.errors })
-  }
-}
-
 // exports.likePost = async (req, res) => {
+//   let post
+//   const { post: postId } = req.query
+//   // console.log('Post = ', postId)
 //   try {
-//     const { post } = req.query
-//     const like = await Like.create({
-//       user: req.currentUser._id,
-//       post,
-//     })
-//     res.status(200).json()
+//     // 1- check if post exists
+//     try {
+//       post = await Post.findById(postId || '')
+//       if (!post) throw Error()
+//     } catch {
+//       throw new Error('Post not found')
+//     }
+//     // if so, add or delete like
+//     const hasAlreadyLikedPost = post.likes.some(
+//       (like) => like.user.toHexString() === req.currentUser._id.toHexString()
+//     )
+
+//     const likes = hasAlreadyLikedPost
+//       ? post.likes.filter(
+//           (like) =>
+//             like.user.toHexString() !== req.currentUser._id.toHexString()
+//         )
+//       : [...post.likes, { user: req.currentUser._id }]
+
+//     post = await Post.findByIdAndUpdate(
+//       postId,
+//       {
+//         likes,
+//       },
+//       { new: true }
+//     )
+//     //
+//     renderRes({ res, status: 200, data: { post } })
 //   } catch (err) {
-//     res.status(400).json({
-//       status: 'error',
-//       error: err.message,
-//     })
+//     renderRes({ res, status: 400, message: err.message, errors: err.errors })
 //   }
 // }
 
