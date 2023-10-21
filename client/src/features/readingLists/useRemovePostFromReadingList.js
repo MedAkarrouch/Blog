@@ -7,7 +7,7 @@ export function useRemovePostFromReadingList() {
   const queryClient = useQueryClient()
   const { postId: post } = useParams()
   const { isLoading, mutate: removePostFromReadingList } = useMutation({
-    mutationFn: () => removePostFromReadingListApi({ post }),
+    mutationFn: (data) => removePostFromReadingListApi({ post, ...data }),
     onSuccess: () => {
       toast.success('Successfully removed from the reading list')
       queryClient.invalidateQueries()

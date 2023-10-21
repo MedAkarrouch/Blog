@@ -12,9 +12,12 @@ import styled from 'styled-components'
 import { useWindowListener } from '../../hooks/useWindowListener'
 
 const SpinnerWrapper = styled.div`
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
+  grid-column: 1/-1;
+  padding: 3rem 0;
 `
 
 function DashboardTable() {
@@ -42,12 +45,6 @@ function DashboardTable() {
     gap = '3rem'
 
   console.log(isLoading, count, posts)
-  if (isLoading)
-    return (
-      <SpinnerWrapper>
-        <Spinner size="4rem" />
-      </SpinnerWrapper>
-    )
 
   if (screen === 'tablet') {
     columns = '7rem 2fr 0.6fr 0.5fr 3rem '
@@ -67,24 +64,32 @@ function DashboardTable() {
         <div>stats</div>
         <div></div>
       </Table.Header>
-      <Table.Body
-        data={posts}
-        render={(post) => (
-          <DashboardRow
-            key={post._id}
-            ref={menuRef}
-            isMenuOpen={selectedId === post._id}
-            openMenu={() =>
-              setSelectedId((current) =>
-                current === post._id ? null : post._id,
-              )
-            }
-            closeMenu={() => setSelectedId(null)}
-            post={post}
-            screen={screen}
-          />
-        )}
-      />
+      {isLoading ? (
+        <Table.Row>
+          <SpinnerWrapper>
+            <Spinner size="4rem" />
+          </SpinnerWrapper>
+        </Table.Row>
+      ) : (
+        <Table.Body
+          data={posts}
+          render={(post) => (
+            <DashboardRow
+              key={post._id}
+              ref={menuRef}
+              isMenuOpen={selectedId === post._id}
+              openMenu={() =>
+                setSelectedId((current) =>
+                  current === post._id ? null : post._id,
+                )
+              }
+              closeMenu={() => setSelectedId(null)}
+              post={post}
+              screen={screen}
+            />
+          )}
+        />
+      )}
       <Modal.Window window={selectedId}>
         <ConfirmDelete
           resourceName={'post'}

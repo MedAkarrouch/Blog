@@ -11,7 +11,7 @@ const StyledMain = styled(Main)`
 `
 const TableContainer = styled.div`
   max-width: 110rem;
-  padding-top: 5rem;
+  padding: 5rem 0;
   margin: 0 auto;
 `
 

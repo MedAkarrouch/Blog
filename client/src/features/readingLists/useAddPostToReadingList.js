@@ -7,7 +7,7 @@ export function useAddPosttoReadingList() {
   const queryClient = useQueryClient()
   const { postId: post } = useParams()
   const { isLoading, mutate: addPostToReadingList } = useMutation({
-    mutationFn: () => addPostToReadingListApi({ post }),
+    mutationFn: (data) => addPostToReadingListApi({ post, ...data }),
     onSuccess: () => {
       toast.success('Successfully added to the reading list')
       queryClient.invalidateQueries()

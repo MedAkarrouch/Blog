@@ -21,9 +21,8 @@ import { useDeletePost } from '../features/posts/useDeletePost'
 import LogInToContinue from './LogInToContinue'
 import SpinnerMini from './SpinnerMini'
 import { toast } from 'react-hot-toast'
-import { useAddLike } from '../features/likes/useAddLike'
-import { useRemoveLike } from '../features/likes/useRemoveLike'
 import LikeButton from './LikeButton'
+import AddToReadingListButton from '../features/readingLists/AddToReadingListButton'
 
 const StyledAside = styled.aside`
   padding: 5vh 0 0 4rem;
@@ -228,9 +227,12 @@ function Aside({ post, commentsSection }) {
         </Item>
         <Modal.Open window={'confirm-window'}>
           <Item>
-            <Icon title="Add to bookmark">
+            <AddToReadingListButton post={post}>
+              <Icon />
+            </AddToReadingListButton>
+            {/* <Icon title="Add to bookmark">
               <HiOutlineBookmark />
-            </Icon>
+            </Icon> */}
           </Item>
         </Modal.Open>
         <Item>
