@@ -124,7 +124,7 @@ function Stats() {
             {isLoading ? (
               <SpinnerMini color="var(--color-green-600)" />
             ) : (
-              averageLikesPerPost
+              averageCommentsPerPost
             )}
           </span>
         </Box>
@@ -139,7 +139,7 @@ function Stats() {
             {isLoading ? (
               <SpinnerMini color="var(--color-amber-600)" />
             ) : (
-              averageCommentsPerPost
+              averageLikesPerPost
             )}
           </span>
         </Box>

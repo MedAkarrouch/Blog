@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import DashboardTable from '../ui/DashboardTable'
+import DashboardTable from '../features/Dashboard/DashboardTable'
 import Modal from '../ui/Modal'
 import Stats from '../ui/Stats'
 import Header from '../ui/Header'

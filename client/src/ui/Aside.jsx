@@ -23,6 +23,7 @@ import SpinnerMini from './SpinnerMini'
 import { toast } from 'react-hot-toast'
 import { useAddLike } from '../features/likes/useAddLike'
 import { useRemoveLike } from '../features/likes/useRemoveLike'
+import LikeButton from './LikeButton'
 
 const StyledAside = styled.aside`
   padding: 5vh 0 0 4rem;
@@ -180,26 +181,12 @@ function Aside({ post, commentsSection }) {
   const linkCopiedTimeout = useRef(null)
   const socialsListRef = useOutsideClick(() => setShowList(false), false)
   //
-  const { likes, commentsCount, likesCount } = post
-  const { addLike, isAddingLike } = useAddLike()
-  const { removeLike, isRemovingLike } = useRemoveLike()
-  const isLoading = isAddingLike || isRemovingLike
+  const { commentsCount, likesCount } = post
 
-  const hasUserAlreadyLikedPost = useMemo(() => {
-    return likes?.some((like) => like.user === user?._id)
-  }, [likesCount, isAuthenticated])
-
-  //z`
   const asideRef = useRef(null)
   const { closeWindow } = useModalContext()
 
   const postBelongsToCurrentUser = post?.author._id === user?._id
-
-  const handleLikeClick = () => {
-    if (!isAuthenticated) return
-    if (hasUserAlreadyLikedPost) removeLike()
-    else if (!hasUserAlreadyLikedPost) addLike()
-  }
 
   const handleCommentClick = () => {
     // console.log(commentsSection.current.getBoundingClientRect())
@@ -222,19 +209,9 @@ function Aside({ post, commentsSection }) {
       <List>
         <Modal.Open window={'confirm-window'}>
           <Item>
-            <Icon
-              title={
-                hasUserAlreadyLikedPost ? 'Remove like' : 'Like this article'
-              }
-              active={hasUserAlreadyLikedPost ? 'true' : ''}
-              onClick={handleLikeClick}
-            >
-              {isLoading ? (
-                <SpinnerMini color={'var(--color-orange-400)'} />
-              ) : (
-                <HiOutlineHeart />
-              )}
-            </Icon>
+            <LikeButton post={post}>
+              <Icon />
+            </LikeButton>
             <span>{likesCount}</span>
           </Item>
         </Modal.Open>
@@ -365,42 +342,6 @@ function Aside({ post, commentsSection }) {
             </Modal.Window>
           </>
         )}
-        {/* <Item>
-            <Icon onClick={handleShareClick} title="Share this article">
-              <HiOutlineShare />
-            </Icon>
-            {showList && (
-              <SocialsList ref={socialsListRef}>
-                <SocialsItem
-                  onClick={handleCopyLink}
-                  linkCopied={linkCopied ? 'true' : ''}
-                >
-                  <span>{linkCopied ? 'Copied !' : 'Copy link'}</span>
-                  {linkCopied ? (
-                    <HiOutlineCheckCircle />
-                  ) : (
-                    <HiOutlineSquare2Stack />
-                  )}
-                </SocialsItem>
-                {socialsLinks.map((social) => (
-                  <SocialsItem>
-                    <SocialLink
-                      target="_blank"
-                      to={social.link.replace(
-                        'URL',
-                        encodeURIComponent(
-                          window.location.href,
-                          // 'https://www.youtube.com/watch?v=yWDHYKTaRmo',
-                        ),
-                      )}
-                    >
-                      Share to {social.social}
-                    </SocialLink>
-                  </SocialsItem>
-                ))}
-              </SocialsList>
-            )}
-          </Item> */}
       </List>
     </StyledAside>
   )
@@ -415,13 +356,14 @@ function Aside({ post, commentsSection }) {
 //   const socialsListRef = useOutsideClick(() => setShowList(false), false)
 //   //
 //   const { likes, commentsCount, likesCount } = post
-//   const { likePost, isLoading } = useLikePost()
+//   const { addLike, isAddingLike } = useAddLike()
+//   const { removeLike, isRemovingLike } = useRemoveLike()
+//   const isLoading = isAddingLike || isRemovingLike
 
 //   const hasUserAlreadyLikedPost = useMemo(() => {
 //     return likes?.some((like) => like.user === user?._id)
-//   }, [likesCount])
+//   }, [likesCount, isAuthenticated])
 
-//   const totalLikes = likesCount || 0
 //   //z`
 //   const asideRef = useRef(null)
 //   const { closeWindow } = useModalContext()
@@ -430,10 +372,12 @@ function Aside({ post, commentsSection }) {
 
 //   const handleLikeClick = () => {
 //     if (!isAuthenticated) return
-//     likePost()
+//     if (hasUserAlreadyLikedPost) removeLike()
+//     else if (!hasUserAlreadyLikedPost) addLike()
 //   }
+
 //   const handleCommentClick = () => {
-//     console.log(commentsSection.current.getBoundingClientRect())
+//     // console.log(commentsSection.current.getBoundingClientRect())
 //     window.scrollBy(0, commentsSection.current.getBoundingClientRect().top - 80)
 //   }
 //   const handleCopyLink = async () => {
@@ -453,7 +397,10 @@ function Aside({ post, commentsSection }) {
 //       <List>
 //         <Modal.Open window={'confirm-window'}>
 //           <Item>
-//             <Icon
+//             <LikeButton post={post}>
+//               <Icon />
+//             </LikeButton>
+//             {/* <Icon
 //               title={
 //                 hasUserAlreadyLikedPost ? 'Remove like' : 'Like this article'
 //               }
@@ -465,8 +412,8 @@ function Aside({ post, commentsSection }) {
 //               ) : (
 //                 <HiOutlineHeart />
 //               )}
-//             </Icon>
-//             <span>{totalLikes}</span>
+//             </Icon> */}
+//             <span>{likesCount}</span>
 //           </Item>
 //         </Modal.Open>
 //         {!isAuthenticated && (

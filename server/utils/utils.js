@@ -1,5 +1,14 @@
 const multer = require('multer')
 //
+exports.userHasAlreadyAddedPostToReadingList = (err) => {
+  if (
+    err.code === 11000 &&
+    err.keyPattern.hasOwnProperty('user') &&
+    err.keyPattern.hasOwnProperty('post')
+  )
+    return { message: 'Post is already added to the raeding list' }
+  else return null
+}
 exports.userHasAlreadyLikedPost = (err) => {
   if (
     err.code === 11000 &&

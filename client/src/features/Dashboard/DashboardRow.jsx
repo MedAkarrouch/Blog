@@ -1,7 +1,7 @@
 import { differenceInSeconds, format } from 'date-fns'
-import { postsImagesUrl } from '../utils/constants'
+import { postsImagesUrl } from '../../utils/constants'
 import { DateTime } from 'luxon'
-import Table from './Table'
+import Table from '../../ui/Table'
 import {
   HiMiniArrowRightCircle,
   HiOutlineChatBubbleOvalLeft,
@@ -12,7 +12,7 @@ import {
 } from 'react-icons/hi2'
 import styled, { css } from 'styled-components'
 import { Link } from 'react-router-dom'
-import Modal from './Modal'
+import Modal from '../../ui/Modal'
 import { forwardRef } from 'react'
 
 const Img = styled.img`

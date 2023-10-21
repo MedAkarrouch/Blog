@@ -8,6 +8,7 @@ const userRouter = require('./routes/userRoutes')
 const postRouter = require('./routes/postRoutes')
 const commentRouter = require('./routes/commentRoutes')
 const likeRouter = require('./routes/likeRoutes')
+const readingListRouter = require('./routes/readingListRoutes')
 
 const app = express()
 
@@ -35,6 +36,7 @@ app.use(
   })
 )
 // app.use(cors({ credentials: true, origin: 'http://localhost:5173' }));
+
 app.use(cookieParser())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.static('public'))
@@ -44,5 +46,6 @@ app.use('/users', userRouter)
 app.use('/posts', postRouter)
 app.use('/comments', commentRouter)
 app.use('/likes', likeRouter)
+app.use('/readingLists', readingListRouter)
 
 module.exports = app

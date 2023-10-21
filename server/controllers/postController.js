@@ -322,6 +322,7 @@ exports.getUserPosts = async (req, res) => {
     renderRes({ res, status: 400, message: err.message, errors: err.errors })
   }
 }
+
 exports.getStats = async (req, res) => {
   try {
     const posts = await Post.find({ author: req.currentUser._id })

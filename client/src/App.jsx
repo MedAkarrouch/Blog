@@ -37,6 +37,7 @@ import Account from './pages/Account'
 import Dashboard from './pages/Dashboard'
 import EditPost from './pages/EditPost'
 import AddPost from './pages/AddPost'
+import ReadingList from './pages/ReadingList'
 import Test1 from './pages/Test1'
 
 const queryClient = new QueryClient({
@@ -84,8 +85,8 @@ function App() {
             {/* <Route path="/new" element={<CreatePost />} /> */}
             <Route path="/new" element={<AddPost />} />
             <Route path="/edit/:postId" element={<EditPost />} />
+            <Route path="/readingList" element={<ReadingList />} />
           </Route>
-          {/* </Route> */}
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/test" element={<Test />} />
