@@ -169,7 +169,7 @@ function PostDetail({ post }) {
       <StyledProfile>
         <UserImg alt="" src={`${usersImagesUrl}/${author.photo}`} />
         <FlexBox>
-          <UserName>{author.fullName}</UserName>
+          <UserName>{author.username}</UserName>
           {/* <PostDate>{DateTime.fromISO(createdAt).toRelative()}</PostDate> */}
           <PostDate>
             {differenceInSeconds(new Date(), new Date(createdAt)) <= 1

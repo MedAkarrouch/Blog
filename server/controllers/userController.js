@@ -1,13 +1,19 @@
 const User = require('../models/userModel')
 const Comment = require('../models/commentModel')
 const Post = require('../models/postModel')
+const Like = require('../models/likeModel')
+const ReadingList = require('../models/readingListModel')
+
 const { FILE_MAX_SIZE } = require('../utils/constants')
 const fs = require('fs').promises
 const sharp = require('sharp')
 const multer = require('multer')
 const jwt = require('jsonwebtoken')
 const renderRes = require('../utils/renderRes')
-const { isEmailAlreadyTaken, isNameAlreadyTaken } = require('../utils/utils')
+const {
+  isEmailAlreadyTaken,
+  isUsernameAlreadyTaken,
+} = require('../utils/utils')
 
 const multerStorage = multer.memoryStorage()
 const multerFilter = (req, file, cb) => {
@@ -66,8 +72,8 @@ exports.getCurrentUser = async (req, res) => {
   }
 }
 exports.updateMe = async (req, res) => {
-  const { email, fullName } = req.body
-  const updateObj = { email, fullName }
+  const { email, username } = req.body
+  const updateObj = { email, username }
   if (req.photo) updateObj.photo = req.photo
   try {
     const user = await User.findByIdAndUpdate(req.currentUser._id, updateObj, {
@@ -84,7 +90,7 @@ exports.updateMe = async (req, res) => {
     //
     renderRes({ res, status: 201, data: { user } })
   } catch (err) {
-    const error = isNameAlreadyTaken(err) || isEmailAlreadyTaken(err) || err
+    const error = isUsernameAlreadyTaken(err) || isEmailAlreadyTaken(err) || err
     renderRes({
       res,
       status: 400,
@@ -129,10 +135,15 @@ exports.deleteMe = async (req, res) => {
           : 'Current password is required',
       })
     // if so
-    // 2- delete all user posts
-    await Post.deleteMany({ author: req.currentUser._id })
+    // delte all user likes
+    await Like.deleteMany({ user: req.currentUser._id })
+    // delete user reading list
+    await ReadingList.deleteMany({ user: req.currentUser._id })
     // delete all user comments
     await Comment.deleteMany({ user: req.currentUser._id })
+
+    // 2- delete all user posts
+    await Post.deleteMany({ author: req.currentUser._id })
     // 2- delete user
     await User.findByIdAndDelete(req.currentUser._id)
     // 3- clear cookie

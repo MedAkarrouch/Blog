@@ -25,9 +25,14 @@ exports.isEmailAlreadyTaken = (err) => {
   else return null
 }
 //
-exports.isNameAlreadyTaken = (err) => {
-  if (err.code === 11000 && err.keyPattern.hasOwnProperty('fullName'))
-    return { message: 'fullName is already taken' }
+exports.isUsernameAlreadyTaken = (err) => {
+  if (err.code === 11000 && err.keyPattern.hasOwnProperty('username'))
+    return { message: 'Username is already taken' }
   else return null
 }
+// exports.isNameAlreadyTaken = (err) => {
+//   if (err.code === 11000 && err.keyPattern.hasOwnProperty('fullName'))
+//     return { message: 'fullName is already taken' }
+//   else return null
+// }
 //

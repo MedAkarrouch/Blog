@@ -48,7 +48,7 @@ const PostComment = forwardRef(function PostComment(
       />
       <PostLayout.Content>
         <StyledRow>
-          <PostLayout.UserName>{user.fullName}</PostLayout.UserName>
+          <PostLayout.UserName>{user.username}</PostLayout.UserName>
           {belongsToUser && (
             <>
               <StyledOptionsBtn

@@ -1,15 +1,24 @@
-const mongoose = require('mongoose');
-const validator = require('validator');
-const bcrypt = require('bcrypt');
+const mongoose = require('mongoose')
+const validator = require('validator')
+const bcrypt = require('bcrypt')
 const userSchema = new mongoose.Schema({
-  fullName: {
+  // fullName: {
+  //   type: String,
+  //   required: [true, 'Full name is required'],
+  //   unique: true,
+  //   trim: true,
+  //   lowercase: true,
+  //   minlength: [3, 'Fullname must have more than 3 characters'],
+  //   maxlength: [25, 'Fullname must have less than 26 characters'],
+  // },
+  username: {
     type: String,
-    required: [true, 'Full name is required'],
+    required: [true, 'Username is required'],
     unique: true,
     trim: true,
     lowercase: true,
-    minlength: [3, 'Fullname must have more than 3 characters'],
-    maxlength: [25, 'Fullname must have less than 26 characters'],
+    minlength: [3, 'Username must have more than 3 characters'],
+    maxlength: [25, 'Username must have less than 26 characters'],
   },
   email: {
     type: String,
@@ -31,7 +40,7 @@ const userSchema = new mongoose.Schema({
     required: [true, 'Confirm password is required'],
     validate: {
       validator: function (el) {
-        return el === this.password;
+        return el === this.password
       },
       message: 'Passwords are not the same',
     },
@@ -42,18 +51,18 @@ const userSchema = new mongoose.Schema({
   },
   // social media links
   // followers
-});
+})
 userSchema.pre('save', async function (next) {
-  if (!this.isModified('password')) return next();
-  this.password = await bcrypt.hash(this.password, 12);
-  this.passwordConfirm = undefined;
-  next();
-});
+  if (!this.isModified('password')) return next()
+  this.password = await bcrypt.hash(this.password, 12)
+  this.passwordConfirm = undefined
+  next()
+})
 userSchema.methods.correctPassword = async function (
   inputPassword,
   userPassword
 ) {
-  return await bcrypt.compare(inputPassword, userPassword);
-};
-const User = mongoose.model('User', userSchema);
-module.exports = User;
+  return await bcrypt.compare(inputPassword, userPassword)
+}
+const User = mongoose.model('User', userSchema)
+module.exports = User

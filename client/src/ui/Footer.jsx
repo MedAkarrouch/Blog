@@ -1,8 +1,7 @@
 import styled from 'styled-components'
 const StyledFooter = styled.footer`
-  height: 15rem;
-  padding: 0 2rem;
-  padding-bottom: 2rem;
+  /* height: 15rem; */
+  padding: 3rem 2rem;
   /* text-align: center; */
   display: grid;
   grid-template-columns: 1fr;

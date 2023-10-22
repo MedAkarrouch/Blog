@@ -2,11 +2,11 @@ import axios from 'axios'
 import { serverUrl } from '../utils/constants'
 import { config } from '../utils/constants'
 
-export async function signup({ fullName, email, password, passwordConfirm }) {
+export async function signup({ username, email, password, passwordConfirm }) {
   const res = await axios.post(
     `${serverUrl}/auth/signup`,
     {
-      fullName,
+      username,
       email,
       password,
       passwordConfirm,

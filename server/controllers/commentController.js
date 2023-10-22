@@ -71,7 +71,7 @@ exports.getPostComments = async (req, res) => {
   let query = Comment.find({ post })
     .populate({
       path: 'user',
-      select: 'photo fullName',
+      select: 'photo username',
     })
     .sort({ createdAt: -1 })
   if (page) {
@@ -108,29 +108,3 @@ exports.getAllComments = async (req, res) => {
     renderRes({ res, status: 400, message: err.message, errors: err.errors })
   }
 }
-// exports.getUserPosts = async (req, res) => {
-//   try {
-//     let posts = await Post.find({ author: req.currentUser._id })
-//     posts = await Promise.all(
-//       posts?.map(async (post) => {
-//         // const comments = await Comment.find({ post: post._id })
-//         const comments = await Comment.countDocuments({ post: post._id })
-//         return {
-//           post,
-//           comments: { totalComments: comments },
-//         }
-//       })
-//     )
-//     renderRes({
-//       res,
-//       status: 200,
-//       data: { totalPosts: posts?.length, posts },
-//     })
-//     // res.status(200).json({
-//     //   status: 'success',
-//     //   data: { posts, count: posts?.length },
-//     // })
-//   } catch (err) {
-//     renderRes({ res, status: 400, message: err.message, errors: err.errors })
-//   }
-// }

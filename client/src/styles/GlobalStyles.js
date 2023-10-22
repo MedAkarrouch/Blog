@@ -133,6 +133,11 @@ const GlobalStyles = createGlobalStyle`
     margin:2px 0 ;
   }
 }
+
+  &::selection{
+    background-color:var(--color-orange-400);
+    color: #FFF;
+  }
   *,
   *::before,
   *::after {

@@ -1,5 +1,7 @@
 const Post = require('../models/postModel')
 const Comment = require('../models/commentModel')
+const Like = require('../models/likeModel')
+const ReadingList = require('../models/readingListModel')
 const fs = require('fs').promises
 const multer = require('multer')
 const { FILE_MAX_SIZE, COMMENTS_PER_PAGE } = require('../utils/constants')
@@ -76,35 +78,6 @@ exports.getPosts = async (req, res) => {
   }
 }
 
-// exports.getPosts = async (req, res) => {
-//   const { category, search, page, pageSize, sortBy } = req.query
-//   console.log('page= ', page)
-//   console.log('sortBy= ', sortBy)
-//   const filterObj = {}
-//   if (category && category !== 'all') filterObj.category = category
-//   if (search) filterObj.title = { $regex: new RegExp(search, 'i') }
-//   let query = Post.find(filterObj).sort({ createdAt: -1 })
-
-//   // if (sortBy === 'popular') query = query.sort({ commentsCount: -1 })
-//   // else query = query.sort({ createdAt: -1 })
-
-//   if (page) {
-//     const PAGE_SIZE = +pageSize ? +pageSize : 10
-//     const skip = +page ? (+page - 1) * PAGE_SIZE : 0
-//     const limit = PAGE_SIZE
-
-//     query = query.skip(skip).limit(limit)
-//   }
-//   try {
-//     const posts = await query
-//     const count = await Post.countDocuments(filterObj)
-//     renderRes({ res, status: 200, data: { count, posts: results } })
-//   } catch (err) {
-//     console.log(err)
-//     renderRes({ res, status: 500, message: err.message })
-//   }
-// }
-
 exports.addNewPost = async (req, res) => {
   const { title, content, category, summary } = req.body
   const author = req.currentUser
@@ -173,6 +146,10 @@ exports.deletePost = async (req, res) => {
     // await Post.findOneAndDelete({ author: req.currentUser._id, post: postId })
     // Delete comments
     await Comment.deleteMany({ post: postId })
+    // Delete likes
+    await Like.deleteMany({ post: postId })
+    // Delete from readingList
+    await ReadingList.deleteMany({ post: postId })
     res.status(200).json({
       status: 'success',
       message: 'Post successfully deleted',
@@ -248,44 +225,6 @@ exports.updatePost = async (req, res) => {
     renderRes({ res, status: 400, message: err.message, errors: err.errors })
   }
 }
-
-// exports.likePost = async (req, res) => {
-//   let post
-//   const { post: postId } = req.query
-//   // console.log('Post = ', postId)
-//   try {
-//     // 1- check if post exists
-//     try {
-//       post = await Post.findById(postId || '')
-//       if (!post) throw Error()
-//     } catch {
-//       throw new Error('Post not found')
-//     }
-//     // if so, add or delete like
-//     const hasAlreadyLikedPost = post.likes.some(
-//       (like) => like.user.toHexString() === req.currentUser._id.toHexString()
-//     )
-
-//     const likes = hasAlreadyLikedPost
-//       ? post.likes.filter(
-//           (like) =>
-//             like.user.toHexString() !== req.currentUser._id.toHexString()
-//         )
-//       : [...post.likes, { user: req.currentUser._id }]
-
-//     post = await Post.findByIdAndUpdate(
-//       postId,
-//       {
-//         likes,
-//       },
-//       { new: true }
-//     )
-//     //
-//     renderRes({ res, status: 200, data: { post } })
-//   } catch (err) {
-//     renderRes({ res, status: 400, message: err.message, errors: err.errors })
-//   }
-// }
 
 exports.getUserPosts = async (req, res) => {
   const { page, pageSize } = req.query

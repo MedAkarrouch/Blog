@@ -211,7 +211,7 @@ const Post = forwardRef(function Post({ post }, ref) {
                 src={`${usersImagesUrl}/${author.photo}`}
               />
               <StyledProfileDiv>
-                <StyledProfileName>{author.fullName}</StyledProfileName>
+                <StyledProfileName>{author.username}</StyledProfileName>
                 <StyledProfileDate>
                   {DateTime.fromISO(createdAt).toRelative()}
                 </StyledProfileDate>

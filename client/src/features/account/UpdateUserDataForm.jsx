@@ -1,37 +1,38 @@
-import { useState } from "react"
-import FileInput from "../../ui/FileInput"
-import { useUser } from "../auth/useUser"
-import Button from "./Button"
-import Form from "./Form"
-import FormRow from "./FormRow"
-import Input from "./Input"
-import { useUpdateUser } from "./useUpdateUser"
+import { useState } from 'react'
+import FileInput from '../../ui/FileInput'
+import { useUser } from '../auth/useUser'
+import Button from './Button'
+import Form from './Form'
+import FormRow from './FormRow'
+import Input from './Input'
+import { useUpdateUser } from './useUpdateUser'
 
 function UpdateUserDataForm({ children }) {
   const { isUpdating, updateMe } = useUpdateUser()
   const { user } = useUser()
   const [email, setEmail] = useState(user.email)
-  const [fullName, setFullName] = useState(user.fullName)
+  const [username, setUsername] = useState(user.username)
   const [photo, setPhoto] = useState(null)
   // const errors = error?.response?.data?.validationErrors
   // console.log(errors)
 
   const onClear = (e) => {
     setEmail(user.email)
-    setFullName(user.fullName)
+    setUsername(user.username)
     setPhoto(null)
   }
+
   const onSubmit = (e) => {
     e.preventDefault()
     const data = new FormData()
-    data.append("email", email)
-    data.append("fullName", fullName)
-    if (photo) data.append("photo", photo)
+    data.append('email', email)
+    data.append('username', username)
+    if (photo) data.append('photo', photo)
     updateMe(data, {
       onSuccess: () => {
         e.target.reset()
         setPhoto()
-      }
+      },
     })
   }
 
@@ -49,11 +50,11 @@ function UpdateUserDataForm({ children }) {
           disabled={isUpdating}
         />
       </FormRow>
-      <FormRow label="Full name">
+      <FormRow label="Username">
         <Input
-          id="fullName"
-          value={fullName}
-          onChange={(e) => setFullName(e.target.value)}
+          id="username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
           disabled={isUpdating}
         />
       </FormRow>

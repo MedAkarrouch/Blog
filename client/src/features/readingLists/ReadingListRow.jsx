@@ -26,12 +26,12 @@ const Img = styled.img`
   /* align-self: center; */
 `
 const Title = styled(Link)`
-  font-size: 1.7rem;
-  font-weight: 700;
+  font-size: 1.8rem;
+  font-weight: 600;
   display: inline-block;
   color: var(--color-grey-600);
   &:hover {
-    color: var(--color-blue-950);
+    color: var(--color-blue-700);
   }
   &::first-letter {
     text-transform: uppercase;
@@ -69,6 +69,7 @@ const Flex = styled.div`
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  flex-wrap: wrap;
   & p {
     font-size: 1rem;
     color: var(--color-grey-400);

@@ -3,13 +3,15 @@ import Heading from '../ui/Heading'
 import UpdateUserDataForm from '../features/account/UpdateUserDataForm'
 import UpdateUserPassword from '../features/account/UpdateUserPassword'
 import DeleteAccount from '../features/account/DeleteAccount'
+import Main from '../ui/Main'
+import Header from '../ui/Header'
+import Footer from '../ui/Footer'
 
-const StyledAccount = styled.div`
+const StyledMain = styled(Main)`
   background-color: var(--color-grey-50);
-  padding: 4rem 0;
-  /* height: calc(100vh - 7rem); */
-  /* overflow-y: auto; */
+  padding: 2rem 2rem 5rem 2rem;
 `
+
 const StyledContent = styled.div`
   max-width: 90rem;
   margin: 0 auto;
@@ -21,33 +23,42 @@ const StyledHeading = styled(Heading)`
   ${(props) =>
     props.as === 'h2' &&
     css`
-      font-size: 4rem;
+      font-size: 3rem;
+      font-weight: 600;
+      max-width: 90rem;
+      margin: 0 auto;
+      margin-bottom: 3rem;
     `}
   ${(props) =>
     props.as === 'h3' &&
     css`
-      font-size: 2.5rem;
+      font-size: 2rem;
       font-weight: 600;
     `}
 `
+
 function Account() {
   return (
-    <StyledAccount>
-      <StyledContent>
+    <>
+      <Header />
+      <StyledMain>
         <StyledHeading as="h2">Account</StyledHeading>
 
-        <UpdateUserDataForm>
-          <StyledHeading as="h3">Update user data</StyledHeading>
-        </UpdateUserDataForm>
+        <StyledContent>
+          <UpdateUserDataForm>
+            <StyledHeading as="h3">Update user data</StyledHeading>
+          </UpdateUserDataForm>
 
-        <UpdateUserPassword>
-          <StyledHeading as="h3">Update password</StyledHeading>
-        </UpdateUserPassword>
-        <DeleteAccount>
-          <StyledHeading as="h3">Delete account</StyledHeading>
-        </DeleteAccount>
-      </StyledContent>
-    </StyledAccount>
+          <UpdateUserPassword>
+            <StyledHeading as="h3">Update password</StyledHeading>
+          </UpdateUserPassword>
+          <DeleteAccount>
+            <StyledHeading as="h3">Delete account</StyledHeading>
+          </DeleteAccount>
+        </StyledContent>
+      </StyledMain>
+      <Footer />
+    </>
   )
 }
 

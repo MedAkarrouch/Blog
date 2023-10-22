@@ -1,32 +1,31 @@
-import FormRow from "../../ui/FormRow"
-import Input from "../../ui/Input"
-import Form from "../../ui/Form"
-import { useSignup } from "./useSignup"
-import { useState } from "react"
-import SpinnerMini from "../../ui/SpinnerMini"
+import FormRow from '../../ui/FormRow'
+import Input from '../../ui/Input'
+import Form from '../../ui/Form'
+import { useSignup } from './useSignup'
+import { useState } from 'react'
+import SpinnerMini from '../../ui/SpinnerMini'
 
 function SignupForm() {
   const { isLoading, signup } = useSignup()
-
-  const [fullName, setFullName] = useState("")
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [passwordConfirm, setPasswordConfirm] = useState("")
+  const [username, setUsername] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [passwordConfirm, setPasswordConfirm] = useState('')
 
   const onSubmit = (e) => {
     e.preventDefault()
-    signup({ fullName, email, password, passwordConfirm })
+    signup({ username, email, password, passwordConfirm })
   }
   return (
     <Form onSubmit={onSubmit}>
       <Form.Heading as="h2">Create Your Account</Form.Heading>
-      <FormRow label="Full name">
+      <FormRow label="Username">
         <Input
           disabled={isLoading}
-          id="fullName"
+          id="username"
           type="text"
-          value={fullName}
-          onChange={(e) => setFullName(e.target.value)}
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
         />
       </FormRow>
       <FormRow label="Email address">
@@ -57,7 +56,7 @@ function SignupForm() {
         />
       </FormRow>
       <Form.Button disabled={isLoading}>
-        {!isLoading ? "Sign up" : <SpinnerMini />}
+        {!isLoading ? 'Sign up' : <SpinnerMini />}
       </Form.Button>
     </Form>
   )
