@@ -24,16 +24,10 @@ const Img = styled.img`
   /* object-fit: cover; */
   object-position: center;
 `
-const Flex = styled.div`
+const FlexItem = styled.div`
   display: flex;
-  gap: 0.75rem 1.5rem;
   align-items: center;
-  flex-wrap: wrap;
-  ${(props) =>
-    props.gap &&
-    css`
-      gap: ${props.gap};
-    `}
+  gap: 0.5rem;
   & svg {
     stroke-width: 1.5;
     font-size: 2rem;
@@ -41,6 +35,18 @@ const Flex = styled.div`
   & span {
     font-size: 1.2rem;
     font-weight: 500;
+  }
+`
+const Flex = styled.div`
+  display: flex;
+  /* gap: 0.75rem 1.5rem; */
+  gap: 1rem;
+  align-items: center;
+  /* flex-wrap: wrap; */
+  @media screen and (max-width: 62.5em) {
+    /* <=1000px */
+    flex-direction: column;
+    align-items: flex-start;
   }
 `
 const ToggleIcon = styled(HiOutlineEllipsisVertical)`
@@ -224,16 +230,16 @@ const DashboardRow = forwardRef(function DashboardRow(
         </div>
       )}
       <Flex>
-        <Flex gap=".5rem">
+        <FlexItem>
           <HiOutlineHeart />
           <span>{post.likesCount || 0}</span>
           {/* <span>74610</span> */}
-        </Flex>
-        <Flex gap=".5rem">
+        </FlexItem>
+        <FlexItem>
           <HiOutlineChatBubbleOvalLeft />
           <span>{post.commentsCount || 0}</span>
           {/* <span>68901</span> */}
-        </Flex>
+        </FlexItem>
       </Flex>
       <IconBtn
         onClick={(e) => {

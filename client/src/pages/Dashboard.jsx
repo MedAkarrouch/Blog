@@ -5,9 +5,9 @@ import Stats from '../ui/Stats'
 import Header from '../ui/Header'
 import Footer from '../ui/Footer'
 import Main from '../ui/Main'
+import Heading from '../ui/Heading'
 
 const Content = styled.div`
-  max-width: 95rem;
   max-width: 125rem;
   margin: 0 auto;
   padding: 2rem 0 5rem 0;
@@ -16,9 +16,9 @@ const StyledMain = styled(Main)`
   background-color: var(--color-grey-50);
   min-height: calc(100vh - 22rem);
 `
-const TableContainer = styled.div`
-  max-width: 110rem;
-  margin: 0 auto;
+const H1 = styled(Heading)`
+  font-size: 3rem;
+  margin-bottom: 2rem;
 `
 
 function Dashboard() {
@@ -27,12 +27,11 @@ function Dashboard() {
       <Header />
       <StyledMain>
         <Content>
+          <H1 as="h1">Dashboard</H1>
           <Stats />
-          <TableContainer>
-            <Modal>
-              <DashboardTable />
-            </Modal>
-          </TableContainer>
+          <Modal>
+            <DashboardTable />
+          </Modal>
         </Content>
       </StyledMain>
       <Footer />

@@ -106,7 +106,7 @@ function DashboardTable() {
         />
       </Modal.Window>
       <Table.Footer>
-        <Pagination count={count} />
+        <Pagination isLoading={isLoading} data={posts} count={count} />
       </Table.Footer>
     </Table>
   )

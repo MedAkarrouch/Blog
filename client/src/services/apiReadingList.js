@@ -3,8 +3,11 @@ import { config, serverUrl } from '../utils/constants'
 
 const server = `${serverUrl}/readingLists`
 
-export const getReadingList = async () => {
-  const res = await axios.get(`${server}/`, config)
+export const getReadingList = async ({ page, pageSize }) => {
+  const res = await axios.get(
+    `${server}?page=${page}&pageSize=${pageSize}`,
+    config,
+  )
   return res?.data?.data
 }
 

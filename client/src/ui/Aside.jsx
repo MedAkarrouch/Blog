@@ -230,9 +230,6 @@ function Aside({ post, commentsSection }) {
             <AddToReadingListButton post={post}>
               <Icon />
             </AddToReadingListButton>
-            {/* <Icon title="Add to bookmark">
-              <HiOutlineBookmark />
-            </Icon> */}
           </Item>
         </Modal.Open>
         <Item>

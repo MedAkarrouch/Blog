@@ -1,7 +1,7 @@
 import { cloneElement, useMemo } from 'react'
 import { useUser } from '../auth/useUser'
 import SpinnerMini from '../../ui/SpinnerMini'
-import { HiOutlineBookmark, HiOutlineHeart } from 'react-icons/hi2'
+import { HiOutlineBookmark } from 'react-icons/hi2'
 import { useAddPosttoReadingList } from './useAddPostToReadingList'
 import { useRemovePostFromReadingList } from './useRemovePostFromReadingList'
 import { useReadingList } from './useReadingList'
@@ -15,16 +15,19 @@ function AddToReadingListButton({ post, children }) {
     useRemovePostFromReadingList()
   const isLoading = isLoading1 || isLoading2 || isLoading3
   console.log('Reading-list : ', readingList)
+  console.log(readingList?.forEach((item) => console.log(item.user, user?._id)))
   const hasUserAlreadyAddedPostToReadingList = useMemo(() => {
-    return readingList?.some((item) => item.user === user?._id)
+    return readingList?.some(
+      (item) => item.post._id === post._id && item.user === user?._id,
+    )
   }, [count, isAuthenticated])
 
   const handleLick = () => {
     if (!isAuthenticated) return
     if (hasUserAlreadyAddedPostToReadingList)
-      removePostFromReadingList({ post: post._id })
+      removePostFromReadingList(post._id)
     else if (!hasUserAlreadyAddedPostToReadingList)
-      addPostToReadingList({ post: post._id })
+      addPostToReadingList(post._id)
   }
 
   return cloneElement(

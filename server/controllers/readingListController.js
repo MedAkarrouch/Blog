@@ -4,17 +4,26 @@ const renderRes = require('../utils/renderRes')
 const { userHasAlreadyAddedPostToReadingList } = require('../utils/utils')
 
 exports.getReadingList = async (req, res) => {
+  const { page, pageSize } = req.query
+  let query = ReadingList.find({ user: req.currentUser._id }).populate({
+    path: 'post',
+    select: 'category title createdAt readingTime coverImg',
+  })
+  if (Number(page)) {
+    const PAGE_SIZE = Number(pageSize) || 10
+    const skip = Number(page) ? (+page - 1) * PAGE_SIZE : 0
+    const limit = PAGE_SIZE
+    query = query.skip(skip).limit(limit)
+  }
   try {
-    const list = await ReadingList.find({
+    const count = await ReadingList.countDocuments({
       user: req.currentUser._id,
-    }).populate({
-      path: 'post',
-      select: 'category title createdAt readingTime coverImg',
     })
+    const list = await query
     renderRes({
       res,
       status: 200,
-      data: { count: list.length, readingList: list },
+      data: { count, readingList: list },
     })
   } catch (err) {
     renderRes({ res, status: 400, message: err.message })

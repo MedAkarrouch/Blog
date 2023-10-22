@@ -4,6 +4,7 @@ import Header from '../ui/Header'
 import Main from '../ui/Main'
 import ReadingListTable from '../features/readingLists/ReadingListTable'
 import { useReadingList } from '../features/readingLists/useReadingList'
+import Heading from '../ui/Heading'
 
 const StyledMain = styled(Main)`
   background-color: var(--color-grey-50);
@@ -11,8 +12,13 @@ const StyledMain = styled(Main)`
 `
 const TableContainer = styled.div`
   max-width: 110rem;
-  padding: 5rem 0;
+  padding: 2rem 0 5rem 0;
   margin: 0 auto;
+`
+const H1 = styled(Heading)`
+  font-size: 3rem;
+  margin-bottom: 2rem;
+  font-weight: 600;
 `
 
 function ReadingList() {
@@ -23,6 +29,7 @@ function ReadingList() {
       <Header />
       <StyledMain>
         <TableContainer>
+          <H1 as="h1">Reading list</H1>
           <ReadingListTable />
         </TableContainer>
       </StyledMain>

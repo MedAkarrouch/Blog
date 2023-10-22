@@ -300,19 +300,6 @@ exports.getUserPosts = async (req, res) => {
   try {
     const count = await Post.countDocuments({ author: req.currentUser._id })
     let posts = await query
-    // console.log('((((((')
-    // console.log(posts)
-    // console.log('))))))')
-    // posts = await Promise.all(
-    //   posts?.map(async (post) => {
-    //     // const comments = await Comment.find({ post: post._id })
-    //     const comments = await Comment.countDocuments({ post: post._id })
-    //     return {
-    //       ...post._doc,
-    //       comments: { totalComments: comments },
-    //     }
-    //   })
-    // )
     renderRes({
       res,
       status: 200,

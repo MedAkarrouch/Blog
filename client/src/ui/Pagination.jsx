@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom'
 import styled, { css } from 'styled-components'
 import { MAX_POSTS_ON_DASHBOARD } from '../utils/constants'
 import { useEffect, useRef } from 'react'
+import SpinnerMini from './SpinnerMini'
 const StyledPagination = styled.div`
   display: flex;
   justify-content: space-between;
@@ -49,8 +50,13 @@ const P = styled.p`
     font-weight: 600;
   }
 `
+const SpinnerWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
 
-function Pagination({ count }) {
+function Pagination({ isLoading, count, data = [] }) {
   const [searchParams, setSearchParams] = useSearchParams()
   const currentPage = Number(searchParams.get('page')) || 1
 
@@ -70,10 +76,16 @@ function Pagination({ count }) {
     searchParams.set('page', currentPage - 1)
     setSearchParams(searchParams)
   }
+  if (isLoading)
+    return (
+      <SpinnerWrapper>
+        <SpinnerMini color={'var(--color-orange-400)'} />
+      </SpinnerWrapper>
+    )
 
   return (
     <StyledPagination>
-      {from > count || to > count ? (
+      {!data.length ? (
         <P>
           Page <span>{currentPage}</span> has <span>0</span> results
         </P>
@@ -103,3 +115,32 @@ function Pagination({ count }) {
 }
 
 export default Pagination
+//  return (
+//    <StyledPagination>
+//      {from > count || to > count || !data.length ? (
+//        <P>
+//          Page <span>{currentPage}</span> has <span>0</span> results
+//        </P>
+//      ) : (
+//        <P>
+//          Showing <span>{from}</span> to <span>{to}</span> of{' '}
+//          <span>{count} </span>
+//          results
+//        </P>
+//      )}
+//      <Buttons>
+//        <Button
+//          hovered={from > count || to > count ? 'true' : ''}
+//          disabled={from === 1}
+//          onClick={previous}
+//        >
+//          <HiChevronLeft />
+//          <span>Previous</span>
+//        </Button>
+//        <Button disabled={to >= count} onClick={next}>
+//          <span>Next</span>
+//          <HiChevronRight />
+//        </Button>
+//      </Buttons>
+//    </StyledPagination>
+//  )

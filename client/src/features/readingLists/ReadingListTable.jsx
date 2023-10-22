@@ -40,7 +40,7 @@ function ReadingListTable() {
         />
       )}
       <Table.Footer>
-        <Pagination count={count} />
+        <Pagination isLoading={isLoading} data={readingList} count={count} />
       </Table.Footer>
     </Table>
   )

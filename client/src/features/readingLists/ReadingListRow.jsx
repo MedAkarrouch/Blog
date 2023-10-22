@@ -1,5 +1,5 @@
-import { differenceInSeconds, format } from 'date-fns'
-import { postsImagesUrl, usersImagesUrl } from '../../utils/constants'
+import { differenceInSeconds } from 'date-fns'
+import { postsImagesUrl } from '../../utils/constants'
 import { DateTime } from 'luxon'
 import Table from '../../ui/Table'
 import {
@@ -13,6 +13,8 @@ import {
 } from 'react-icons/hi2'
 import styled, { css } from 'styled-components'
 import { Link } from 'react-router-dom'
+import { useRemovePostFromReadingList } from './useRemovePostFromReadingList'
+import SpinnerMini from '../../ui/SpinnerMini'
 
 const Img = styled.img`
   width: 100%;
@@ -24,7 +26,7 @@ const Img = styled.img`
   /* align-self: center; */
 `
 const Title = styled(Link)`
-  font-size: 1.8rem;
+  font-size: 1.7rem;
   font-weight: 700;
   display: inline-block;
   color: var(--color-grey-600);
@@ -50,6 +52,7 @@ const IconBtn = styled.button`
   background: none;
   padding: 0.4rem;
   border-radius: 5px;
+  position: relative;
 
   & svg {
     color: var(--color-orange-400);
@@ -62,7 +65,6 @@ const IconBtn = styled.button`
     background-color: var(--color-grey-100);
   }
 `
-
 const Flex = styled.div`
   display: flex;
   align-items: center;
@@ -78,24 +80,34 @@ const Flex = styled.div`
 `
 
 function ReadingListRow({ post }) {
+  const { isLoading, removePostFromReadingList } =
+    useRemovePostFromReadingList()
   return (
     <Table.Row>
       <Img loading="lazy" src={`${postsImagesUrl}/${post.coverImg}`} alt="" />
       <div>
         <Flex>
           <Category>#{post.category}</Category>
-          <p>{post.readingTime}</p>
-          <p> &bull; </p>
           <p>
+            posted{' '}
             {differenceInSeconds(new Date(), new Date(post.createdAt)) <= 1
               ? 'Now'
               : DateTime.fromISO(post.createdAt).toRelative()}
           </p>
+          <p> &bull; </p>
+          <p>{post.readingTime}</p>
         </Flex>
         <Title to={`/post/${post._id}`}>{post.title}</Title>
       </div>
-      <IconBtn>
-        <HiOutlineBookmark />
+      <IconBtn
+        title="Remove from reading list"
+        onClick={() => removePostFromReadingList(post._id)}
+      >
+        {isLoading ? (
+          <SpinnerMini color={'var(--color-orange-400)'} />
+        ) : (
+          <HiOutlineBookmark />
+        )}
       </IconBtn>
     </Table.Row>
   )
