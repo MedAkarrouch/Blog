@@ -134,16 +134,30 @@ exports.deleteMe = async (req, res) => {
           ? 'Current password is wrong'
           : 'Current password is required',
       })
-    // if so
-    // delte all user likes
+    // delete post and everyything realted to it
+    const posts = await Post.find({ author: req.currentUser._id })
+    console.log('posts = ', posts)
+    await Promise.all(
+      posts.map(async (post) => {
+        const postId = post._id
+        // Delete likes related to the post
+        await Like.deleteMany({ post: postId })
+        // Delete comments related to the post
+        await Comment.deleteMany({ post: postId })
+        // Delete reading list posts
+        await ReadingList.deleteMany({ post: postId })
+        // Delete post
+        await Post.findByIdAndDelete(postId)
+        //
+      })
+    )
+    // delete all user likes
     await Like.deleteMany({ user: req.currentUser._id })
-    // delete user reading list
-    await ReadingList.deleteMany({ user: req.currentUser._id })
     // delete all user comments
     await Comment.deleteMany({ user: req.currentUser._id })
+    // delete user reading list
+    await ReadingList.deleteMany({ user: req.currentUser._id })
 
-    // 2- delete all user posts
-    await Post.deleteMany({ author: req.currentUser._id })
     // 2- delete user
     await User.findByIdAndDelete(req.currentUser._id)
     // 3- clear cookie
