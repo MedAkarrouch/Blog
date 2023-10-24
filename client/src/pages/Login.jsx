@@ -7,10 +7,14 @@ import { useIsLoggedIn } from '../features/auth/useIsLoggedIn'
 const LoginLayout = styled.main`
   display: grid;
   grid-template-columns: 48rem;
+  padding: 3rem 2rem;
   justify-content: center;
   align-content: center;
   min-height: 100vh;
   background-color: var(--color-grey-50);
+  @media screen and (max-width: 25em) {
+    grid-template-columns: 1fr;
+  }
 `
 
 const Wrapper = styled.div`

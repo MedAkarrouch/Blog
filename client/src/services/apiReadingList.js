@@ -3,9 +3,9 @@ import { config, serverUrl } from '../utils/constants'
 
 const server = `${serverUrl}/readingLists`
 
-export const getReadingList = async ({ page, pageSize }) => {
+export const getReadingList = async ({ page, pageSize, sortBy }) => {
   const res = await axios.get(
-    `${server}?page=${page}&pageSize=${pageSize}`,
+    `${server}?page=${page}&pageSize=${pageSize}&sortBy=${sortBy}`,
     config,
   )
   return res?.data?.data

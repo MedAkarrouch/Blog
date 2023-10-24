@@ -1,7 +1,9 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 const StyledFooter = styled.footer`
-  /* height: 15rem; */
   padding: 3rem 2rem;
+  height: 10rem;
+  padding-bottom: 2rem;
+  /* ${(props) => props.home === 'true' && css``} */
   /* text-align: center; */
   display: grid;
   grid-template-columns: 1fr;
@@ -27,9 +29,9 @@ const Item = styled.li`
   }
 `
 
-function Footer() {
+function Footer({ home = false }) {
   return (
-    <StyledFooter>
+    <StyledFooter home={home ? 'true' : ''}>
       <List>
         <Item>About</Item>
         <Item>Terms of Use</Item>

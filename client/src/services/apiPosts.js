@@ -43,9 +43,9 @@ export const likePost = async (post) => {
   return res.data?.data?.post
 }
 
-export const getUserPosts = async ({ page, pageSize }) => {
+export const getUserPosts = async ({ page, pageSize, sortBy }) => {
   const res = await axios.get(
-    `${server}/getUserPosts?page=${page}&pageSize=${pageSize}`,
+    `${server}/getUserPosts?page=${page}&pageSize=${pageSize}&sortBy=${sortBy}`,
     config,
   )
   console.log(res)

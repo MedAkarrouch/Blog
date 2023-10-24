@@ -11,6 +11,13 @@ const StyledSelect = styled.select`
       margin-top: 5rem;
       margin-bottom: 2rem;
     `}
+  ${(props) =>
+    props.page === 'readingList' &&
+    css`
+      /* margin-top: rem; */
+      margin-bottom: 2rem;
+    `}
+  
   /* border: 1px solid
     ${(props) =>
     props.type === 'white'
@@ -22,9 +29,9 @@ const StyledSelect = styled.select`
   box-shadow: var(--shadow-sm);
 `
 
-function Select({ options, page, onChange }) {
+function Select({ options, page, onChange, value }) {
   return (
-    <StyledSelect page={page} onChange={onChange}>
+    <StyledSelect page={page} value={value} onChange={onChange}>
       {options.map((option) => (
         <option value={option.value} key={option.value}>
           {option.label}

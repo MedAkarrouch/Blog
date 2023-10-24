@@ -1,12 +1,10 @@
-import styled from "styled-components"
-import Heading from "./Heading"
+import styled from 'styled-components'
+import Heading from './Heading'
 
 const StyledForm = styled.form`
   background-color: #fff;
   padding: 4rem 3rem;
   padding-top: 3rem;
-  box-shadow: var(--shadow-sm);
-  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   box-shadow:
     0 1px 3px 0 rgb(0 0 0 / 0.1),
     0 1px 2px -1px rgb(0 0 0 / 0.1);
@@ -15,6 +13,12 @@ const StyledForm = styled.form`
   gap: 2rem;
   border-radius: 5px;
   font-size: 1.4rem;
+  @media screen and (max-width: 25em) {
+    /* padding: 2rem 1.5rem; */
+    /* max-width: 45rem; */
+    /* padding: 2rem 1.5rem; */
+    /* margin: 0 auto; */
+  }
 `
 const StyledHeading = styled(Heading)`
   font-size: 3rem;

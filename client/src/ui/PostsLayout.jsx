@@ -87,14 +87,12 @@ function PostsLayout() {
             isFetchingNextPage={isFetchingNextPage}
             hasNextPage={hasNextPage}
           />
-          {isFetchingNextPage ? (
+          {isFetchingNextPage && (
             <StyledSpinner>
               <SpinnerMini />
               <span>Loading more...</span>
             </StyledSpinner>
-          ) : posts?.length === postsCount ? (
-            <EndOfList>You’ve reached the end of the list</EndOfList>
-          ) : null}
+          )}
         </>
       ) : (
         <NoResults>

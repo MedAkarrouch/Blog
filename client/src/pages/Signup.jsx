@@ -10,8 +10,12 @@ const SignupLayout = styled.main`
   grid-template-columns: 48rem;
   justify-content: center;
   align-content: center;
+  padding: 3rem 2rem;
   min-height: 100vh;
   background-color: var(--color-grey-50);
+  @media screen and (max-width: 25em) {
+    grid-template-columns: 1fr;
+  }
 `
 const Wrapper = styled.div`
   margin-bottom: 1rem;

@@ -9,6 +9,7 @@ import Modal from '../ui/Modal'
 import Main from '../ui/Main'
 import Header from '../ui/Header'
 import Footer from '../ui/Footer'
+import PageNotFound from './PageNotFound'
 
 const StyledPost = styled.div`
   max-width: 90rem;
@@ -48,7 +49,7 @@ function Post() {
         <Spinner />
       </Spinner.Wrapper>
     )
-  if (isError || !post) return <div>No post found !</div>
+  if (isError || !post) return <PageNotFound />
 
   return (
     <>

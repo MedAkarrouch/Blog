@@ -25,6 +25,7 @@ export function usePost() {
       if (allPages.length < totalPages) return allPages.length + 1
       else return undefined
     },
+    retry: false,
   })
   //
   const post = data?.pages?.at(0)
@@ -43,22 +44,3 @@ export function usePost() {
     hasNextPage,
   }
 }
-// export function usePost() {
-//   const { postId } = useParams()
-//   const {
-//     isLoading,
-//     data: post,
-//     isError,
-//     error,
-//   } = useQuery({
-//     queryKey: ['post', postId],
-//     queryFn: (data) => getPost({ postId, ...data }),
-//     retry: false,
-//   })
-//   return {
-//     isLoading,
-//     post,
-//     isError,
-//     error,
-//   }
-// }

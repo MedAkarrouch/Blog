@@ -227,18 +227,40 @@ exports.updatePost = async (req, res) => {
 }
 
 exports.getUserPosts = async (req, res) => {
-  const { page, pageSize } = req.query
+  const { page, pageSize, sortBy } = req.query
+  let skip, limit
   let query = Post.find({ author: req.currentUser._id })
-  if (page) {
+  if (Number(page)) {
     const PAGE_SIZE = Number(pageSize) || 10
-    const skip = Number(page) ? (+page - 1) * PAGE_SIZE : 0
-    const limit = PAGE_SIZE
-    query = query.skip(skip).limit(limit)
+    skip = Number(page) ? (+page - 1) * PAGE_SIZE : 0
+    limit = PAGE_SIZE
+    if (sortBy !== 'stats-desc' && sortBy !== 'stats-asc')
+      query = query.skip(skip).limit(limit)
   }
-
+  if (sortBy === 'date-desc') query = query.sort({ createdAt: -1 })
+  else if (sortBy === 'date-asc') query = query.sort({ createdAt: 1 })
   try {
     const count = await Post.countDocuments({ author: req.currentUser._id })
     let posts = await query
+    if (sortBy === 'stats-desc') {
+      posts = posts
+        .sort((a, b) => b.likesCount - a.likesCount)
+        .sort((a, b) => {
+          if (a.likesCount === b.likesCount)
+            return b.commentsCount - a.commentsCount
+          else return b.likesCount - a.likesCount
+        })
+        .slice(skip, skip + limit)
+    } else if (sortBy === 'stats-asc') {
+      posts = posts
+        .sort((a, b) => a.likesCount - b.likesCount)
+        .sort((a, b) => {
+          if (a.likesCount === b.likesCount)
+            return a.commentsCount - b.commentsCount
+          else return a.likesCount - b.likesCount
+        })
+        .slice(skip, skip + limit)
+    }
     renderRes({
       res,
       status: 200,

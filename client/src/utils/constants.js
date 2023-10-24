@@ -23,6 +23,17 @@ export const config = {
   withCredentials: true,
 }
 
+export const sortByDashboardArr = [
+  { label: 'Sort by date (recent first)', value: 'date-desc' },
+  { label: 'Sort by date (earlier first)', value: 'date-asc' },
+  { label: 'Sort by stats (high first)', value: 'stats-desc' },
+  { label: 'Sort by stats (low first)', value: 'stas-asc' },
+]
+export const sortByReadingListArr = [
+  { label: 'Sort by date (recent first)', value: 'date-desc' },
+  { label: 'Sort by date (earlier first)', value: 'date-asc' },
+]
+
 export const categoriesArr = [
   { label: 'All', value: 'all' },
   { label: 'Lifestyle', value: 'lifestyle' },

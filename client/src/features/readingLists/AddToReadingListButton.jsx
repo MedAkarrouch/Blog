@@ -40,7 +40,7 @@ function AddToReadingListButton({ post, children }) {
       onClick: handleLick,
     },
     isLoading ? (
-      <SpinnerMini color={'var(--color-orange-400)'} />
+      <SpinnerMini color="var(--color-orange-400)" />
     ) : (
       <HiOutlineBookmark />
     ),

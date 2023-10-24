@@ -19,7 +19,7 @@ function Home() {
           <PostsLayout />
         </StyledContent>
       </Main>
-      <Footer />
+      <Footer home={true} />
     </>
   )
 }

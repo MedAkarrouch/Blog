@@ -7,18 +7,6 @@ import { useLogin } from './useLogin'
 import { useState } from 'react'
 import SpinnerMini from '../../ui/SpinnerMini'
 
-const StyledDiv = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  align-items: center;
-  & div:nth-child(2) {
-    border-radius: 15px;
-    height: 2.5px;
-    width: 100%;
-    background-color: var(--color-grey-100);
-  }
-`
 const StyledLink = styled(Link)`
   color: var(--color-orange-500);
   font-weight: 500;
@@ -27,6 +15,9 @@ const StyledLink = styled(Link)`
   }
 `
 const StyldeFooterDiv = styled.div`
+  border-top: 2px solid var(--color-grey-100);
+  margin-top: 0.5rem;
+  padding-top: 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -41,7 +32,6 @@ function LoginForm() {
   const { login, isLoading } = useLogin()
   const [email, setEmail] = useState('akro@email.io')
   const [password, setPassword] = useState('12345678')
-  const allowLogIn = email.length >= 5 && password.length >= 5
 
   const onSubmit = (e) => {
     e.preventDefault()
@@ -79,14 +69,10 @@ function LoginForm() {
       <Form.Button disabled={isLoading}>
         {!isLoading ? 'Log in' : <SpinnerMini />}
       </Form.Button>
-      <StyledDiv>
-        <StyledLink to="/forgotPassword">Forgot Password?</StyledLink>
-        <div></div>
-        <StyldeFooterDiv>
-          <div>Don't have an account</div>
-          <StyledLink to="/signup">Signup</StyledLink>
-        </StyldeFooterDiv>
-      </StyledDiv>
+      <StyldeFooterDiv>
+        <div>Don't have an account</div>
+        <StyledLink to="/signup">Signup</StyledLink>
+      </StyldeFooterDiv>
     </Form>
   )
 }

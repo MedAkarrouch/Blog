@@ -4,11 +4,14 @@ const renderRes = require('../utils/renderRes')
 const { userHasAlreadyAddedPostToReadingList } = require('../utils/utils')
 
 exports.getReadingList = async (req, res) => {
-  const { page, pageSize } = req.query
+  const { page, pageSize, sortBy } = req.query
   let query = ReadingList.find({ user: req.currentUser._id }).populate({
     path: 'post',
     select: 'category title createdAt readingTime coverImg',
   })
+  if (sortBy === 'date-desc') query = query.sort({ createdAt: -1 })
+  else if (sortBy === 'date-asc') query = query.sort({ createdAt: 1 })
+
   if (Number(page)) {
     const PAGE_SIZE = Number(pageSize) || 10
     const skip = Number(page) ? (+page - 1) * PAGE_SIZE : 0
