@@ -21,23 +21,24 @@ const Wrapper = styled.div`
   margin-bottom: 1rem;
 `
 function Signup() {
-  const { isLoggedIn, isLoading } = useIsLoggedIn()
-  if (isLoading)
-    return (
-      <Spinner.Wrapper>
-        <Spinner />
-      </Spinner.Wrapper>
-    )
-  else if (!isLoggedIn)
-    return (
-      <SignupLayout>
-        <Wrapper>
-          <Logo includeLink={false} />
-        </Wrapper>
-        <SignupForm />
-      </SignupLayout>
-    )
-  else return null
+  // const { isLoggedIn, isLoading } = useIsLoggedIn()
+  // if (isLoading)
+  //   return (
+  //     <Spinner.Wrapper>
+  //       <Spinner />
+  //     </Spinner.Wrapper>
+  //   )
+  // else
+  // if (!isLoggedIn)
+  return (
+    <SignupLayout>
+      <Wrapper>
+        <Logo includeLink={false} />
+      </Wrapper>
+      <SignupForm />
+    </SignupLayout>
+  )
+  // else return null
 }
 
 export default Signup

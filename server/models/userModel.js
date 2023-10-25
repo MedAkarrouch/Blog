@@ -2,15 +2,6 @@ const mongoose = require('mongoose')
 const validator = require('validator')
 const bcrypt = require('bcrypt')
 const userSchema = new mongoose.Schema({
-  // fullName: {
-  //   type: String,
-  //   required: [true, 'Full name is required'],
-  //   unique: true,
-  //   trim: true,
-  //   lowercase: true,
-  //   minlength: [3, 'Fullname must have more than 3 characters'],
-  //   maxlength: [25, 'Fullname must have less than 26 characters'],
-  // },
   username: {
     type: String,
     required: [true, 'Username is required'],
@@ -49,8 +40,6 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: 'default.jpg',
   },
-  // social media links
-  // followers
 })
 userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next()

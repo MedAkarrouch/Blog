@@ -1,11 +1,15 @@
-import toast from "react-hot-toast"
+import toast from 'react-hot-toast'
+export const checkForNetworkError = (err) => {
+  if (err.message === 'Network Error')
+    return toast.error('Something went wrong Try again later')
+}
 export const handleError = (err) => {
-  if (err.message === "Network Error")
-    toast.error("Something went wrong Try again later")
+  if (err.message === 'Network Error')
+    toast.error('Something went wrong Try again later')
   //
   const {
     validationErrors,
-    data: { message }
+    data: { message },
   } = err.response?.data
   if (validationErrors)
     [...validationErrors].reverse().forEach((element, index) => {

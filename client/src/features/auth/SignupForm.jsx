@@ -21,6 +21,8 @@ function SignupForm() {
       <Form.Heading as="h2">Create Your Account</Form.Heading>
       <FormRow label="Username">
         <Input
+          required
+          minLength={3}
           disabled={isLoading}
           id="username"
           type="text"
@@ -30,6 +32,7 @@ function SignupForm() {
       </FormRow>
       <FormRow label="Email address">
         <Input
+          required
           disabled={isLoading}
           id="email"
           type="text"
@@ -39,6 +42,8 @@ function SignupForm() {
       </FormRow>
       <FormRow label="Password">
         <Input
+          required
+          minLength={8}
           disabled={isLoading}
           id="password"
           type="password"
@@ -48,6 +53,8 @@ function SignupForm() {
       </FormRow>
       <FormRow label="Confirm password">
         <Input
+          required
+          minLength={8}
           disabled={isLoading}
           id="passwordConfirm"
           type="password"

@@ -1,21 +1,21 @@
-import { useState } from "react"
-import FileInput from "../../ui/FileInput"
-import Button from "./Button"
-import Form from "./Form"
-import FormRow from "./FormRow"
-import Input from "./Input"
-import { useUpdatePassword } from "./useUpdatePassword"
+import { useState } from 'react'
+import FileInput from '../../ui/FileInput'
+import Button from './Button'
+import Form from './Form'
+import FormRow from './FormRow'
+import Input from './Input'
+import { useUpdatePassword } from './useUpdatePassword'
 
 function UpdateUserPassword({ children }) {
   const { isUpdating, updatePassword } = useUpdatePassword()
-  const [currentPassword, setCurrentPassword] = useState("")
-  const [newPassword, setNewPassword] = useState("")
-  const [confirmPassword, setConfirmPassword] = useState("")
+  const [currentPassword, setCurrentPassword] = useState('')
+  const [newPassword, setNewPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
 
   const onClear = () => {
-    setCurrentPassword("")
-    setNewPassword("")
-    setConfirmPassword("")
+    setCurrentPassword('')
+    setNewPassword('')
+    setConfirmPassword('')
   }
 
   const onSubmit = (e) => {
@@ -25,8 +25,8 @@ function UpdateUserPassword({ children }) {
       {
         onSuccess: () => {
           onClear()
-        }
-      }
+        },
+      },
     )
   }
 
@@ -35,6 +35,7 @@ function UpdateUserPassword({ children }) {
       <FormRow>{children}</FormRow>
       <FormRow label="Current password">
         <Input
+          required
           id="currentPassword"
           value={currentPassword}
           onChange={(e) => setCurrentPassword(e.target.value)}
@@ -44,6 +45,7 @@ function UpdateUserPassword({ children }) {
       </FormRow>
       <FormRow label="New password">
         <Input
+          required
           id="newPassword"
           value={newPassword}
           onChange={(e) => setNewPassword(e.target.value)}
@@ -53,6 +55,7 @@ function UpdateUserPassword({ children }) {
       </FormRow>
       <FormRow label="Confirm password">
         <Input
+          required
           id="confirmPassword"
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}

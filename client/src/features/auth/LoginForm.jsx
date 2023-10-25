@@ -50,6 +50,7 @@ function LoginForm() {
       <Form.Heading as="h2">Log In To Your Account</Form.Heading>
       <FormRow label="Email address">
         <Input
+          required
           disabled={isLoading}
           id="email"
           type="text"
@@ -59,6 +60,7 @@ function LoginForm() {
       </FormRow>
       <FormRow label="Password">
         <Input
+          required
           disabled={isLoading}
           id="password"
           type="password"

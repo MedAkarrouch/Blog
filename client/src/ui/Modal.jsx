@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 import { createPortal } from 'react-dom'
 import {
   cloneElement,
@@ -9,6 +9,11 @@ import {
 } from 'react'
 import { HiXMark } from 'react-icons/hi2'
 import { useOutsideClick } from '../hooks/useOutsideClick'
+
+const Frame = keyframes`
+  0%{opacity : 0;transform:translate(-50%,100%)}
+  100%{opacity:1;transform : translate(-50%,-50%)} 
+`
 
 const Overlay = styled.div`
   position: fixed;
@@ -27,7 +32,7 @@ const StyledModal = styled.div`
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  /* transform: translate(-50%, -50%); */
   /* background-color: var(--color-grey-50); */
   background-color: #fff;
   border-radius: 5px;
@@ -37,7 +42,8 @@ const StyledModal = styled.div`
     /* <=500px */
     padding: 2rem;
   }
-  transition: all 0.5s;
+  /* transition: all 0.5s; */
+  animation: ${Frame} 0.3s forwards;
 `
 const Button = styled.button`
   background: none;

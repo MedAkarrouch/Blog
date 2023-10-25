@@ -9,6 +9,7 @@ const Container = styled.div`
   min-height: 100vh;
   justify-items: center;
   padding: 3rem 2rem;
+  row-gap: 1rem;
 `
 const LinkBtn = styled(Link)`
   /* border: 1px solid var(--color-orange-100); */
@@ -23,18 +24,21 @@ const LinkBtn = styled(Link)`
   /* font-size: 1.6rem; */
 `
 const H1 = styled.h1`
-  margin-bottom: 2rem;
   font-size: 3rem;
 `
 const P = styled.p`
-  margin-bottom: 2rem;
   font-size: 1.8rem;
+  margin-bottom: 2rem;
+`
+const StyledImg = styled.img`
+  width: 5rem;
 `
 
 function PageNotFound() {
   return (
     <Container>
       {/* <ErrorMessage /> */}
+      <StyledImg alt="error emoji" src="/emojis/error.png" />
       <H1>Sorry, this page isn't available.</H1>
       <P>
         The link you followed may be broken, or the page may have been removed.

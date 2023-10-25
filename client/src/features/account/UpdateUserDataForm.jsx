@@ -39,11 +39,9 @@ function UpdateUserDataForm({ children }) {
   return (
     <Form onSubmit={onSubmit}>
       <FormRow>{children}</FormRow>
-      <FormRow
-        label="Email address"
-        // error={errors?.find((err) => err.field === "email")?.error}
-      >
+      <FormRow label="Email address">
         <Input
+          required
           id="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -52,6 +50,8 @@ function UpdateUserDataForm({ children }) {
       </FormRow>
       <FormRow label="Username">
         <Input
+          required
+          minlength={3}
           id="username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}

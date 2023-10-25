@@ -31,7 +31,8 @@ function UpdateUserPassword({ children }) {
       <FormRow>{children}</FormRow>
       <FormRow label="Current password">
         <Input
-          id="currentPassword"
+          required
+          id="current password"
           value={currentPassword}
           onChange={(e) => setCurrentPassword(e.target.value)}
           disabled={isDeleting}
