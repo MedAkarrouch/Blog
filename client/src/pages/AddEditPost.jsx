@@ -17,7 +17,7 @@ const StyledCreatePost = styled.form`
 `
 const SyledDiv = styled.div`
   height: 85%;
-  border-radius: 8px;
+  border-radius: 5px;
   overflow: hidden;
   overflow-y: auto;
   display: flex;

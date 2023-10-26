@@ -179,6 +179,7 @@ function Aside({ post, commentsSection }) {
   const [linkCopied, setLinkcopied] = useState(false)
   const linkCopiedTimeout = useRef(null)
   const socialsListRef = useOutsideClick(() => setShowList(false), false)
+
   //
   const { commentsCount, likesCount } = post
 

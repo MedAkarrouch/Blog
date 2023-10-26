@@ -146,9 +146,12 @@ exports.deleteMe = async (req, res) => {
         await Comment.deleteMany({ post: postId })
         // Delete reading list posts
         await ReadingList.deleteMany({ post: postId })
+        // Delete post Image
+        const postDoc = await Post.findById(postId)
+        const path = 'public/img/posts'
+        await fs.unlink(`${path}/${postDoc.coverImg}`)
         // Delete post
         await Post.findByIdAndDelete(postId)
-        //
       })
     )
     // delete all user likes
@@ -160,6 +163,11 @@ exports.deleteMe = async (req, res) => {
 
     // 2- delete user
     await User.findByIdAndDelete(req.currentUser._id)
+    // delete user image
+    if (req.currentUser.photo !== 'default.jpg') {
+      const path = 'public/img/users'
+      await fs.unlink(`${path}/${req.currentUser.photo}`)
+    }
     // 3- clear cookie
     res.clearCookie('jwt')
     renderRes({

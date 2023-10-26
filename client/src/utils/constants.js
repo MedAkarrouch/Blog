@@ -10,7 +10,7 @@ export const COMMENTS_PER_PAGE = 10
 export const MAX_COMMENT_LENGTH = 10000
 export const DEFAULT_IMG = 'default.jpg'
 //
-export const PAGE_SIZE = 4
+export const PAGE_SIZE = 10
 export const MIN_PAGES = 8 //means how many pages should we have to display the dots
 //
 export const searchForArray = [

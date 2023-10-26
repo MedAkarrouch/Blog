@@ -150,6 +150,9 @@ exports.deletePost = async (req, res) => {
     await Like.deleteMany({ post: postId })
     // Delete from readingList
     await ReadingList.deleteMany({ post: postId })
+    // Delete post image
+    const path = 'public/img/posts'
+    await fs.unlink(`${path}/${postDoc.coverImg}`)
     res.status(200).json({
       status: 'success',
       message: 'Post successfully deleted',
@@ -167,9 +170,6 @@ exports.updatePost = async (req, res) => {
   const { post: postId } = req.query
   const { category, title, summary, content } = req.body
   const coverImg = req.coverImg
-  // console.log(coverImg)
-  // console.log(req.file)
-  // console.log('** ', req.body)
 
   const updateObj = {
     title,
@@ -206,14 +206,12 @@ exports.updatePost = async (req, res) => {
         new: true,
       }
     )
-    // const updatedPost = await Post.findByIdAndUpdate(postId, updateObj, {
-    //   runValidators: true,
-    //   new: true,
-    // })
     // upload image
     if (coverImg) {
       const path = 'public/img/posts'
       await fs.writeFile(`${path}/${coverImg}`, req.file.buffer)
+      // Delete prev post image
+      await fs.unlink(`${path}/${post.coverImg}`)
     }
     // return response
     renderRes({
