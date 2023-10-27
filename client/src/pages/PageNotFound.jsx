@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import ErrorMessage from '../ui/ErrorMessage'
 import { Link } from 'react-router-dom'
+import { useWindowTitle } from '../hooks/useWindowTitle'
 const Container = styled.div`
   display: grid;
   grid-template-columns: max-content;
@@ -35,6 +36,7 @@ const StyledImg = styled.img`
 `
 
 function PageNotFound() {
+  useWindowTitle('Page Not Foud 404')
   return (
     <Container>
       {/* <ErrorMessage /> */}

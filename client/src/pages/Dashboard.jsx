@@ -8,6 +8,7 @@ import Main from '../ui/Main'
 import Heading from '../ui/Heading'
 import SortBy from '../features/Dashboard/SortBy'
 import { sortByDashboardArr } from '../utils/constants'
+import { useWindowTitle } from '../hooks/useWindowTitle'
 
 const Content = styled.div`
   max-width: 125rem;
@@ -24,6 +25,7 @@ const H1 = styled(Heading)`
 `
 
 function Dashboard() {
+  useWindowTitle('Dashboard')
   return (
     <>
       <Header />

@@ -10,6 +10,7 @@ import Main from '../ui/Main'
 import Header from '../ui/Header'
 import Footer from '../ui/Footer'
 import PageNotFound from './PageNotFound'
+import { useWindowTitle } from '../hooks/useWindowTitle'
 
 const StyledPost = styled.div`
   max-width: 90rem;
@@ -43,6 +44,7 @@ function Post() {
   const { isLoading, post, isError } = usePost()
   const commentsSection = useRef(null)
   console.log({ isLoading, post, isError })
+  useWindowTitle(`${post?.title || ''}`)
   if (isLoading)
     return (
       <Spinner.Wrapper subtract="7rem">

@@ -3,6 +3,7 @@ import LoginForm from '../features/auth/LoginForm'
 import Logo from '../ui/Logo'
 import Spinner from '../ui/Spinner'
 import { useIsLoggedIn } from '../features/auth/useIsLoggedIn'
+import { useWindowTitle } from '../hooks/useWindowTitle'
 
 const LoginLayout = styled.main`
   display: grid;
@@ -23,6 +24,7 @@ const Wrapper = styled.div`
 
 function Login() {
   const { isLoading, isLoggedIn } = useIsLoggedIn()
+  useWindowTitle('Login')
 
   if (isLoading)
     return (

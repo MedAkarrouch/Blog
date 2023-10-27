@@ -6,6 +6,8 @@ import DeleteAccount from '../features/account/DeleteAccount'
 import Main from '../ui/Main'
 import Header from '../ui/Header'
 import Footer from '../ui/Footer'
+import { useEffect } from 'react'
+import { useWindowTitle } from '../hooks/useWindowTitle'
 
 const StyledMain = styled(Main)`
   background-color: var(--color-grey-50);
@@ -38,6 +40,7 @@ const StyledHeading = styled(Heading)`
 `
 
 function Account() {
+  useWindowTitle('Account')
   return (
     <>
       <Header />

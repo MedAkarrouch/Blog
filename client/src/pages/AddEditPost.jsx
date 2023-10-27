@@ -10,6 +10,7 @@ import { useAddNewPost } from '../features/posts/useAddNewPost'
 import { postsImagesUrl } from '../utils/constants'
 import { useUpdatePost } from '../features/posts/useUpdatePost'
 import { toast } from 'react-hot-toast'
+import { useWindowTitle } from '../hooks/useWindowTitle'
 
 const StyledCreatePost = styled.form`
   height: calc(100vh - 7rem);
@@ -114,7 +115,7 @@ function AddEditPost({ post, onEditMode = false }) {
     setSummary('')
     setContent('')
   }
-
+  useWindowTitle(`${onEditMode ? 'Edit' : 'Create'} post`)
   return (
     <StyledCreatePost onSubmit={handleSubmit}>
       <SyledDiv>

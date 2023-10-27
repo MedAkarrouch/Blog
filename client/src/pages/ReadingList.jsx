@@ -7,6 +7,7 @@ import { useReadingList } from '../features/readingLists/useReadingList'
 import Heading from '../ui/Heading'
 import SortBy from '../features/Dashboard/SortBy'
 import { sortByReadingListArr } from '../utils/constants'
+import { useWindowTitle } from '../hooks/useWindowTitle'
 
 const StyledMain = styled(Main)`
   background-color: var(--color-grey-50);
@@ -26,6 +27,7 @@ const H1 = styled(Heading)`
 function ReadingList() {
   const { isLoading, count, readingList } = useReadingList()
   console.log({ isLoading, count, readingList })
+  useWindowTitle('Reading list')
   return (
     <>
       <Header />
