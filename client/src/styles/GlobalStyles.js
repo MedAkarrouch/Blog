@@ -95,6 +95,9 @@ const GlobalStyles = createGlobalStyle`
   gap:1rem;
   flex-wrap: wrap;
   justify-content: center;
+  position:sticky;
+  top:-2.2rem;
+  z-index: 10;
 }
 .ql-toolbar.ql-snow .ql-formats{
   margin-right: 0;
@@ -111,6 +114,7 @@ const GlobalStyles = createGlobalStyle`
 }
 .ql-container{
   border: none !important;
+  margin-top: 0rem !important;
   /* background-color: var(--color-grey-50); */
   /* padding: 1rem 0; */
 }
@@ -118,7 +122,7 @@ const GlobalStyles = createGlobalStyle`
   /* Your styles here */
   color: #999; /* Change the color */
   font-style: italic; //Add italics, for example
-  color: red !important;
+  /* color: red !important; */
 }
 .ql-editor {
   border: none !important;

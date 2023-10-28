@@ -4,6 +4,8 @@ import Spinner from '../../ui/Spinner'
 import styled from 'styled-components'
 import { useReadingList } from './useReadingList'
 import ReadingListRow from './ReadingListRow'
+import { useOutsideClick } from '../../hooks/useOutsideClick'
+import { useState } from 'react'
 
 const SpinnerWrapper = styled.div`
   width: 100%;
@@ -16,6 +18,9 @@ const SpinnerWrapper = styled.div`
 
 function ReadingListTable() {
   const { isLoading, count, readingList } = useReadingList()
+  const [selectedId, setSelectedId] = useState(null)
+  const menuRef = useOutsideClick(() => setSelectedId(null))
+
   // console.log(isLoading, count, posts)
 
   return (
@@ -35,7 +40,17 @@ function ReadingListTable() {
         <Table.Body
           data={readingList}
           render={(item) => (
-            <ReadingListRow key={item.post._id} post={item.post} />
+            <ReadingListRow
+              key={item.post._id}
+              post={item.post}
+              ref={menuRef}
+              isMenuOpen={selectedId === item.post._id}
+              openMenu={() =>
+                setSelectedId((current) =>
+                  current === item.post._id ? null : item.post._id,
+                )
+              }
+            />
           )}
         />
       )}

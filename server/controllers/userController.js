@@ -85,7 +85,10 @@ exports.updateMe = async (req, res) => {
       await sharp(req.file.buffer)
         .resize(500, 500)
         .toFile(`${path}/${req.photo}`)
-      if (user.photo !== 'default.jpg') await fs.unlink(`${path}/${user.photo}`)
+      try {
+        if (user.photo !== 'default.jpg')
+          await fs.unlink(`${path}/${user.photo}`)
+      } catch {}
     }
     //
     renderRes({ res, status: 201, data: { user } })
@@ -149,7 +152,9 @@ exports.deleteMe = async (req, res) => {
         // Delete post Image
         const postDoc = await Post.findById(postId)
         const path = 'public/img/posts'
-        await fs.unlink(`${path}/${postDoc.coverImg}`)
+        try {
+          await fs.unlink(`${path}/${postDoc.coverImg}`)
+        } catch {}
         // Delete post
         await Post.findByIdAndDelete(postId)
       })
@@ -166,7 +171,9 @@ exports.deleteMe = async (req, res) => {
     // delete user image
     if (req.currentUser.photo !== 'default.jpg') {
       const path = 'public/img/users'
-      await fs.unlink(`${path}/${req.currentUser.photo}`)
+      try {
+        await fs.unlink(`${path}/${req.currentUser.photo}`)
+      } catch {}
     }
     // 3- clear cookie
     res.clearCookie('jwt')

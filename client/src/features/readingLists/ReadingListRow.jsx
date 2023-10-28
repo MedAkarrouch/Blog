@@ -3,18 +3,15 @@ import { postsImagesUrl } from '../../utils/constants'
 import { DateTime } from 'luxon'
 import Table from '../../ui/Table'
 import {
+  HiBookmark,
   HiMiniArrowRightCircle,
-  HiOutlineBookmark,
-  HiOutlineChatBubbleOvalLeft,
   HiOutlineEllipsisVertical,
-  HiOutlineHeart,
-  HiPencil,
-  HiTrash,
 } from 'react-icons/hi2'
 import styled, { css } from 'styled-components'
 import { Link } from 'react-router-dom'
 import { useRemovePostFromReadingList } from './useRemovePostFromReadingList'
 import SpinnerMini from '../../ui/SpinnerMini'
+import { forwardRef } from 'react'
 
 const Img = styled.img`
   width: 100%;
@@ -25,14 +22,11 @@ const Img = styled.img`
   object-position: center;
   /* align-self: center; */
 `
-const Title = styled(Link)`
+const Title = styled.div`
   font-size: 1.8rem;
   font-weight: 600;
   display: inline-block;
   color: var(--color-grey-600);
-  &:hover {
-    color: var(--color-blue-700);
-  }
   &::first-letter {
     text-transform: uppercase;
   }
@@ -54,13 +48,13 @@ const IconBtn = styled.button`
   border-radius: 5px;
   position: relative;
 
-  & svg {
+  /* & svg {
     color: var(--color-orange-400);
     fill: var(--color-orange-400);
     stroke-width: 1.5;
     width: 2.5rem;
     height: 2.5rem;
-  }
+  } */
   &:hover {
     background-color: var(--color-grey-100);
   }
@@ -79,12 +73,86 @@ const Flex = styled.div`
     color: var(--color-grey-300);
   }
 `
+const ToggleIcon = styled(HiOutlineEllipsisVertical)`
+  stroke-width: 1.5;
+  width: 2.4rem;
+  height: 2.4rem;
+`
 
-function ReadingListRow({ post }) {
+const OptionsMenu = styled.menu`
+  position: absolute;
+  background-color: #fff;
+  top: 75%;
+  right: 1.5rem;
+  border: 1px solid var(--color-grey-50);
+  border-radius: 7px;
+  box-shadow: var(--shadow-md);
+  z-index: 10;
+`
+const OptionsList = styled.ul`
+  display: flex;
+  flex-direction: column;
+`
+const OptionsItem = styled.li`
+  cursor: pointer;
+  display: flex;
+  gap: 1.6rem;
+  align-items: center;
+  &:not(:has(:link)) {
+    padding: 1.2rem 2.4rem;
+  }
+  /* color: var(--color-grey-700); */
+  color: var(--color-grey-700);
+  span {
+    font-size: 1.4rem;
+  }
+  &:hover {
+    background-color: var(--color-grey-50);
+  }
+  & svg {
+    color: var(--color-grey-400);
+    /* color: var(--color-grey-300); */
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+`
+const OptionsLink = styled(Link)`
+  display: block;
+  padding: 1.2rem 2.4rem;
+  display: flex;
+  align-items: center;
+  gap: 1.6rem;
+`
+
+const ReadingListRow = forwardRef(function ReadingListRow(
+  { post, isMenuOpen, openMenu },
+  ref,
+) {
   const { isLoading, removePostFromReadingList } =
     useRemovePostFromReadingList()
   return (
     <Table.Row>
+      {isMenuOpen && (
+        <OptionsMenu ref={ref}>
+          <OptionsList>
+            <OptionsItem>
+              <OptionsLink to={`/post/${post._id}`}>
+                <HiMiniArrowRightCircle />
+                <span>Go to post</span>
+              </OptionsLink>
+            </OptionsItem>
+
+            <OptionsItem onClick={() => removePostFromReadingList(post._id)}>
+              {isLoading ? (
+                <SpinnerMini color={'var(--color-orange-400)'} />
+              ) : (
+                <HiBookmark />
+              )}
+              <span>Remove from list</span>
+            </OptionsItem>
+          </OptionsList>
+        </OptionsMenu>
+      )}
       <Img loading="lazy" src={`${postsImagesUrl}/${post.coverImg}`} alt="" />
       <div>
         <Flex>
@@ -101,17 +169,15 @@ function ReadingListRow({ post }) {
         <Title to={`/post/${post._id}`}>{post.title}</Title>
       </div>
       <IconBtn
-        title="Remove from reading list"
-        onClick={() => removePostFromReadingList(post._id)}
+        onClick={(e) => {
+          e.stopPropagation()
+          openMenu()
+        }}
       >
-        {isLoading ? (
-          <SpinnerMini color={'var(--color-orange-400)'} />
-        ) : (
-          <HiOutlineBookmark />
-        )}
+        <ToggleIcon />
       </IconBtn>
     </Table.Row>
   )
-}
+})
 
 export default ReadingListRow

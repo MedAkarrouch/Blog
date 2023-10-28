@@ -10,8 +10,10 @@ const StyledContent = styled.div`
   font-size: 1.8rem;
   /* font-size: 1.8rem; */
   /* color:; */
-  color: var(--color-grey-600);
   & p {
+    hyphens: unset !important;
+    overflow-wrap: unset !important;
+    color: var(--color-grey-600);
     line-height: 1.9;
     &::first-letter {
       text-transform: capitalize;

@@ -151,8 +151,10 @@ exports.deletePost = async (req, res) => {
     // Delete from readingList
     await ReadingList.deleteMany({ post: postId })
     // Delete post image
-    const path = 'public/img/posts'
-    await fs.unlink(`${path}/${postDoc.coverImg}`)
+    try {
+      const path = 'public/img/posts'
+      await fs.unlink(`${path}/${postDoc.coverImg}`)
+    } catch {}
     res.status(200).json({
       status: 'success',
       message: 'Post successfully deleted',
@@ -211,7 +213,9 @@ exports.updatePost = async (req, res) => {
       const path = 'public/img/posts'
       await fs.writeFile(`${path}/${coverImg}`, req.file.buffer)
       // Delete prev post image
-      await fs.unlink(`${path}/${post.coverImg}`)
+      try {
+        await fs.unlink(`${path}/${post.coverImg}`)
+      } catch {}
     }
     // return response
     renderRes({
