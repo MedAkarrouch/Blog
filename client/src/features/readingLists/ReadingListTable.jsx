@@ -50,6 +50,7 @@ function ReadingListTable() {
                   current === item.post._id ? null : item.post._id,
                 )
               }
+              closeMenu={() => setSelectedId(null)}
             />
           )}
         />

@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { updateComment as updateCommentApi } from '../../services/apiComments'
 import { toast } from 'react-hot-toast'
+import { handleError } from '../../utils/utils'
 
 export function useUpdateComment() {
   const queryClient = useQueryClient()
@@ -8,11 +9,9 @@ export function useUpdateComment() {
     mutationFn: updateCommentApi,
     onSuccess: ({ comment }) => {
       toast.success('Comment successfully updated')
-      console.log(comment.post)
-      // queryClient.invalidateQueries(['post-comments', comment.post])
       queryClient.invalidateQueries(['post', comment.post])
     },
-    onError: () => toast.error('Something went wrong'),
+    onError: (err) => handleError(err),
   })
   return { isUpdating, updateComment }
 }

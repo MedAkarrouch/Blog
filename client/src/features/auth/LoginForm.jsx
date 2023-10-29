@@ -30,7 +30,7 @@ const StyldeFooterDiv = styled.div`
 
 function LoginForm() {
   const { login, isLoading } = useLogin()
-  const [email, setEmail] = useState('akro@email.io')
+  const [email, setEmail] = useState('selena@email.io')
   const [password, setPassword] = useState('12345678')
 
   const onSubmit = (e) => {

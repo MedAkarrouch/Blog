@@ -87,6 +87,18 @@ exports.protect = async (req, res, next) => {
     renderRes({ res, status: 401, message: err.message })
   }
 }
+
+exports.restrictToUsers = async (req, res, next) => {
+  if (req.currentUser?.role === 'demo')
+    return renderRes({
+      res,
+      status: 401,
+      message:
+        'This demo account is only for exploration. To add, delete, or update content, create your own account for full control.',
+    })
+  else return next()
+}
+
 exports.logout = async (req, res) => {
   res.clearCookie('jwt')
   res.status(200).json({

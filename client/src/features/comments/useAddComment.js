@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { addComment as addCommentApi } from '../../services/apiComments'
 import { toast } from 'react-hot-toast'
 import { useParams } from 'react-router-dom'
+import { handleError } from '../../utils/utils'
 
 export function useAddComment() {
   const queryClient = useQueryClient()
@@ -12,7 +13,7 @@ export function useAddComment() {
       toast.success('Comment successfully added')
       queryClient.invalidateQueries(['post', comment.post])
     },
-    onError: () => toast.error('Something went wrong'),
+    onError: (err) => handleError(err),
   })
   return { isAddingComment, addComment }
 }

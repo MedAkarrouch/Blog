@@ -125,7 +125,7 @@ const OptionsLink = styled(Link)`
 `
 
 const ReadingListRow = forwardRef(function ReadingListRow(
-  { post, isMenuOpen, openMenu },
+  { post, isMenuOpen, openMenu, closeMenu },
   ref,
 ) {
   const { isLoading, removePostFromReadingList } =
@@ -142,7 +142,11 @@ const ReadingListRow = forwardRef(function ReadingListRow(
               </OptionsLink>
             </OptionsItem>
 
-            <OptionsItem onClick={() => removePostFromReadingList(post._id)}>
+            <OptionsItem
+              onClick={() =>
+                removePostFromReadingList(post._id, { onSettled: closeMenu })
+              }
+            >
               {isLoading ? (
                 <SpinnerMini color={'var(--color-orange-400)'} />
               ) : (

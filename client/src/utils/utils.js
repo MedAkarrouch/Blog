@@ -5,7 +5,7 @@ export const checkForNetworkError = (err) => {
 }
 export const handleError = (err) => {
   if (err.message === 'Network Error')
-    toast.error('Something went wrong Try again later')
+    return toast.error('Something went wrong Try again later')
   //
   const {
     validationErrors,

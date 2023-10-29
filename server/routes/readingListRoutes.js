@@ -7,12 +7,14 @@ router.get('/', authController.protect, readingListController.getReadingList)
 router.post(
   '/addToReadingList',
   authController.protect,
+  authController.restrictToUsers,
   readingListController.addToReadingList
 )
 
 router.delete(
   '/removePostFromReadingList',
   authController.protect,
+  authController.restrictToUsers,
   readingListController.removePostFromReadingList
 )
 

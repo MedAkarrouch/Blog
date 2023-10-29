@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { deletePost as deletePostApi } from '../../services/apiPosts'
 import { toast } from 'react-hot-toast'
+import { handleError } from '../../utils/utils'
 
 export function useDeletePost() {
   const queryClient = useQueryClient()
@@ -10,7 +11,7 @@ export function useDeletePost() {
       toast.success('Post successfully deleted')
       queryClient.invalidateQueries()
     },
-    onError: () => toast.error('Something went wrong'),
+    onError: (err) => handleError(err),
   })
   return { isDeleting, deletePost }
 }

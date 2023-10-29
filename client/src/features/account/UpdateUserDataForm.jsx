@@ -33,6 +33,7 @@ function UpdateUserDataForm({ children }) {
         e.target.reset()
         setPhoto()
       },
+      // onError: onClear,
     })
   }
 
