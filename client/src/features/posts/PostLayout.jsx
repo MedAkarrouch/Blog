@@ -1,4 +1,4 @@
-import styled, { css } from "styled-components"
+import styled, { css } from 'styled-components'
 const PostLayout = styled.div`
   display: grid;
   grid-template-columns: max-content 1fr;
@@ -28,6 +28,9 @@ const Comment = styled.p`
   grid-column: 2/-1;
   color: var(--color-grey-500);
   font-size: 1.4rem;
+  &::first-letter {
+    text-transform: uppercase;
+  }
 `
 const Row = styled.div`
   display: flex;

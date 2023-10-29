@@ -95,6 +95,7 @@ const GlobalStyles = createGlobalStyle`
   gap:1rem;
   flex-wrap: wrap;
   justify-content: center;
+  position: -webkit-sticky;
   position:sticky;
   top:-2.2rem;
   z-index: 10;
@@ -233,8 +234,8 @@ const GlobalStyles = createGlobalStyle`
   h4,
   h5,
   h6 {
-    overflow-wrap: break-word;
-    hyphens: auto;
+    /* overflow-wrap: break-word; */
+    /* hyphens: auto; */
   }
 
   img {
