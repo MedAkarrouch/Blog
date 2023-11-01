@@ -99,7 +99,7 @@ The Blog Web App is built using the following technologies and tools:
 
 ## Screenshots
 
-![Homepage](/screenshots/home.png)
+![Homepage](/screenshots/Home.png)
 _Caption: The homepage of the blog app._
 
 ![Blog post](/screenshots/Blog-post-1.png)
