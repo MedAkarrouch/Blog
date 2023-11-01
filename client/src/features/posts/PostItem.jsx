@@ -7,9 +7,13 @@ import {
   HiOutlineBookOpen,
   HiOutlineHeart,
   HiOutlineChatBubbleOvalLeft,
+  HiOutlineBookmark,
 } from 'react-icons/hi2'
 import { forwardRef } from 'react'
 import AddToReadingListButton from '../readingLists/AddToReadingListButton'
+import { useUser } from '../auth/useUser'
+import Modal from '../../ui/Modal'
+import LogInToContinue from '../../ui/LogInToContinue'
 
 const StyledPost = styled.li`
   border-radius: 20px;
@@ -260,6 +264,8 @@ const Post = forwardRef(function Post({ post }, ref) {
     readingTime,
     _id: postId,
   } = post
+  const { isAuthenticated } = useUser()
+
   return (
     <>
       <StyledPost ref={ref}>
@@ -297,9 +303,17 @@ const Post = forwardRef(function Post({ post }, ref) {
                 </StyledProfileDate>
               </StyledProfileDiv>
             </StyledProfile>
-            <AddToReadingListButton post={post}>
-              <Icon />
-            </AddToReadingListButton>
+            {!isAuthenticated ? (
+              <Modal.Open window="form-login">
+                <Icon title="Add to reading list">
+                  <HiOutlineBookmark />
+                </Icon>
+              </Modal.Open>
+            ) : (
+              <AddToReadingListButton post={post}>
+                <Icon />
+              </AddToReadingListButton>
+            )}
           </StyledPostFooter>
         </StyledContent>
         <StyledCoverImg

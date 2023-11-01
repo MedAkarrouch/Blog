@@ -112,7 +112,6 @@ The Blog Web App is built using the following technologies and tools:
 ### Dashboard page
 
 ![User dashboard](/screenshots/Dashboard.png)
-_Caption: The user's dashboard page._
 
 ### Account page
 
@@ -125,7 +124,6 @@ _Caption: The user's dashboard page._
 ### Reading list page
 
 ![User reading list](/screenshots/Reading-list.png)
-_Caption : The user's reading list page._
 
 ## API Reference
 

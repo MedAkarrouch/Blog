@@ -14,8 +14,8 @@ function AddToReadingListButton({ post, children }) {
   const { removePostFromReadingList, isLoading: isLoading3 } =
     useRemovePostFromReadingList()
   const isLoading = isLoading1 || isLoading2 || isLoading3
-  console.log('Reading-list : ', readingList)
-  console.log(readingList?.forEach((item) => console.log(item.user, user?._id)))
+  // console.log('Reading-list : ', readingList)
+  // console.log(readingList?.forEach((item) => console.log(item.user, user?._id)))
   const hasUserAlreadyAddedPostToReadingList = useMemo(() => {
     return readingList?.some(
       (item) => item.post._id === post._id && item.user === user?._id,
@@ -29,7 +29,6 @@ function AddToReadingListButton({ post, children }) {
     else if (!hasUserAlreadyAddedPostToReadingList)
       addPostToReadingList(post._id)
   }
-
   return cloneElement(
     children,
     {

@@ -6,6 +6,8 @@ import SpinnerMini from './SpinnerMini'
 import ErrorMessage from './ErrorMessage'
 import ScrollMenu from './ScrollMenu'
 import SortBy from './SortBy'
+import Modal from './Modal'
+import LogInToContinue from './LogInToContinue'
 
 const StyledSpinner = styled.div`
   justify-content: center;
@@ -81,12 +83,17 @@ function PostsLayout() {
         </SpinnerContainer>
       ) : posts.length ? (
         <>
-          <Posts
-            posts={posts}
-            fetchNextPage={fetchNextPage}
-            isFetchingNextPage={isFetchingNextPage}
-            hasNextPage={hasNextPage}
-          />
+          <Modal>
+            <Posts
+              posts={posts}
+              fetchNextPage={fetchNextPage}
+              isFetchingNextPage={isFetchingNextPage}
+              hasNextPage={hasNextPage}
+            />
+            <Modal.Window window="form-login">
+              <LogInToContinue />
+            </Modal.Window>
+          </Modal>
           {isFetchingNextPage && (
             <StyledSpinner>
               <SpinnerMini />

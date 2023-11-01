@@ -44,7 +44,7 @@ function Post() {
   const { isLoading, post, isError } = usePost()
   const commentsSection = useRef(null)
   console.log({ isLoading, post, isError })
-  useWindowTitle(`${post?.title || ''}`)
+  useWindowTitle(`${post?.title || 'LOOR'}`)
   if (isLoading)
     return (
       <Spinner.Wrapper subtract="7rem">

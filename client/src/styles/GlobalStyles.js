@@ -169,6 +169,14 @@ const GlobalStyles = createGlobalStyle`
     @media screen and (max-width:37.5em) {
       font-size: 43.75%;
     }
+    @media screen and (min-width:  90.625em){
+      /* 1450 */
+      font-size: 68.75%;
+    }
+    @media screen and (min-width: 112.5em) {
+      /* 1800 */
+      font-size: 75%;
+    }
   }
 
   body {
