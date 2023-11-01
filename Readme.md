@@ -99,18 +99,30 @@ The Blog Web App is built using the following technologies and tools:
 
 ## Screenshots
 
+### Home page
+
 ![Homepage](/screenshots/Home.png)
-_Caption: The homepage of the blog app._
+
+### Blog post page
 
 ![Blog post](/screenshots/Blog-post-1.png)
+
 ![Comments section of the blog post](/screenshots/blog-post-comments-section.png)
-_Caption: Blog post._
+
+### Dashboard page
 
 ![User dashboard](/screenshots/Dashboard.png)
 _Caption: The user's dashboard page._
 
+### Account page
+
 ![Create account page](/screenshots/Account.png)
-_Caption: The user's account page._
+
+### Create post page
+
+![Create post page](/screenshots/Create-post.png)
+
+### Reading list page
 
 ![User reading list](/screenshots/Reading-list.png)
 _Caption : The user's reading list page._
