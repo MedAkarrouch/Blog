@@ -20,7 +20,7 @@ function AddToReadingListButton({ post, children }) {
     return readingList?.some(
       (item) => item.post._id === post._id && item.user === user?._id,
     )
-  }, [count, isAuthenticated])
+  }, [count, isAuthenticated, user?._id])
 
   const handleLick = () => {
     if (!isAuthenticated) return

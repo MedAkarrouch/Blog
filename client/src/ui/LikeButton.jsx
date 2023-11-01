@@ -14,7 +14,7 @@ function LikeButton({ post, children }) {
 
   const hasUserAlreadyLikedPost = useMemo(() => {
     return likes?.some((like) => like.user === user?._id)
-  }, [likesCount, isAuthenticated])
+  }, [likesCount, isAuthenticated, user?._id])
 
   const handleLikeClick = () => {
     if (!isAuthenticated) return

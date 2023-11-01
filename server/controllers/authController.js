@@ -94,7 +94,7 @@ exports.restrictToUsers = async (req, res, next) => {
       res,
       status: 401,
       message:
-        'This demo account is only for exploration. To add, delete, or update content, create your own account for full control.',
+        'This demo account is only for exploration. Please create your own account for full control.',
     })
   else return next()
 }
