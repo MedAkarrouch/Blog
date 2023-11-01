@@ -31,8 +31,8 @@ app.use(express.json())
 // )
 app.use(
   cors({
-    // origin: ['http://localhost:5173'],
-    origin: ['https://loor.netlify.app'],
+    origin: ['http://localhost:5173'],
+    // origin: ['https://loor.netlify.app'],
     credentials: true,
     sameSite: 'none',
   })

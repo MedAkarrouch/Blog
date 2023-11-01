@@ -1,5 +1,5 @@
 // export const serverUrl = 'http://localhost:8000'
-export const serverUrl = 'blog.railway.internal'
+export const serverUrl = 'https://blog-production-f8a0.up.railway.app/'
 export const postsImagesUrl = `${serverUrl}/img/posts`
 export const usersImagesUrl = `${serverUrl}/img/users`
 //
