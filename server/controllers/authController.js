@@ -103,7 +103,8 @@ exports.restrictToUsers = async (req, res, next) => {
 }
 
 exports.logout = async (req, res) => {
-  res.cookie('jwt', { maxAge: 0 })
+  // res.cookie('jwt', { maxAge: 0 })
+  cookies.set('jwt', { maxAge: 0 })
   // res.clearCookie('jwt', {
   //   httpOnly: true,
   //   sameSite: 'none',
