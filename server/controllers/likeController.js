@@ -1,4 +1,4 @@
-const Like = require('../models/likeModel')
+const Like = require('../models/LikeModel')
 const Post = require('../models/postModel')
 const renderRes = require('../utils/renderRes')
 const { userHasAlreadyLikedPost } = require('../utils/utils')

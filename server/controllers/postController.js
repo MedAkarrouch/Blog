@@ -1,6 +1,6 @@
 const Post = require('../models/postModel')
 const Comment = require('../models/commentModel')
-const Like = require('../models/likeModel')
+const Like = require('../models/LikeModel')
 const ReadingList = require('../models/readingListModel')
 const fs = require('fs').promises
 const multer = require('multer')

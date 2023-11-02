@@ -1,7 +1,7 @@
 const User = require('../models/userModel')
 const Comment = require('../models/commentModel')
 const Post = require('../models/postModel')
-const Like = require('../models/likeModel')
+const Like = require('../models/LikeModel')
 const ReadingList = require('../models/readingListModel')
 
 const { FILE_MAX_SIZE } = require('../utils/constants')
