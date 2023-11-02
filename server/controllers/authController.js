@@ -103,7 +103,12 @@ exports.restrictToUsers = async (req, res, next) => {
 }
 
 exports.logout = async (req, res) => {
-  res.clearCookie('jwt', { sameSite : 'None', secure: true, domain: 'https://loor.netlify.app' })
+  res.clearCookie('jwt', {
+    httpOnly: true,
+    sameSite: 'None',
+    secure: true,
+    domain: 'https://loor.netlify.app',
+  })
   // res.clearCookie('jwt')
   res.status(200).json({
     status: 'success',
