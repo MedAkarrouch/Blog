@@ -1,6 +1,7 @@
 // export const serverUrl = 'http://localhost:8000'
 // export const serverUrl = 'https://blog-production-f8a0.up.railway.app'
-export const serverUrl = 'https://blog-production-578f.up.railway.app'
+// export const serverUrl = 'https://blog-production-578f.up.railway.app'
+export const serverUrl = 'https://loor-api.up.railway.app'
 export const postsImagesUrl = `${serverUrl}/img/posts`
 export const usersImagesUrl = `${serverUrl}/img/users`
 //
