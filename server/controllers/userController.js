@@ -1,7 +1,7 @@
-// const Like = require('../models/likeModel')
 const User = require('../models/userModel')
 const Comment = require('../models/commentModel')
 const Post = require('../models/postModel')
+const Like = require('../models/likeModel')
 const ReadingList = require('../models/readingListModel')
 
 const { FILE_MAX_SIZE } = require('../utils/constants')
@@ -144,7 +144,7 @@ exports.deleteMe = async (req, res) => {
       posts.map(async (post) => {
         const postId = post._id
         // Delete likes related to the post
-        // await Like.deleteMany({ post: postId })
+        await Like.deleteMany({ post: postId })
         // Delete comments related to the post
         await Comment.deleteMany({ post: postId })
         // Delete reading list posts
@@ -160,7 +160,7 @@ exports.deleteMe = async (req, res) => {
       })
     )
     // delete all user likes
-    // await Like.deleteMany({ user: req.currentUser._id })
+    await Like.deleteMany({ user: req.currentUser._id })
     // delete all user comments
     await Comment.deleteMany({ user: req.currentUser._id })
     // delete user reading list
