@@ -107,7 +107,8 @@ exports.logout = async (req, res) => {
     httpOnly: true,
     sameSite: 'None',
     secure: true,
-    domain: 'https://loor.netlify.app',
+    domain: 'loor.netlify.app',
+    path: '/',
   })
   // res.clearCookie('jwt')
   res.status(200).json({
