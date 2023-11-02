@@ -17,6 +17,9 @@ const createSendToken = (status, user, req, res) => {
   res.cookie('jwt', token, {
     maxAge: 10 * process.env.COOKIE_EXPIRES_IN * 60 * 60 * 1000,
     httpOnly: true,
+    // Production
+    sameSite: 'none',
+    secure: true,
   })
 
   user.password = undefined
