@@ -1,6 +1,6 @@
 # Blog App
 
-> [Demo](http:www.youtube.com) (Log in with email= **selena@email.io** & password=**12345678**)
+> [Demo](https://loor.netlify.app) (Log in with email= **selena@email.io** & password=**12345678**)
 
 Our blog web app is a feature-rich platform that empowers users to create, manage, and share their thoughts through blog posts. With a strong focus on user experience and functionality, it offers user registration and authentication through JWT, making it easy for users to access and contribute to the platform. Users can create, edit, and delete their blog posts, leave comments, and like posts.
 
