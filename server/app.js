@@ -18,11 +18,7 @@ app.use(express.json())
 
 // Set security HTTP Headers
 app.use(helmet())
-// Data sanitization against NoSQL query injection
-app.use(mongoSanitize())
-// Data sanitization against xss
-app.use(xss())
-
+//
 app.use(
   cors({
     // origin: ['http://localhost:5173'],
@@ -31,11 +27,17 @@ app.use(
     sameSite: 'none',
   })
 )
+// Data sanitization against NoSQL query injection
+app.use(mongoSanitize())
+// Data sanitization against xss
+app.use(xss())
+
 // Allow credentials (cookies) to be sent
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Credentials', 'true')
   next()
 })
+
 // app.use(cors({ credentials: true, origin: 'http://localhost:5173' }));
 
 app.use(cookieParser())
