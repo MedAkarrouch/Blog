@@ -2,6 +2,8 @@ const express = require('express')
 const cors = require('cors')
 const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
+const mongoSanitize = require('express-mongo-sanitize')
+const xss = require('xss')
 
 const authRouter = require('./routes/authRouters')
 const userRouter = require('./routes/userRoutes')
@@ -12,23 +14,13 @@ const readingListRouter = require('./routes/readingListRoutes')
 
 const app = express()
 
+// Data sanitization against NoSQL query injection
+app.use(mongoSanitize())
+// Data sanitization against xss
+app.use(xss())
+
 app.use(express.json())
-// app.use(
-//   cors({
-//     // origin: ['https://loor.netlify.app'],
-//     // origin: 'http://localhost:5173',
-//     credentials: true,
-//     optionSuccessStatus: 200,
-//     Headers: true,
-//     exposedHeaders: 'Set-Cookie',
-//     methods: ['GET', 'PUT', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
-//     allowedHeaders: [
-//       'Access-Control-Allow-Origin',
-//       'Content-Type',
-//       'Authorization',
-//     ],
-//   })
-// )
+
 app.use(
   cors({
     // origin: ['http://localhost:5173'],

@@ -92,14 +92,22 @@ exports.protect = async (req, res, next) => {
 }
 
 exports.restrictToUsers = async (req, res, next) => {
-  if (req.currentUser?.role === 'demo')
-    return renderRes({
-      res,
-      status: 401,
-      message:
-        'This demo account is only for exploration. Please create your own account for full control.',
-    })
-  else return next()
+  // Temporary so no one could break our app
+  return renderRes({
+    res,
+    status: 401,
+    message:
+      'This demo account is only for exploration. Please create your own account for full control.',
+  })
+  // That's the right one
+  // if (req.currentUser?.role === 'demo')
+  //   return renderRes({
+  //     res,
+  //     status: 401,
+  //     message:
+  //       'This demo account is only for exploration. Please create your own account for full control.',
+  //   })
+  // else return next()
 }
 
 exports.logout = async (req, res) => {
