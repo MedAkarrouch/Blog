@@ -4,6 +4,7 @@ const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
 const mongoSanitize = require('express-mongo-sanitize')
 const xss = require('xss-clean')
+const helmet = require('helmet')
 
 const authRouter = require('./routes/authRouters')
 const userRouter = require('./routes/userRoutes')
@@ -15,6 +16,8 @@ const readingListRouter = require('./routes/readingListRoutes')
 const app = express()
 app.use(express.json())
 
+// Set security HTTP Headers
+app.use(helmet())
 // Data sanitization against NoSQL query injection
 app.use(mongoSanitize())
 // Data sanitization against xss
