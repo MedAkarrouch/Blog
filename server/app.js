@@ -3,7 +3,7 @@ const cors = require('cors')
 const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
 const mongoSanitize = require('express-mongo-sanitize')
-const xss = require('xss')
+const xss = require('xss-clean')
 
 const authRouter = require('./routes/authRouters')
 const userRouter = require('./routes/userRoutes')
@@ -13,13 +13,12 @@ const likeRouter = require('./routes/likeRoutes')
 const readingListRouter = require('./routes/readingListRoutes')
 
 const app = express()
+app.use(express.json())
 
 // Data sanitization against NoSQL query injection
 app.use(mongoSanitize())
 // Data sanitization against xss
 app.use(xss())
-
-app.use(express.json())
 
 app.use(
   cors({
