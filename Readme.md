@@ -19,6 +19,7 @@ The Blog Web App is built using the following technologies and tools:
 - **MongoDB**: A NoSQL database for storing blog posts and user data.
 - **JWT (JSON Web Tokens)**: Used for user authentication and securing API endpoints.
 - **React**: A JavaScript library for building the user interface and managing the front-end.
+- **React Query**: A JavaScript library used for simplified and efficient management of asynchronous data in React applications.
 - **npm**: The Node Package Manager for managing project dependencies.
 
 ## Features
